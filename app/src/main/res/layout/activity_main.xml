@@ -37,4 +37,5 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:text="Mai says hi. :)" />
+    
 </android.support.v4.widget.DrawerLayout>
