@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 // Parse:
 import com.parse.Parse;
+import com.parse.ParseObject;
 import com.parse.ParseAnalytics;
 
 
@@ -38,6 +39,13 @@ public class MainActivity extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Parse.initialize(this, "KnbVYjrpTnGbSxTHepqboC9Cdr1Q2hFLAyHJMyvg",
+                "GKyOV7Jd4bwKXS1drBan5HppMNE3toltclrS3wBY");
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
