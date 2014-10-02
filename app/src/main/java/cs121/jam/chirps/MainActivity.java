@@ -39,8 +39,8 @@ public class MainActivity extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Parse.initialize(this, "KnbVYjrpTnGbSxTHepqboC9Cdr1Q2hFLAyHJMyvg",
-                "GKyOV7Jd4bwKXS1drBan5HppMNE3toltclrS3wBY");
+        Parse.initialize(this, getString(R.string.parse_application_id),
+                getString(R.string.parse_client_key));
 
         ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");

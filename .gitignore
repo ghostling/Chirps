@@ -25,3 +25,5 @@ local.properties
 .gradle
 /build
 
+# Config
+config.xml
