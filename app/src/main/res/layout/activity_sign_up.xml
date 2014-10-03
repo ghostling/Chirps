@@ -20,12 +20,14 @@
 
     <EditText
         android:id="@+id/sign_up_first_name_input"
+        android:capitalize="words"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/first_name_input_hint" />
 
     <EditText
         android:id="@+id/sign_up_last_name_input"
+        android:capitalize="words"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/last_name_input_hint" />
