@@ -27,15 +27,5 @@
         android:layout_gravity="start"
         android:name="cs121.jam.chirps.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
-
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:text="Jiexi says hi. :)"/>
-
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:text="Mai says hi. :)" />
     
 </android.support.v4.widget.DrawerLayout>

@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -20,8 +21,10 @@ import android.widget.TextView;
 
 // Parse:
 import com.parse.Parse;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseObject;
 import com.parse.ParseAnalytics;
+import com.parse.ParseUser;
 
 
 public class MainActivity extends Activity
@@ -39,14 +42,30 @@ public class MainActivity extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Parse.initialize(this, getString(R.string.parse_application_id),
-                getString(R.string.parse_client_key));
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
-
         super.onCreate(savedInstanceState);
+
+        // Determine whether the current user is an anonymous user
+        if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+            // If user is anonymous, send the user to LoginActivity.class
+            Intent intent = new Intent(MainActivity.this,
+                    LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            // Get current user data from Parse.com
+            ParseUser currentUser = ParseUser.getCurrentUser();
+
+            // If the current user is anonymous, send them to the LoginActivity to either login or
+            // sign up.
+//            if (currentUser == null) {
+//                // Send user to LoginActivity.class
+//                Intent intent = new Intent(MainActivity.this,
+//                        LoginActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+        }
+
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
