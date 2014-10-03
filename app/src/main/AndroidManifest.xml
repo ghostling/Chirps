@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk
-        android:minSdkVersion="15"
+        android:minSdkVersion="16"
         android:targetSdkVersion="20" />
 
     <application
@@ -29,11 +29,13 @@
             android:label="@string/login_activity_label"/>
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up" >
+            android:label="@string/title_activity_sign_up"
+            android:parentActivityName=".LoginActivity">
         </activity>
         <activity
             android:name=".ChirpSubmissionActivity"
-            android:label="@string/title_activity_chirp_submission" >
+            android:label="@string/title_activity_chirp_submission"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 
