@@ -1,5 +1,6 @@
 package cs121.jam.model;
 
+import com.parse.ParseACL;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -8,7 +9,10 @@ import com.parse.ParseUser;
 import org.json.JSONArray;
 import java.util.Date;
 
-
+/**
+ * TODO: Instead of "void," we should really return success/failure messages to enable us to have
+ * a starting point for our future unit tests.
+ */
 @ParseClassName("Chirp")
 public class Chirp extends ParseObject{
     private String TITLE = "title";
@@ -19,6 +23,7 @@ public class Chirp extends ParseObject{
     private String SCHOOLS = "schools";
     private String CATEGORIES = "categories";
     private String USER = "user";
+    private String CHIRP_APPROVAL = "chirpApproval";
 
     public String getTitle() {
         return getString(TITLE);
@@ -82,5 +87,29 @@ public class Chirp extends ParseObject{
 
     public void setUser(ParseUser user) {
         put(USER, user);
+    }
+
+    public void approveChirp() {
+        put(CHIRP_APPROVAL, true);
+    }
+
+    public void rejectChirp() {
+        put(CHIRP_APPROVAL, false);
+    }
+
+    public void saveChirp() {
+        ParseACL chirpACL = new ParseACL();
+        chirpACL.setPublicReadAccess(true);
+        chirpACL.setRoleWriteAccess(Admin.ADMIN_ROLE, true);
+
+        // Allows the current user to read/modify its own objects.
+        ParseACL.setDefaultACL(chirpACL, true);
+
+        this.setACL(chirpACL);
+        this.saveInBackground();
+    }
+
+    public void deleteChirp() {
+        // TODO: Implement.
     }
 }
