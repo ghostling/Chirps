@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,14 +18,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 // Parse:
 import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseAnalytics;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import cs121.jam.model.Chirp;
 
 
 public class MainActivity extends Activity
@@ -39,6 +49,12 @@ public class MainActivity extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    /**
+     * Used to display the list of Chirps.
+     */
+    private ListView chirpListView;
+    private ArrayAdapter<String> chirpListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +92,41 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        showChirpList();
+    }
+
+    public void showChirpList() {
+        chirpListView = (ListView) findViewById(R.id.chirp_list_view);
+
+        // TODO: Maybe this goes somewhere else?
+        ParseObject.registerSubclass(Chirp.class);
+
+        ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
+        chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+        chirpQuery.orderByDescending("createdAt");
+
+        List<Chirp> chirps = null;
+        try {
+            chirps = chirpQuery.find();
+        } catch (ParseException pe) {
+            Log.e("Chirp Query", pe.getMessage());
+        }
+
+        String[] cl = new String[chirps.size()];
+        for (int i = 0; i < chirps.size(); i++) {
+            cl[i] = chirps.get(i).toString();
+        }
+
+        ArrayList<String> chirpList = new ArrayList<String>();
+        chirpList.addAll(Arrays.asList(cl));
+
+        // Create ArrayAdapter using the planet list.
+        chirpListAdapter = new ArrayAdapter<String>(this, R.layout.chirp_row_item, chirpList);
+
+        // Set the ArrayAdapter as the ListView's adapter.
+        chirpListView.setAdapter(chirpListAdapter);
+
     }
 
     @Override

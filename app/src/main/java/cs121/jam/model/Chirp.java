@@ -12,18 +12,21 @@ import java.util.Date;
 /**
  * TODO: Instead of "void," we should really return success/failure messages to enable us to have
  * a starting point for our future unit tests.
+ *
+ * Whether or not attributes are correct or required will be specified by the "View." It is not the
+ * intent of the data model.
  */
 @ParseClassName("Chirp")
 public class Chirp extends ParseObject{
-    private String TITLE = "title";
-    private String DESCRIPTION = "description";
-    private String IMAGE = "image";
-    private String EXPIRATION_DATE = "expirationDate";
-    private String CONTACT_EMAIL = "contactEmail";
-    private String SCHOOLS = "schools";
-    private String CATEGORIES = "categories";
-    private String USER = "user";
-    private String CHIRP_APPROVAL = "chirpApproval";
+    public static String TITLE = "title";
+    public static String DESCRIPTION = "description";
+    public static String IMAGE = "image";
+    public static String EXPIRATION_DATE = "expirationDate";
+    public static String CONTACT_EMAIL = "contactEmail";
+    public static String SCHOOLS = "schools";
+    public static String CATEGORIES = "categories";
+    public static String USER = "user";
+    public static String CHIRP_APPROVAL = "chirpApproval";
 
     public String getTitle() {
         return getString(TITLE);
@@ -54,6 +57,14 @@ public class Chirp extends ParseObject{
     }
 
     public void setExpirationDate(Date expirationDate) {
+        put(EXPIRATION_DATE, expirationDate);
+    }
+
+    /**
+     * When no expiration date is specified, auto it to a week from now.
+     */
+    public void setExpirationDate() {
+        Date expirationDate = new Date();
         put(EXPIRATION_DATE, expirationDate);
     }
 
@@ -111,5 +122,12 @@ public class Chirp extends ParseObject{
 
     public void deleteChirp() {
         // TODO: Implement.
+    }
+
+    @Override
+    public String toString() {
+        return getClassName() + "[" +
+                "title=" + getTitle() + ", " +
+                "description=" + getDescription() + "]";
     }
 }
