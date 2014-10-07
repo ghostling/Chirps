@@ -35,6 +35,7 @@ public class MainActivity extends Activity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -57,13 +58,13 @@ public class MainActivity extends Activity
 
             // If the current user is anonymous, send them to the LoginActivity to either login or
             // sign up.
-//            if (currentUser == null) {
-//                // Send user to LoginActivity.class
-//                Intent intent = new Intent(MainActivity.this,
-//                        LoginActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
+            if (currentUser == null) {
+                // Send user to LoginActivity.class
+                Intent intent = new Intent(MainActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
 
         setContentView(R.layout.activity_main);
@@ -76,6 +77,8 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
     }
 
     @Override
@@ -130,6 +133,13 @@ public class MainActivity extends Activity
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_logout) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            currentUser.logOut();
+            Intent intent = new Intent(MainActivity.this,
+                    LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
