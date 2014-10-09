@@ -58,7 +58,8 @@ public class ChirpSubmissionActivity extends Activity {
                 chirp.setContactEmail(chirpContact);
                 chirp.setExpirationDate(expirationDate);
                 chirp.setDescription(chirpDescription);
-                chirp.saveEventually();
+                chirp.approveChirp(); // TODO: this is auto-approve; remove later.
+                chirp.saveWithPermissions();
 
                 // Tell the user that the chirp is submitted and take them back to the main activity
                 Toast.makeText(getApplicationContext(),

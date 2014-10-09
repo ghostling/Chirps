@@ -112,7 +112,7 @@ public class Chirp extends ParseObject{
         return getBoolean(CHIRP_APPROVAL);
     }
 
-    public void saveChirp() {
+    public void saveWithPermissions() {
         ParseACL chirpACL = new ParseACL();
         chirpACL.setPublicReadAccess(true);
         chirpACL.setRoleWriteAccess(Admin.ADMIN_ROLE, true);

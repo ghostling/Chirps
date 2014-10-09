@@ -30,6 +30,7 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -105,7 +106,7 @@ public class MainActivity extends Activity
 
         ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
         chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
-        chirpQuery.orderByDescending("createdAt");
+        chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
 
         List<Chirp> chirps = null;
         try {
@@ -114,18 +115,16 @@ public class MainActivity extends Activity
             Log.e("Chirp Query", pe.getMessage());
         }
 
-        String[] cl = new String[chirps.size()];
+        String[] titleArray = new String[chirps.size()];
+        String[] expDateArray = new String[chirps.size()];
         for (int i = 0; i < chirps.size(); i++) {
-            cl[i] = chirps.get(i).toString();
+            titleArray[i] = chirps.get(i).getTitle();
+            expDateArray[i] = chirps.get(i).getExpirationDate().toString();
         }
 
-        ArrayList<String> chirpList = new ArrayList<String>();
-        chirpList.addAll(Arrays.asList(cl));
+        ChirpList chirpListAdapter = new ChirpList(this, titleArray, expDateArray);
 
-        // Create ArrayAdapter using the planet list.
-        chirpListAdapter = new ArrayAdapter<String>(this, R.layout.chirp_row_item, chirpList);
-
-        // Set the ArrayAdapter as the ListView's adapter.
+        chirpListView = (ListView) findViewById(R.id.chirp_list_view);
         chirpListView.setAdapter(chirpListAdapter);
     }
 
