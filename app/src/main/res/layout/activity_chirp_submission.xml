@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
+        android:textSize="14sp"
         android:id="@+id/chirp_title"
         android:layout_gravity="center_horizontal"
         android:hint="@string/chirp_title_hint"/>
@@ -41,6 +42,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:id="@+id/chirp_contact"
         android:layout_gravity="center_horizontal"
         android:hint="@string/chirp_contact_info_hint"/>
@@ -59,6 +61,7 @@
         android:layout_height="wrap_content"
         android:inputType="date"
         android:ems="10"
+        android:textSize="14sp"
         android:id="@+id/chirp_expiration_date"
         android:layout_gravity="center_horizontal"
         android:hint="@string/chirp_expiration_date_hint" />
@@ -77,6 +80,7 @@
         android:layout_height="wrap_content"
         android:inputType="date"
         android:ems="10"
+        android:textSize="14sp"
         android:id="@+id/chirp_expiration_time"
         android:layout_gravity="center_horizontal"
         android:hint="@string/chirp_expiration_time_hint" />
@@ -95,6 +99,7 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
+        android:textSize="14sp"
         android:id="@+id/chirp_description"
         android:layout_gravity="center_horizontal"
         android:hint="@string/chirp_description_hint" />
