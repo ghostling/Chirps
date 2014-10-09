@@ -1,5 +1,6 @@
 package cs121.jam.model;
 
+import com.parse.ParseACL;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -8,17 +9,24 @@ import com.parse.ParseUser;
 import org.json.JSONArray;
 import java.util.Date;
 
-
+/**
+ * TODO: Instead of "void," we should really return success/failure messages to enable us to have
+ * a starting point for our future unit tests.
+ *
+ * Whether or not attributes are correct or required will be specified by the "View." It is not the
+ * intent of the data model.
+ */
 @ParseClassName("Chirp")
 public class Chirp extends ParseObject{
-    private String TITLE = "title";
-    private String DESCRIPTION = "description";
-    private String IMAGE = "image";
-    private String EXPIRATION_DATE = "expirationDate";
-    private String CONTACT_EMAIL = "contactEmail";
-    private String SCHOOLS = "schools";
-    private String CATEGORIES = "categories";
-    private String USER = "user";
+    public static String TITLE = "title";
+    public static String DESCRIPTION = "description";
+    public static String IMAGE = "image";
+    public static String EXPIRATION_DATE = "expirationDate";
+    public static String CONTACT_EMAIL = "contactEmail";
+    public static String SCHOOLS = "schools";
+    public static String CATEGORIES = "categories";
+    public static String USER = "user";
+    public static String CHIRP_APPROVAL = "chirpApproval";
 
     public String getTitle() {
         return getString(TITLE);
@@ -52,6 +60,14 @@ public class Chirp extends ParseObject{
         put(EXPIRATION_DATE, expirationDate);
     }
 
+    /**
+     * When no expiration date is specified, auto it to a week from now.
+     */
+    public void setExpirationDate() {
+        Date expirationDate = new Date();
+        put(EXPIRATION_DATE, expirationDate);
+    }
+
     public String getContactEmail() {
         return getString(CONTACT_EMAIL);
     }
@@ -82,5 +98,47 @@ public class Chirp extends ParseObject{
 
     public void setUser(ParseUser user) {
         put(USER, user);
+    }
+
+    public void approveChirp() {
+        put(CHIRP_APPROVAL, true);
+    }
+
+    public void rejectChirp() {
+        put(CHIRP_APPROVAL, false);
+    }
+
+    public boolean getChirpApproval() {
+        return getBoolean(CHIRP_APPROVAL);
+    }
+
+    public void saveChirp() {
+        ParseACL chirpACL = new ParseACL();
+        chirpACL.setPublicReadAccess(true);
+        chirpACL.setRoleWriteAccess(Admin.ADMIN_ROLE, true);
+
+        // Allows the current user to read/modify its own objects.
+        ParseACL.setDefaultACL(chirpACL, true);
+
+        this.setACL(chirpACL);
+        this.saveInBackground();
+    }
+
+    public void deleteChirp() {
+        // TODO: Implement.
+    }
+
+    @Override
+    public String toString() {
+        return getClassName() + "[" +
+                "title=" + getTitle() + ", \n" +
+                "description=" + getDescription() + ", \n" +
+                "image=" + getImage() + ", \n" +
+                "expirationDate=" + getExpirationDate() + ", \n" +
+                "contactEmail=" + getContactEmail() + ", \n" +
+                "schools=" + getSchools() + ", \n" +
+                "categories=" + getCategories() + ", \n" +
+                "user=" + getUser() + ", \n" +
+                "chirpApproval=" + getChirpApproval() + "]";
     }
 }
