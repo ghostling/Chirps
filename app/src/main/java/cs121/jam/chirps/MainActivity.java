@@ -17,9 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // Parse:
 import com.parse.Parse;
@@ -40,6 +42,7 @@ import cs121.jam.model.Chirp;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    public static String CHIRP_OBJECT_ID = "chirpObjectId";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -115,17 +118,28 @@ public class MainActivity extends Activity
             Log.e("Chirp Query", pe.getMessage());
         }
 
-        String[] titleArray = new String[chirps.size()];
-        String[] expDateArray = new String[chirps.size()];
+        final String[] titleArray = new String[chirps.size()];
+        final String[] expDateArray = new String[chirps.size()];
+        final String[] idArray = new String[chirps.size()];
         for (int i = 0; i < chirps.size(); i++) {
             titleArray[i] = chirps.get(i).getTitle();
             expDateArray[i] = chirps.get(i).getExpirationDate().toString();
+            idArray[i] = chirps.get(i).getObjectId();
         }
 
         ChirpList chirpListAdapter = new ChirpList(this, titleArray, expDateArray);
 
+        final Activity thisActivity = this;
         chirpListView = (ListView) findViewById(R.id.chirp_list_view);
         chirpListView.setAdapter(chirpListAdapter);
+        chirpListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(thisActivity, ChirpDetailsActivity.class);
+                intent.putExtra(CHIRP_OBJECT_ID, idArray[+position]);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

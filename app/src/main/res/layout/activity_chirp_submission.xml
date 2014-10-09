@@ -27,12 +27,12 @@
         android:ems="10"
         android:id="@+id/chirp_title"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/chirps_title_hint"/>
+        android:hint="@string/chirp_title_hint"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/chirps_contact_info"
+        android:text="@string/chirp_contact_info"
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -43,12 +43,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/chirp_contact"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/chirps_contact_info_hint"/>
+        android:hint="@string/chirp_contact_info_hint"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/chirps_expiration_date"
+        android:text="@string/chirp_expiration_date"
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -61,12 +61,12 @@
         android:ems="10"
         android:id="@+id/chirp_expiration_date"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/chirps_expiration_date_hint" />
+        android:hint="@string/chirp_expiration_date_hint" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/chirps_expiration_time"
+        android:text="@string/chirp_expiration_time"
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -79,12 +79,12 @@
         android:ems="10"
         android:id="@+id/chirp_expiration_time"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/chirps_expiration_time_hint" />
+        android:hint="@string/chirp_expiration_time_hint" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/chirps_description"
+        android:text="@string/chirp_description"
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -97,7 +97,7 @@
         android:ems="10"
         android:id="@+id/chirp_description"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/chirps_description_hint" />
+        android:hint="@string/chirp_description_hint" />
 
     <LinearLayout
         android:id="@+id/buttons"

@@ -24,16 +24,19 @@
     <string name="last_name_input_hint">Last name</string>
     <string name="submit_chirp_button_label">Submit Chirp</string>
     <string name="chirp_title">Title</string>
-    <string name="chirps_title_hint">Please give an appropriate title for your Chirp.</string>
-    <string name="chirps_contact_info">Contact Info</string>
-    <string name="chirps_contact_info_hint">Email or phone number to contact.</string>
-    <string name="chirps_expiration_date">Expiration Date</string>
-    <string name="chirps_expiration_date_hint">This chirp will disappear on this date.</string>
-    <string name="chirps_expiration_time">Expiration Time (Optional)</string>
-    <string name="chirps_expiration_time_hint">This chirp will disappear at this time.</string>
-    <string name="chirps_description">Description</string>
-    <string name="chirps_description_hint">Please give a brief description of the Chirp.</string>
+    <string name="chirp_title_hint">Please give an appropriate title for your Chirp.</string>
+    <string name="chirp_contact_info">Contact Info</string>
+    <string name="chirp_contact_info_hint">Email or phone number to contact.</string>
+    <string name="chirp_expiration_date">Expiration Date</string>
+    <string name="chirp_expiration_date_hint">This chirp will disappear on this date.</string>
+    <string name="chirp_expiration_time">Expiration Time (Optional)</string>
+    <string name="chirp_expiration_time_hint">This chirp will disappear at this time.</string>
+    <string name="chirp_description">Description</string>
+    <string name="chirp_description_hint">Please give a brief description of the Chirp.</string>
+    <string name="chirp_poster">Poster</string>
     <string name="log_out">Log out</string>
     <string name="add_chirp">Add Chirp</string>
+    <string name="title_activity_chirp_details">ChirpDetailsActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
