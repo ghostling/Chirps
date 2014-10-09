@@ -108,6 +108,10 @@ public class Chirp extends ParseObject{
         put(CHIRP_APPROVAL, false);
     }
 
+    public boolean getChirpApproval() {
+        return getBoolean(CHIRP_APPROVAL);
+    }
+
     public void saveChirp() {
         ParseACL chirpACL = new ParseACL();
         chirpACL.setPublicReadAccess(true);
@@ -127,7 +131,14 @@ public class Chirp extends ParseObject{
     @Override
     public String toString() {
         return getClassName() + "[" +
-                "title=" + getTitle() + ", " +
-                "description=" + getDescription() + "]";
+                "title=" + getTitle() + ", \n" +
+                "description=" + getDescription() + ", \n" +
+                "image=" + getImage() + ", \n" +
+                "expirationDate=" + getExpirationDate() + ", \n" +
+                "contactEmail=" + getContactEmail() + ", \n" +
+                "schools=" + getSchools() + ", \n" +
+                "categories=" + getCategories() + ", \n" +
+                "user=" + getUser() + ", \n" +
+                "chirpApproval=" + getChirpApproval() + "]";
     }
 }

@@ -73,13 +73,13 @@ public class MainActivity extends Activity
 
             // If the current user is anonymous, send them to the LoginActivity to either login or
             // sign up.
-//            if (currentUser == null) {
-//                // Send user to LoginActivity.class
-//                Intent intent = new Intent(MainActivity.this,
-//                        LoginActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
+            if (currentUser == null) {
+                // Send user to LoginActivity.class
+                Intent intent = new Intent(MainActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
 
         setContentView(R.layout.activity_main);
