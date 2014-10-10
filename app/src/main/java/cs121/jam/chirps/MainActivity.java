@@ -201,6 +201,10 @@ public class MainActivity extends Activity
                     LoginActivity.class);
             startActivity(intent);
             finish();
+        } else if (id == R.id.user_profile) {
+            Intent intent = new Intent(MainActivity.this,
+                    UserProfileActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

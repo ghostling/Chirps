@@ -1,10 +1,14 @@
 package cs121.jam.model;
 
+import android.util.Log;
+
 import com.parse.ParseACL;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import java.util.Date;
@@ -121,7 +125,17 @@ public class Chirp extends ParseObject{
         ParseACL.setDefaultACL(chirpACL, true);
 
         this.setACL(chirpACL);
-        this.saveInBackground();
+
+        this.saveInBackground(new SaveCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Object saved successfully
+                } else {
+                    // Object not saved
+                    Log.e("Saving chirp: ", e.getMessage());
+                }
+            }
+        });
     }
 
     public void deleteChirp() {

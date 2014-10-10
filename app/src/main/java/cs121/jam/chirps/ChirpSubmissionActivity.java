@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.parse.ParseUser;
+
 import java.util.Date;
 
 import cs121.jam.model.Chirp;
@@ -52,12 +55,15 @@ public class ChirpSubmissionActivity extends Activity {
                 // constructor for Date.
                 Date expirationDate = new Date();
 
+                ParseUser currentUser = ParseUser.getCurrentUser();
+
                 // Save new user data into Parse.com Data Storage
                 Chirp chirp = new Chirp();
                 chirp.setTitle(chirpTitle);
                 chirp.setContactEmail(chirpContact);
                 chirp.setExpirationDate(expirationDate);
                 chirp.setDescription(chirpDescription);
+                chirp.setUser(currentUser);
                 chirp.approveChirp(); // TODO: this is auto-approve; remove later.
                 chirp.saveWithPermissions();
 
@@ -70,7 +76,6 @@ public class ChirpSubmissionActivity extends Activity {
                         ChirpSubmissionActivity.this,
                         MainActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }

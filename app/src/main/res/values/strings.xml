@@ -38,5 +38,10 @@
     <string name="add_chirp">Add Chirp</string>
     <string name="title_activity_chirp_details">ChirpDetailsActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_user_page">UserPageActivity</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="user_profile_name">Name</string>
+    <string name="user_profile_school">School</string>
+    <string name="user_profile">User Profile</string>
 
 </resources>

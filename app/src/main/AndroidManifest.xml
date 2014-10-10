@@ -42,6 +42,10 @@
             android:label="@string/title_activity_chirp_details"
             android:parentActivityName=".MainActivity" >
         </activity>
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="User Profile" >
+        </activity>
     </application>
 
 </manifest>
