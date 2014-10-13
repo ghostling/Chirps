@@ -19,7 +19,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,6 +28,75 @@
         android:id="@+id/chirp_title"
         android:layout_gravity="center_horizontal"
         android:hint="@string/chirp_title_hint"/>
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/chirp_description"
+    android:textAllCaps="true"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:textSize="14sp"
+        android:id="@+id/chirp_description"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/chirp_description_hint" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chirp_schools"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/school_checkbox_pmc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/college_pmc"/>
+
+        <CheckBox
+            android:id="@+id/school_checkbox_hmc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/college_hmc"/>
+
+        <CheckBox
+            android:id="@+id/school_checkbox_sc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/college_sc"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/school_checkbox_cmc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/college_cmc"/>
+
+        <CheckBox
+            android:id="@+id/school_checkbox_pzc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/college_pzc"/>
+        </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -84,25 +152,6 @@
         android:id="@+id/chirp_expiration_time"
         android:layout_gravity="center_horizontal"
         android:hint="@string/chirp_expiration_time_hint" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/chirp_description"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:textSize="14sp"
-        android:id="@+id/chirp_description"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/chirp_description_hint" />
 
     <LinearLayout
         android:id="@+id/buttons"

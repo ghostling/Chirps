@@ -25,6 +25,8 @@
     <string name="submit_chirp_button_label">Submit Chirp</string>
     <string name="chirp_title">Title</string>
     <string name="chirp_title_hint">Please give an appropriate title for your Chirp.</string>
+    <string name="chirp_schools">Relevant Schools</string>
+    <string name="chirp_schools_hint">Please select the schools relevant to this Chirp.</string>
     <string name="chirp_contact_info">Contact Info</string>
     <string name="chirp_contact_info_hint">Email or phone number to contact.</string>
     <string name="chirp_expiration_date">Expiration Date</string>
@@ -43,5 +45,11 @@
     <string name="user_profile_name">Name</string>
     <string name="user_profile_school">School</string>
     <string name="user_profile">User Profile</string>
+    <string name="college_pmc">Pomona</string>
+    <string name="college_sc">Scripps</string>
+    <string name="college_hmc">Harvey Mudd</string>
+    <string name="college_pzc">Pitzer</string>
+    <string name="college_cmc">Claremont McKenna</string>
+
 
 </resources>

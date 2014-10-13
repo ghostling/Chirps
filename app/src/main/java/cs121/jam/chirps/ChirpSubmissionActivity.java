@@ -7,11 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 import cs121.jam.model.Chirp;
@@ -25,6 +29,12 @@ public class ChirpSubmissionActivity extends Activity {
     EditText chirpExpirationTimeView;
     EditText chirpDescriptionView;
     Button submitChirpButtonView;
+    CheckBox college_pmcCheckBox;
+    CheckBox college_hmcCheckBox;
+    CheckBox college_scCheckBox;
+    CheckBox college_cmcCheckBox;
+    CheckBox college_pzcCheckBox;
+    ArrayList<CheckBox> collegesCheckBoxes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +49,19 @@ public class ChirpSubmissionActivity extends Activity {
         chirpDescriptionView = (EditText) findViewById(R.id.chirp_description);
         submitChirpButtonView = (Button) findViewById(R.id.submit_chirp_button);
 
+        college_pmcCheckBox = (CheckBox) findViewById(R.id.school_checkbox_pmc);
+        college_hmcCheckBox = (CheckBox) findViewById(R.id.school_checkbox_hmc);
+        college_scCheckBox = (CheckBox) findViewById(R.id.school_checkbox_sc);
+        college_cmcCheckBox = (CheckBox) findViewById(R.id.school_checkbox_cmc);
+        college_pzcCheckBox = (CheckBox) findViewById(R.id.school_checkbox_pzc);
+
+        collegesCheckBoxes = new ArrayList<CheckBox>();
+        collegesCheckBoxes.add(college_pmcCheckBox);
+        collegesCheckBoxes.add(college_hmcCheckBox);
+        collegesCheckBoxes.add(college_scCheckBox);
+        collegesCheckBoxes.add(college_cmcCheckBox);
+        collegesCheckBoxes.add(college_pzcCheckBox);
+
         // Sign up Button Click Listener
         submitChirpButtonView.setOnClickListener(new View.OnClickListener() {
 
@@ -49,7 +72,13 @@ public class ChirpSubmissionActivity extends Activity {
                 String chirpExpirationDate = chirpExpirationDateView.getText().toString();
                 String chirpExpirationTime = chirpExpirationTimeView.getText().toString();
                 String chirpDescription = chirpDescriptionView.getText().toString();
+                JSONArray chirpSchools = new JSONArray();
 
+                // Collect all the colleges submitted
+                for(CheckBox collegeCheckBox: collegesCheckBoxes) {
+                    if (collegeCheckBox.isChecked())
+                        chirpSchools.put(collegeCheckBox.getText().toString());
+                }
                 // Create Date object
                 // TODO(Mai): Extract the date and time from the given strings and use it in the
                 // constructor for Date.
@@ -60,6 +89,7 @@ public class ChirpSubmissionActivity extends Activity {
                 // Save new user data into Parse.com Data Storage
                 Chirp chirp = new Chirp();
                 chirp.setTitle(chirpTitle);
+                chirp.setSchools(chirpSchools);
                 chirp.setContactEmail(chirpContact);
                 chirp.setExpirationDate(expirationDate);
                 chirp.setDescription(chirpDescription);
