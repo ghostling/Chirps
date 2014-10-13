@@ -12,6 +12,8 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import cs121.jam.model.Chirp;
@@ -19,6 +21,7 @@ import cs121.jam.model.Chirp;
 
 public class ChirpDetailsActivity extends Activity {
 
+    TextView relevantSchoolsTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,8 @@ public class ChirpDetailsActivity extends Activity {
         Intent intent = getIntent();
         String chirpObjectId = intent.getStringExtra(MainActivity.CHIRP_OBJECT_ID);
         getAndDisplayChirpDetails(chirpObjectId);
+
+
     }
 
     public void getAndDisplayChirpDetails(String chirpObjectId) {
@@ -42,6 +47,9 @@ public class ChirpDetailsActivity extends Activity {
         String description = "";
         String expirationDate = "";
         String contact = "";
+        JSONArray schoolsArray = chirp.getSchools();
+        StringBuilder schools = new StringBuilder("");
+
         if (chirp != null) {
             title = chirp.getTitle();
             description = chirp.getDescription();
@@ -57,6 +65,20 @@ public class ChirpDetailsActivity extends Activity {
         tv.setText(expirationDate);
         tv = (TextView) findViewById(R.id.chirp_details_contact);
         tv.setText(contact);
+        if(schoolsArray != null) {
+            for (int i = 0; i < schoolsArray.length(); i++) {
+                if (i != 0)
+                    schools = schools.append(", ");
+
+                try {
+                    schools = schools.append(schoolsArray.getString(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        relevantSchoolsTextView = (TextView) findViewById(R.id.chirp_relevant_schools);
+        relevantSchoolsTextView.setText(schools.toString());
     }
 
     @Override
