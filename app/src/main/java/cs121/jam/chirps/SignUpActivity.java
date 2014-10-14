@@ -54,15 +54,15 @@ public class SignUpActivity extends Activity {
                 String school = "";
 
                 if(email.matches(getString(R.string.email_regex_harveymudd)))
-                    school = getString(R.string.college_harveymudd);
+                    school = getString(R.string.school_harveymudd);
                 else if(email.matches(getString(R.string.email_regex_pomona)))
-                    school = getString(R.string.college_pomona);
+                    school = getString(R.string.school_pomona);
                 else if(email.matches(getString(R.string.email_regex_scripps)))
-                    school = getString(R.string.college_scripps);
+                    school = getString(R.string.school_scripps);
                 else if(email.matches(getString(R.string.email_regex_claremontmckenna)))
-                    school = getString(R.string.college_claremontmckenna);
+                    school = getString(R.string.school_claremontmckenna);
                 else if(email.matches(getString(R.string.email_regex_pitzer)))
-                    school = getString(R.string.college_pitzer);
+                    school = getString(R.string.school_pitzer);
                 else {
                     // TODO(Alex): Don't create User since they are not using a school email
                 }
