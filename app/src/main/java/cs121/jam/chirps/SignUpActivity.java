@@ -54,7 +54,9 @@ public class SignUpActivity extends Activity {
                 String school = "";
                 // TODO(Mai): Use regex to extract the school.
                 if(email.matches("\\w+@(g.)?hmc.edu"))
-                    school = "Harvey Mudd";
+                    school = getString(R.string.college_harveymudd);
+                else if(email.matches("\\w+@mymail.pomona.edu"))
+                    school = getString(R.string.college_pomona);
 
                 // Force user to fill up the form
                 if (!password.equals(reenterPassword)) {

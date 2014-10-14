@@ -45,11 +45,11 @@
     <string name="user_profile_name">Name</string>
     <string name="user_profile_school">School</string>
     <string name="user_profile">User Profile</string>
-    <string name="college_pmc">Pomona</string>
-    <string name="college_sc">Scripps</string>
-    <string name="college_hmc">Harvey Mudd</string>
-    <string name="college_pzc">Pitzer</string>
-    <string name="college_cmc">Claremont McKenna</string>
+    <string name="college_pomona">Pomona</string>
+    <string name="college_scripps">Scripps</string>
+    <string name="college_harveymudd">Harvey Mudd</string>
+    <string name="college_pitzer">Pitzer</string>
+    <string name="college_claremontmckenna">Claremont McKenna</string>
 
 
 </resources>

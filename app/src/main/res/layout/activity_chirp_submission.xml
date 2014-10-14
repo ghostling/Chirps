@@ -66,19 +66,19 @@
             android:id="@+id/school_checkbox_pmc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/college_pmc"/>
+            android:text="@string/college_pomona"/>
 
         <CheckBox
             android:id="@+id/school_checkbox_hmc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/college_hmc"/>
+            android:text="@string/college_harveymudd"/>
 
         <CheckBox
             android:id="@+id/school_checkbox_sc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/college_sc"/>
+            android:text="@string/college_scripps"/>
     </LinearLayout>
 
     <LinearLayout
@@ -89,13 +89,13 @@
             android:id="@+id/school_checkbox_cmc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/college_cmc"/>
+            android:text="@string/college_claremontmckenna"/>
 
         <CheckBox
             android:id="@+id/school_checkbox_pzc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/college_pzc"/>
+            android:text="@string/college_pitzer"/>
         </LinearLayout>
 
     <TextView
