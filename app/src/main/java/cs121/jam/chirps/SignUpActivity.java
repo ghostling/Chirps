@@ -51,8 +51,10 @@ public class SignUpActivity extends Activity {
                 String password = passwordView.getText().toString();
                 String reenterPassword = reenterPasswordView.getText().toString();
 
-                // TODO(Mai): Use regex to extract the school.
                 String school = "";
+                // TODO(Mai): Use regex to extract the school.
+                if(email.matches("\\w+@(g.)?hmc.edu"))
+                    school = "Harvey Mudd";
 
                 // Force user to fill up the form
                 if (!password.equals(reenterPassword)) {
