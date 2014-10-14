@@ -106,6 +106,7 @@ public class ChirpSubmissionActivity extends Activity {
                         ChirpSubmissionActivity.this,
                         MainActivity.class);
                 startActivity(intent);
+
             }
         });
     }

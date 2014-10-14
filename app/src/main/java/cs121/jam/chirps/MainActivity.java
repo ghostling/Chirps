@@ -35,6 +35,7 @@ import com.parse.ParseUser;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import cs121.jam.model.Chirp;
@@ -104,11 +105,15 @@ public class MainActivity extends Activity
     public void showChirpList() {
         chirpListView = (ListView) findViewById(R.id.chirp_list_view);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ArrayList<String> school = new ArrayList<String>();
+        school.add(currentUser.getString("school"));
         // TODO: Maybe this goes somewhere else?
         ParseObject.registerSubclass(Chirp.class);
 
         ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
         chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+        chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
         chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
 
         List<Chirp> chirps = null;
@@ -117,6 +122,10 @@ public class MainActivity extends Activity
         } catch (ParseException pe) {
             Log.e("Chirp Query", pe.getMessage());
         }
+
+        // don't display list if there are no chirps to display
+        if(chirps == null)
+            return;
 
         final String[] titleArray = new String[chirps.size()];
         final String[] expDateArray = new String[chirps.size()];
