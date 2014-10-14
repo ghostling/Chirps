@@ -52,11 +52,20 @@ public class SignUpActivity extends Activity {
                 String reenterPassword = reenterPasswordView.getText().toString();
 
                 String school = "";
-                // TODO(Mai): Use regex to extract the school.
-                if(email.matches("\\w+@(g.)?hmc.edu"))
+
+                if(email.matches(getString(R.string.email_regex_harveymudd)))
                     school = getString(R.string.college_harveymudd);
-                else if(email.matches("\\w+@mymail.pomona.edu"))
+                else if(email.matches(getString(R.string.email_regex_pomona)))
                     school = getString(R.string.college_pomona);
+                else if(email.matches(getString(R.string.email_regex_scripps)))
+                    school = getString(R.string.college_scripps);
+                else if(email.matches(getString(R.string.email_regex_claremontmckenna)))
+                    school = getString(R.string.college_claremontmckenna);
+                else if(email.matches(getString(R.string.email_regex_pitzer)))
+                    school = getString(R.string.college_pitzer);
+                else {
+                    // TODO(Alex): Don't create User since they are not using a school email
+                }
 
                 // Force user to fill up the form
                 if (!password.equals(reenterPassword)) {

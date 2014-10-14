@@ -50,6 +50,10 @@
     <string name="college_harveymudd">Harvey Mudd</string>
     <string name="college_pitzer">Pitzer</string>
     <string name="college_claremontmckenna">Claremont McKenna</string>
-
+    <string name="email_regex_harveymudd">\w+@(g.)?hmc.edu</string>
+    <string name="email_regex_pomona">\w+@(mymail.)?pomona.edu</string>
+    <string name="email_regex_pitzer">\w+@(students.)?pitzer.edu</string>
+    <string name="email_regex_claremontmckenna">\w+@(students.claremontmckenna|cmc).edu</string>
+    <string name="email_regex_scripps">\w+@scrippscollege.edu</string>
 
 </resources>

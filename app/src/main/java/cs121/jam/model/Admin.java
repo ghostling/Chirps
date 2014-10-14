@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class Admin {
     public static String ADMIN_ROLE = "admin";
+    public static String ADMIN_SCHOOLS = "schools";
 
     public Admin(String username, String password, String email) {
         // Create a basic user.

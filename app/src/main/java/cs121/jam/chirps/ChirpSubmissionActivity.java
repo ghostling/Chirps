@@ -49,6 +49,8 @@ public class ChirpSubmissionActivity extends Activity {
         chirpDescriptionView = (EditText) findViewById(R.id.chirp_description);
         submitChirpButtonView = (Button) findViewById(R.id.submit_chirp_button);
 
+
+        // TODO(Alex): Make this more general for a list of schools, far down the line
         college_pmcCheckBox = (CheckBox) findViewById(R.id.school_checkbox_pmc);
         college_hmcCheckBox = (CheckBox) findViewById(R.id.school_checkbox_hmc);
         college_scCheckBox = (CheckBox) findViewById(R.id.school_checkbox_sc);
