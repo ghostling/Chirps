@@ -1,7 +1,6 @@
 package cs121.jam.chirps;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import android.app.DialogFragment;
 import android.app.DatePickerDialog;

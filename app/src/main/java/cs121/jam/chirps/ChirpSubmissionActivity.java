@@ -1,6 +1,5 @@
 package cs121.jam.chirps;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
@@ -20,11 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.parse.ParseUser;
-
-import java.sql.Time;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,10 +30,8 @@ import java.util.regex.Pattern;
 
 import cs121.jam.model.Chirp;
 
-import static android.app.DatePickerDialog.OnDateSetListener;
 
-
-public class ChirpSubmissionActivity extends FragmentActivity implements OnDateSetListener,
+public class ChirpSubmissionActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener {
     // All views from Chirp Submission Page
     EditText chirpTitleView;
