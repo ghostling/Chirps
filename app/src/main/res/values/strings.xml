@@ -26,8 +26,8 @@
     <string name="chirp_title">Title</string>
     <string name="chirp_title_hint">Please give an appropriate title for your Chirp.</string>
     <string name="chirp_contact_info">Contact Info</string>
-    <string name="chirp_contact_info_hint">Email or phone number to contact.</string>
-    <string name="chirp_expiration_date">Expiration Date</string>
+    <string name="chirp_contact_info_hint">Email to contact.</string>
+    <string name="chirp_expiration_date">Expiration Date (Optional)</string>
     <string name="chirp_expiration_date_hint">This chirp will disappear on this date.</string>
     <string name="chirp_expiration_time">Expiration Time (Optional)</string>
     <string name="chirp_expiration_time_hint">This chirp will disappear at this time.</string>
@@ -43,5 +43,6 @@
     <string name="user_profile_name">Name</string>
     <string name="user_profile_school">School</string>
     <string name="user_profile">User Profile</string>
+    <string name="post_until">Post until</string>
 
 </resources>
