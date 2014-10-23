@@ -28,8 +28,8 @@
     <string name="chirp_schools">Relevant Schools</string>
     <string name="chirp_schools_hint">Please select the schools relevant to this Chirp.</string>
     <string name="chirp_contact_info">Contact Info</string>
-    <string name="chirp_contact_info_hint">Email or phone number to contact.</string>
-    <string name="chirp_expiration_date">Expiration Date</string>
+    <string name="chirp_contact_info_hint">Email to contact.</string>
+    <string name="chirp_expiration_date">Expiration Date (Optional)</string>
     <string name="chirp_expiration_date_hint">This chirp will disappear on this date.</string>
     <string name="chirp_expiration_time">Expiration Time (Optional)</string>
     <string name="chirp_expiration_time_hint">This chirp will disappear at this time.</string>
@@ -56,5 +56,6 @@
     <string name="email_regex_claremontmckenna">\\w+@(students.claremontmckenna|cmc).edu</string>
     <string name="email_regex_scripps">\\w+@scrippscollege.edu</string>
     <string name="refresh_chirps">Refresh Chirps</string>
+    <string name="post_until">Post until</string>
 
 </resources>
