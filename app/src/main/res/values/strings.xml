@@ -55,5 +55,6 @@
     <string name="email_regex_pitzer">\\w+@(students.)?pitzer.edu</string>
     <string name="email_regex_claremontmckenna">\\w+@(students.claremontmckenna|cmc).edu</string>
     <string name="email_regex_scripps">\\w+@scrippscollege.edu</string>
+    <string name="refresh_chirps">Refresh Chirps</string>
 
 </resources>

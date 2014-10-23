@@ -102,6 +102,11 @@ public class MainActivity extends Activity
         showChirpList();
     }
 
+    public void onResume() {
+        showChirpList();
+        super.onResume();
+    }
+
     public void showChirpList() {
         chirpListView = (ListView) findViewById(R.id.chirp_list_view);
 
@@ -203,6 +208,8 @@ public class MainActivity extends Activity
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_refresh_chirps) {
+            showChirpList();
         } else if (id == R.id.action_logout) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentUser.logOut();
