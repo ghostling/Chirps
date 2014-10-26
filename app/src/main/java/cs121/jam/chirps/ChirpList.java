@@ -8,20 +8,26 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by jiexicao on 10/9/14.
  */
 public class ChirpList extends ArrayAdapter<String> {
     private final Activity context;
     private final String[] title;
-    private final String[] expDate;
+    private final Date[] expDate;
+    public SimpleDateFormat PRETTY_DATE_TIME = new SimpleDateFormat("MMMM d, yyyy 'at' h:m a");
+
     public ChirpList(Activity context,
-                      String[] title, String[] expDate) {
+                      String[] title, Date[] expDate) {
         super(context, R.layout.chirp_row_item, title);
         this.context = context;
         this.title = title;
         this.expDate = expDate;
     }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
@@ -29,7 +35,8 @@ public class ChirpList extends ArrayAdapter<String> {
         TextView textTitle = (TextView) rowView.findViewById(R.id.chirp_item_title);
         TextView textExpDate = (TextView) rowView.findViewById(R.id.chirp_item_exp_date);
         textTitle.setText(title[position]);
-        textExpDate.setText(expDate[position]);
+
+        textExpDate.append(PRETTY_DATE_TIME.format(expDate[position]));
         return rowView;
     }
 }
