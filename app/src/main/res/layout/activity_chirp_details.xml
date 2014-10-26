@@ -14,65 +14,72 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chirp_details_title"
-        android:textAllCaps="true"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp" />
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/chirp_description"
         android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp" />
+        android:textSize="10sp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/chirp_details_description"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textAlignment="viewStart"
+        android:layout_gravity="start" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/chirp_schools"
         android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp" />
+        android:textSize="10sp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/chirp_relevant_schools"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textAlignment="viewStart"
+        android:layout_gravity="start" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/chirp_expiration_date"
+        android:text="@string/chirp_expires"
         android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp" />
+        android:textSize="10sp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/chirp_details_expiration_date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textAlignment="viewStart"
+        android:layout_gravity="start" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/chirp_contact_info"
         android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp" />
+        android:textSize="10sp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/chirp_details_contact"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textAlignment="viewStart"
+        android:layout_gravity="start" />
 
 </LinearLayout>

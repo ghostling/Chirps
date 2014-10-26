@@ -33,10 +33,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.StringBufferInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Date;
+
 
 import cs121.jam.model.Chirp;
 
@@ -133,11 +136,11 @@ public class MainActivity extends Activity
             return;
 
         final String[] titleArray = new String[chirps.size()];
-        final String[] expDateArray = new String[chirps.size()];
+        final Date[] expDateArray = new Date[chirps.size()];
         final String[] idArray = new String[chirps.size()];
         for (int i = 0; i < chirps.size(); i++) {
             titleArray[i] = chirps.get(i).getTitle();
-            expDateArray[i] = chirps.get(i).getExpirationDate().toString();
+            expDateArray[i] = chirps.get(i).getExpirationDate();
             idArray[i] = chirps.get(i).getObjectId();
         }
 
