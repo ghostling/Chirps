@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.w3c.dom.Text;
 
+import java.util.Date;
+
 import cs121.jam.model.Chirp;
 
 
@@ -45,7 +47,7 @@ public class ChirpDetailsActivity extends Activity {
 
         String title = "";
         String description = "";
-        String expirationDate = "";
+        Date expirationDate = null;
         String contact = "";
         JSONArray schoolsArray = chirp.getSchools();
         StringBuilder schools = new StringBuilder("");
@@ -53,7 +55,7 @@ public class ChirpDetailsActivity extends Activity {
         if (chirp != null) {
             title = chirp.getTitle();
             description = chirp.getDescription();
-            expirationDate = chirp.getExpirationDate().toString();
+            expirationDate = chirp.getExpirationDate();
             contact = chirp.getContactEmail();
         }
         Log.e("Chirp Details", title);
@@ -62,7 +64,7 @@ public class ChirpDetailsActivity extends Activity {
         tv = (TextView) findViewById(R.id.chirp_details_description);
         tv.setText(description);
         tv = (TextView) findViewById(R.id.chirp_details_expiration_date);
-        tv.setText(expirationDate);
+        tv.setText(ChirpList.PRETTY_DATE_TIME.format(expirationDate));
         tv = (TextView) findViewById(R.id.chirp_details_contact);
         tv.setText(contact);
         if(schoolsArray != null) {
