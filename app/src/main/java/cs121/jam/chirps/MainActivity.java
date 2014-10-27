@@ -5,12 +5,10 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,23 +18,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 // Parse:
-import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseAnalytics;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.io.StringBufferInputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Date;
 
@@ -45,7 +36,7 @@ import cs121.jam.model.Chirp;
 
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, SwipeRefreshLayout.OnRefreshListener {
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
 
     /**
@@ -64,6 +55,11 @@ public class MainActivity extends Activity
      */
     private ListView chirpListView;
     private ArrayAdapter<String> chirpListAdapter;
+
+    /**
+     * Used for swipeRefresh
+     */
+    private SwipeRefreshLayout swipeListLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +97,9 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        swipeListLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_list);
+        swipeListLayout.setOnRefreshListener(this);
 
         showChirpList();
     }
@@ -226,6 +225,13 @@ public class MainActivity extends Activity
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+        showChirpList();
+        swipeListLayout.setRefreshing(false);
     }
 
     /**
