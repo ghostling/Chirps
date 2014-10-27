@@ -47,7 +47,7 @@ public class SignUpActivity extends Activity {
                 // Retrieve the text entered from the EditText
                 String name = firstNameView.getText().toString() + ' '
                         + lastNameView.getText().toString();
-                String email = emailView.getText().toString();
+                String email = emailView.getText().toString().toLowerCase();
                 String password = passwordView.getText().toString();
                 String reenterPassword = reenterPasswordView.getText().toString();
 

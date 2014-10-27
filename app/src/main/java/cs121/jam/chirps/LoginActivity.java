@@ -42,7 +42,7 @@ public class LoginActivity extends Activity {
 
                 // Get the values of all the form fields
 
-                String email = emailView.getText().toString().trim();
+                String email = emailView.getText().toString().trim().toLowerCase();
                 String password = passwordView.getText().toString().trim();
 
                 // Send data to Parse.com for verification
