@@ -121,6 +121,7 @@
         android:id="@+id/submit_chirp_expiration_text"
         android:text="@string/post_until"
         android:focusable="true"
+        android:textAllCaps="true"
         android:clickable="true"
         android:focusableInTouchMode="true"
         android:textSize="20sp"
@@ -150,15 +151,6 @@
             android:onClick="showTimePickerDialog"
             />
         </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/chirp_expiration_time"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
 
     <EditText
         android:layout_width="match_parent"

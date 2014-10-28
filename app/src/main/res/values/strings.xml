@@ -57,6 +57,6 @@
     <string name="email_regex_claremontmckenna">\\w+@(students.claremontmckenna|cmc).edu</string>
     <string name="email_regex_scripps">\\w+@scrippscollege.edu</string>
     <string name="refresh_chirps">Refresh Chirps</string>
-    <string name="post_until">Post until</string>
+    <string name="post_until">Post Until</string>
 
 </resources>
