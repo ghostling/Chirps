@@ -3,6 +3,8 @@ package cs121.jam.chirps;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +15,9 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //import cs121.jam.model.User;
 
@@ -40,6 +45,9 @@ public class SignUpActivity extends Activity {
         reenterPasswordView = (EditText) findViewById(R.id.sign_up_reenter_password_input);
         signUpButtonView = (Button) findViewById(R.id.sign_up_button);
 
+        // Data validation for sign up fields.
+        addInlineSignUpValidation();
+
         // Sign up Button Click Listener
         signUpButtonView.setOnClickListener(new View.OnClickListener() {
 
@@ -49,32 +57,10 @@ public class SignUpActivity extends Activity {
                         + lastNameView.getText().toString();
                 String email = emailView.getText().toString();
                 String password = passwordView.getText().toString();
-                String reenterPassword = reenterPasswordView.getText().toString();
+                String school = getSchool();
 
-                String school = "";
-
-                if(email.matches(getString(R.string.email_regex_harveymudd)))
-                    school = getString(R.string.school_harveymudd);
-                else if(email.matches(getString(R.string.email_regex_pomona)))
-                    school = getString(R.string.school_pomona);
-                else if(email.matches(getString(R.string.email_regex_scripps)))
-                    school = getString(R.string.school_scripps);
-                else if(email.matches(getString(R.string.email_regex_claremontmckenna)))
-                    school = getString(R.string.school_claremontmckenna);
-                else if(email.matches(getString(R.string.email_regex_pitzer)))
-                    school = getString(R.string.school_pitzer);
-                else {
-                    // TODO(Alex): Don't create User since they are not using a school email
-                }
-
-                // Force user to fill up the form
-                if (!password.equals(reenterPassword)) {
-                    Toast.makeText(getApplicationContext(),
-                            "Passwords did not match. Please try again.",
-                            Toast.LENGTH_LONG).show();
-                    reenterPasswordView.selectAll();
-                    reenterPasswordView.requestFocus();
-                } else {
+                // Validate fields before creating the new user.
+                if (emailValidation() && reenterPasswordViewValidation()) {
                     // Save new user data into Parse.com Data Storage
                     ParseUser user = new ParseUser();
                     user.setUsername(email);
@@ -130,7 +116,6 @@ public class SignUpActivity extends Activity {
                         }
                     });
                 }
-
             }
         });
     }
@@ -153,6 +138,91 @@ public class SignUpActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getSchool() {
+        String email = emailView.getText().toString();
+        String school = "";
+
+        if(email.matches(getString(R.string.email_regex_harveymudd)))
+            school = getString(R.string.school_harveymudd);
+        else if(email.matches(getString(R.string.email_regex_pomona)))
+            school = getString(R.string.school_pomona);
+        else if(email.matches(getString(R.string.email_regex_scripps)))
+            school = getString(R.string.school_scripps);
+        else if(email.matches(getString(R.string.email_regex_claremontmckenna)))
+            school = getString(R.string.school_claremontmckenna);
+        else if(email.matches(getString(R.string.email_regex_pitzer)))
+            school = getString(R.string.school_pitzer);
+
+        return school;
+    }
+
+    public boolean emailValidation() {
+        String email = emailView.getText().toString();
+
+        if (email.length() == 0) {
+            emailView.setError("Contact is a required field.");
+            return false;
+        } else if (getSchool().length() == 0){
+            emailView.setError("Please enter a valid 5C email.");
+            return false;
+        } else {
+            emailView.setError(null);
+        }
+
+        return true;
+    }
+
+    public boolean reenterPasswordViewValidation() {
+        String reenterPassword = reenterPasswordView.getText().toString();
+        String password = passwordView.getText().toString();
+
+        if (reenterPassword.length() == 0) {
+            emailView.setError("Please confirm your password.");
+            return false;
+        } else if (!reenterPassword.equals(password)){
+            emailView.setError("Password confirmation does not match password.");
+            return false;
+        } else {
+            emailView.setError(null);
+        }
+
+        return true;
+    }
+
+    public void addInlineSignUpValidation() {
+        emailView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                // Do nothing.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                // Do nothing.
+            }
+
+            public void afterTextChanged(Editable edt) {
+                emailValidation();
+            }
+        });
+
+        reenterPasswordView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                // Do nothing.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                // Do nothing.
+            }
+
+            public void afterTextChanged(Editable edt) {
+                reenterPasswordViewValidation();
+            }
+        });
     }
 }
 
