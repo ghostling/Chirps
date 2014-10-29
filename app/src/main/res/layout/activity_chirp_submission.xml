@@ -1,172 +1,176 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:id="@+id/chirp_submission"
-    tools:context="cs121.jam.chirps.ChirpSubmissionActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/chirp_title"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:textSize="14sp"
-        android:id="@+id/chirp_title"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/chirp_title_hint"/>
-
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/chirp_description"
-    android:textAllCaps="true"
-    android:textSize="20sp"
-    android:textStyle="bold"
-    />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:textSize="14sp"
-        android:id="@+id/chirp_description"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/chirp_description_hint" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/chirp_schools"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/school_checkbox_pmc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/school_pomona"/>
-
-        <CheckBox
-            android:id="@+id/school_checkbox_hmc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/school_harveymudd"/>
-
-        <CheckBox
-            android:id="@+id/school_checkbox_sc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/school_scripps"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <CheckBox
-            android:id="@+id/school_checkbox_cmc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/school_claremontmckenna"/>
-
-        <CheckBox
-            android:id="@+id/school_checkbox_pzc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/school_pitzer"/>
-        </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/chirp_contact_info"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:id="@+id/chirp_contact"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/chirp_contact_info_hint"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/submit_chirp_expiration_text"
-        android:text="@string/post_until"
-        android:focusable="true"
-        android:textAllCaps="true"
-        android:clickable="true"
-        android:focusableInTouchMode="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="true"
-            android:textSize="20sp"
-            android:layout_weight="0.7"
-            android:id="@+id/submit_chirp_expiration_date"
-            style="@android:style/Widget.Holo.Spinner"
-            android:onClick="showDatePickerDialog"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="true"
-            android:textSize="20sp"
-            android:layout_weight="0.4"
-            android:id="@+id/submit_chirp_expiration_time"
-            style="@android:style/Widget.Holo.Spinner"
-            android:onClick="showTimePickerDialog"
-            />
-        </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/chirp_submission"
+        tools:context="cs121.jam.chirps.ChirpSubmissionActivity">
 
-        <Button
-            android:id="@+id/submit_chirp_button"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:text="@string/submit_chirp_button_label" />
-    </LinearLayout>
+            android:text="@string/chirp_title"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:textSize="14sp"
+            android:id="@+id/chirp_title"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/chirp_title_hint"/>
 
-</LinearLayout>
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chirp_description"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:textSize="14sp"
+            android:id="@+id/chirp_description"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/chirp_description_hint" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/chirp_schools"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/school_checkbox_pmc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/school_pomona"/>
+
+            <CheckBox
+                android:id="@+id/school_checkbox_hmc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/school_harveymudd"/>
+
+            <CheckBox
+                android:id="@+id/school_checkbox_sc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/school_scripps"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <CheckBox
+                android:id="@+id/school_checkbox_cmc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/school_claremontmckenna"/>
+
+            <CheckBox
+                android:id="@+id/school_checkbox_pzc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/school_pitzer"/>
+            </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/chirp_contact_info"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:id="@+id/chirp_contact"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/chirp_contact_info_hint"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/submit_chirp_expiration_text"
+            android:text="@string/post_until"
+            android:focusable="true"
+            android:textAllCaps="true"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                android:layout_weight="0.7"
+                android:id="@+id/submit_chirp_expiration_date"
+                style="@android:style/Widget.Holo.Spinner"
+                android:onClick="showDatePickerDialog"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                android:layout_weight="0.4"
+                android:id="@+id/submit_chirp_expiration_time"
+                style="@android:style/Widget.Holo.Spinner"
+                android:onClick="showTimePickerDialog"
+                />
+            </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin">
+
+            <Button
+                android:id="@+id/submit_chirp_button"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:text="@string/submit_chirp_button_label" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
