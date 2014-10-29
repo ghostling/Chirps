@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 // Parse:
+import com.parse.FindCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -100,6 +102,8 @@ public class MainActivity extends Activity
 
         swipeListLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_list);
         swipeListLayout.setOnRefreshListener(this);
+        int orange = getResources().getColor(R.color.orange_loading);
+        swipeListLayout.setColorSchemeColors(orange, orange, orange, orange);
 
         showChirpList();
     }
@@ -124,37 +128,32 @@ public class MainActivity extends Activity
         chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
         chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
 
-        List<Chirp> chirps = null;
-        try {
-            chirps = chirpQuery.find();
-        } catch (ParseException pe) {
-            Log.e("Chirp Query", pe.getMessage());
-        }
+        chirpQuery.findInBackground(new FindCallback<Chirp>() {
+            public void done(List<Chirp> chirps, ParseException e) {
+                if(chirps == null)
+                    return;
 
-        // don't display list if there are no chirps to display
-        if(chirps == null)
-            return;
+                final String[] titleArray = new String[chirps.size()];
+                final Date[] expDateArray = new Date[chirps.size()];
+                final String[] idArray = new String[chirps.size()];
+                for (int i = 0; i < chirps.size(); i++) {
+                    titleArray[i] = chirps.get(i).getTitle();
+                    expDateArray[i] = chirps.get(i).getExpirationDate();
+                    idArray[i] = chirps.get(i).getObjectId();
+                }
 
-        final String[] titleArray = new String[chirps.size()];
-        final Date[] expDateArray = new Date[chirps.size()];
-        final String[] idArray = new String[chirps.size()];
-        for (int i = 0; i < chirps.size(); i++) {
-            titleArray[i] = chirps.get(i).getTitle();
-            expDateArray[i] = chirps.get(i).getExpirationDate();
-            idArray[i] = chirps.get(i).getObjectId();
-        }
+                ChirpList chirpListAdapter = new ChirpList(MainActivity.this, titleArray, expDateArray);
 
-        ChirpList chirpListAdapter = new ChirpList(this, titleArray, expDateArray);
-
-        final Activity thisActivity = this;
-        chirpListView = (ListView) findViewById(R.id.chirp_list_view);
-        chirpListView.setAdapter(chirpListAdapter);
-        chirpListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(thisActivity, ChirpDetailsActivity.class);
-                intent.putExtra(CHIRP_OBJECT_ID, idArray[+position]);
-                startActivity(intent);
+                chirpListView = (ListView) findViewById(R.id.chirp_list_view);
+                chirpListView.setAdapter(chirpListAdapter);
+                chirpListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(MainActivity.this, ChirpDetailsActivity.class);
+                        intent.putExtra(CHIRP_OBJECT_ID, idArray[+position]);
+                        startActivity(intent);
+                    }
+                });
             }
         });
     }
