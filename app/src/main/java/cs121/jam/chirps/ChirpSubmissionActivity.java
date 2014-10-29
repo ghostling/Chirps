@@ -134,7 +134,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     chirp.setDescription(chirpDescription);
                     chirp.setSchools(chirpSchools);
                     chirp.setUser(currentUser);
-                    chirp.approveChirp(); // TODO: this is auto-approve; remove later.
+                    chirp.rejectChirp(); // All chirps are default not approved.
                     chirp.saveWithPermissions();
 
                     // Tell the user that the chirp is submitted and take them back to the main activity

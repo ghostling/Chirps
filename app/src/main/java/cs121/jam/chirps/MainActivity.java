@@ -121,6 +121,7 @@ public class MainActivity extends Activity
         ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
         chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
         chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+        chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
         chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
 
         List<Chirp> chirps = null;

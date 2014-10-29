@@ -57,7 +57,7 @@ public class LoginActivity extends Activity {
                                             MainActivity.class);
                                     startActivity(intent);
                                     Toast.makeText(getApplicationContext(),
-                                            "Successfully Logged in",
+                                            "Successfully logged in.",
                                             Toast.LENGTH_LONG).show();
                                     finish();
                                 } else {
