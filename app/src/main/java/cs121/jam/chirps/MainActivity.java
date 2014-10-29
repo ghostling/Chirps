@@ -229,7 +229,6 @@ public class MainActivity extends Activity
 
     @Override
     public void onRefresh() {
-        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
         showChirpList();
         swipeListLayout.setRefreshing(false);
     }

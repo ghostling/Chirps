@@ -11,7 +11,8 @@
         android:showAsAction="withText|ifRoom" />
     <item android:id="@+id/action_refresh_chirps"
         android:title="@string/refresh_chirps"
-        android:showAsAction="withText|ifRoom" />
+        android:icon="@drawable/refresh"
+        android:showAsAction="ifRoom" />
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
