@@ -109,6 +109,17 @@ public class UserProfileActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_logout) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            currentUser.logOut();
+            Intent intent = new Intent(UserProfileActivity.this,
+                    LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.user_profile) {
+            Intent intent = new Intent(UserProfileActivity.this,
+                    UserProfileActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

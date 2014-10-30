@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,6 +99,17 @@ public class ChirpDetailsActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_logout) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            currentUser.logOut();
+            Intent intent = new Intent(ChirpDetailsActivity.this,
+                    LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.user_profile) {
+            Intent intent = new Intent(ChirpDetailsActivity.this,
+                    UserProfileActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -335,6 +335,17 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_logout) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            currentUser.logOut();
+            Intent intent = new Intent(ChirpSubmissionActivity.this,
+                    LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.user_profile) {
+            Intent intent = new Intent(ChirpSubmissionActivity.this,
+                    UserProfileActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
