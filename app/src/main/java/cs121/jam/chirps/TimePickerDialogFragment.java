@@ -27,7 +27,7 @@ public class TimePickerDialogFragment extends DialogFragment {
         Calendar cal = Calendar.getInstance();
 
         return new TimePickerDialog(getActivity(),
-                mTimeSetListener, cal.get(Calendar.HOUR),
+                mTimeSetListener, cal.get(Calendar.HOUR_OF_DAY),
                 cal.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(getActivity()));
     }

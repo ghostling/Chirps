@@ -314,7 +314,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
     @Override
     public void onTimeSet(TimePicker view, int hour, int minute) {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR, hour);
+        cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, minute);
         chirpExpirationTimeView.setText(TIME_FORMATTER.format(cal.getTime()));
         Log.i("Expiration time is ", TIME_FORMATTER.format(cal.getTime()));

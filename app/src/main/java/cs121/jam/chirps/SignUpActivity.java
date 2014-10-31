@@ -179,13 +179,13 @@ public class SignUpActivity extends Activity {
         String password = passwordView.getText().toString();
 
         if (reenterPassword.length() == 0) {
-            emailView.setError("Please confirm your password.");
+            reenterPasswordView.setError("Please confirm your password.");
             return false;
         } else if (!reenterPassword.equals(password)){
-            emailView.setError("Password confirmation does not match password.");
+            reenterPasswordView.setError("Password confirmation does not match password.");
             return false;
         } else {
-            emailView.setError(null);
+            reenterPasswordView.setError(null);
         }
 
         return true;

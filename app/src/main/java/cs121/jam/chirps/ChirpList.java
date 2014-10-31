@@ -18,7 +18,7 @@ public class ChirpList extends ArrayAdapter<String> {
     private final Activity context;
     private final String[] title;
     private final Date[] expDate;
-    public static SimpleDateFormat PRETTY_DATE_TIME = new SimpleDateFormat("MMMM d, yyyy 'at' h:m a");
+    public static SimpleDateFormat PRETTY_DATE_TIME = new SimpleDateFormat("MMMM d, yyyy 'at' h:mm a");
 
     public ChirpList(Activity context,
                       String[] title, Date[] expDate) {
