@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,8 +38,8 @@ import java.util.Date;
 import cs121.jam.model.Chirp;
 
 
-public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends FragmentActivity
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ChirpFragment.OnFragmentInteractionListener {
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
 
     /**
@@ -100,70 +101,15 @@ public class MainActivity extends Activity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        swipeListLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_list);
-        swipeListLayout.setOnRefreshListener(this);
-        int orange = getResources().getColor(R.color.orange_loading);
-        swipeListLayout.setColorSchemeColors(orange, orange, orange, orange);
-
-        showChirpList();
     }
 
-    public void onResume() {
-        showChirpList();
-        super.onResume();
-    }
-
-    public void showChirpList() {
-        chirpListView = (ListView) findViewById(R.id.chirp_list_view);
-
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ArrayList<String> school = new ArrayList<String>();
-        school.add(currentUser.getString("school"));
-        // TODO: Maybe this goes somewhere else?
-        ParseObject.registerSubclass(Chirp.class);
-
-        ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
-        chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
-        chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
-        chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
-        chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
-
-        chirpQuery.findInBackground(new FindCallback<Chirp>() {
-            public void done(List<Chirp> chirps, ParseException e) {
-                if(chirps == null)
-                    return;
-
-                final String[] titleArray = new String[chirps.size()];
-                final Date[] expDateArray = new Date[chirps.size()];
-                final String[] idArray = new String[chirps.size()];
-                for (int i = 0; i < chirps.size(); i++) {
-                    titleArray[i] = chirps.get(i).getTitle();
-                    expDateArray[i] = chirps.get(i).getExpirationDate();
-                    idArray[i] = chirps.get(i).getObjectId();
-                }
-
-                ChirpList chirpListAdapter = new ChirpList(MainActivity.this, titleArray, expDateArray);
-
-                chirpListView = (ListView) findViewById(R.id.chirp_list_view);
-                chirpListView.setAdapter(chirpListAdapter);
-                chirpListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(MainActivity.this, ChirpDetailsActivity.class);
-                        intent.putExtra(CHIRP_OBJECT_ID, idArray[+position]);
-                        startActivity(intent);
-                    }
-                });
-            }
-        });
-    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, ChirpFragment.newInstance("", ""))
                 .commit();
     }
 
@@ -211,7 +157,6 @@ public class MainActivity extends Activity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_refresh_chirps) {
-            showChirpList();
         } else if (id == R.id.action_logout) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentUser.logOut();
@@ -228,9 +173,10 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onRefresh() {
-        showChirpList();
-        swipeListLayout.setRefreshing(false);
+    public void onFragmentChirpClick(String chirpId) {
+        Intent intent = new Intent(MainActivity.this, ChirpDetailsActivity.class);
+        intent.putExtra(CHIRP_OBJECT_ID, chirpId);
+        startActivity(intent);
     }
 
     /**
