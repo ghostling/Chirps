@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import cs121.jam.model.Chirp;
 public class UserProfileActivity extends Activity {
     ParseUser currentUser = ParseUser.getCurrentUser();
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
+    public Button resetPasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,18 @@ public class UserProfileActivity extends Activity {
 
         displayUserProfile();
         displayChirpsList();
+
+        resetPasswordButton = (Button) findViewById(R.id.reset_password_button);
+
+        resetPasswordButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                Intent intent = new Intent(
+                        UserProfileActivity.this,
+                        ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void displayUserProfile() {

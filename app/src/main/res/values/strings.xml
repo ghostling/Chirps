@@ -58,5 +58,12 @@
     <string name="email_regex_scripps">\\w+@scrippscollege.edu</string>
     <string name="refresh_chirps">Refresh Chirps</string>
     <string name="post_until">Post Until</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="new_password_hint">Enter new password</string>
+    <string name="confirm_new_password_hint">Confirm new password</string>
+    <string name="set_new_password">Set new password</string>
+
 
 </resources>

@@ -46,6 +46,10 @@
             android:name=".UserProfileActivity"
             android:label="User Profile" >
         </activity>
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:label="@string/title_activity_reset_password" >
+        </activity>
     </application>
 
 </manifest>

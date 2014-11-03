@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 
 //import cs121.jam.model.User;
 
@@ -23,6 +24,7 @@ public class LoginActivity extends Activity {
     EditText passwordView;
     Button loginButtonView;
     Button signUpButtonView;
+    Button forgotPasswordButtonView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class LoginActivity extends Activity {
         passwordView = (EditText) findViewById(R.id.login_password_input);
         loginButtonView = (Button) findViewById(R.id.login_button);
         signUpButtonView = (Button) findViewById(R.id.sign_up_button);
+        forgotPasswordButtonView = (Button) findViewById(R.id.forgot_password_button);
 
         // On login button click
         loginButtonView.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +82,33 @@ public class LoginActivity extends Activity {
                         LoginActivity.this,
                         SignUpActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        // Forgot Password Button Click Listener
+        forgotPasswordButtonView.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                String email = emailView.getText().toString().trim().toLowerCase();
+
+                ParseUser.requestPasswordResetInBackground(email,
+                        new RequestPasswordResetCallback() {
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    // An email was successfully sent with reset instructions.
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            "An email was successfully sent with reset instructions",
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            "Place email associated with Chirps account into email field",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
             }
         });
     }
