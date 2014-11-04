@@ -35,19 +35,23 @@ import cs121.jam.model.Chirp;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p />
- * Activities containing this fragment MUST implement the {@link Callbacks}
+ * Activities containing this fragment MUST implement the
  * interface.
  */
 public class ChirpFragment extends Fragment implements AbsListView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public static final String ARG_PARAM1 = "QueryType";
+    public static final String ARG_PARAM2 = "QueryValue";
+
+    public static final String USER_CHIRP_QUERY = "UserQuery";
+    public static final String CATEGORY_CHIRP_QUERY = "CatQuery";
+    public static final String ALL_CHIRP_QUERY = "AllQuery";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mParamQueryType;
+    private Object mParamQueryValue;
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,6 +80,8 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
 
     private String[] idArray;
 
+    private ParseQuery<Chirp> chirpQuery;
+
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
 
     private SwipeRefreshLayout swipeListLayout;
@@ -102,13 +108,46 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParamQueryType = getArguments().getString(ARG_PARAM1);
+            mParamQueryValue = getArguments().getString(ARG_PARAM2);
+
+
+            // TODO: Change Adapter to display your content
+            chirpQuery = ParseQuery.getQuery("Chirp");
+
+            if (mParamQueryType.equals(USER_CHIRP_QUERY)) {
+                boolean approved = false;
+                if (mParamQueryValue.equals("TRUE"))
+                    approved = true;
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                chirpQuery.whereEqualTo(Chirp.USER, currentUser);
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, approved);
+            } else if (mParamQueryType.equals(CATEGORY_CHIRP_QUERY)) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ArrayList<String> school = new ArrayList<String>();
+                school.add(currentUser.getString("school"));
+                // TODO: Maybe this goes somewhere else?
+                ParseObject.registerSubclass(Chirp.class);
+
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+                chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
+            } else if (mParamQueryType.equals(ALL_CHIRP_QUERY)) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ArrayList<String> school = new ArrayList<String>();
+                school.add(currentUser.getString("school"));
+                // TODO: Maybe this goes somewhere else?
+                ParseObject.registerSubclass(Chirp.class);
+
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+                chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
+            }
+
+            chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
         }
-
-        // TODO: Change Adapter to display your content
-
-
     }
 
     @Override
@@ -132,9 +171,60 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
         return view;
     }
 
+    public void setChirpQuery(ParseQuery<Chirp> query) {
+        this.chirpQuery = query;
+    }
+
+    public void setQueryFromParams() {
+        if (getArguments() != null) {
+            mParamQueryType = getArguments().getString(ARG_PARAM1);
+            mParamQueryValue = getArguments().getString(ARG_PARAM2);
+
+
+            // TODO: Change Adapter to display your content
+            ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
+
+            if (mParamQueryType.equals(USER_CHIRP_QUERY)) {
+                boolean approved = false;
+                if (mParamQueryValue.equals("TRUE"))
+                    approved = true;
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                chirpQuery.whereEqualTo(Chirp.USER, currentUser.getObjectId());
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, approved);
+            } else if (mParamQueryType.equals(CATEGORY_CHIRP_QUERY)) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ArrayList<String> school = new ArrayList<String>();
+                school.add(currentUser.getString("school"));
+                // TODO: Maybe this goes somewhere else?
+                ParseObject.registerSubclass(Chirp.class);
+
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+                chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
+            } else if (mParamQueryType.equals(ALL_CHIRP_QUERY)) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ArrayList<String> school = new ArrayList<String>();
+                school.add(currentUser.getString("school"));
+                // TODO: Maybe this goes somewhere else?
+                ParseObject.registerSubclass(Chirp.class);
+
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+                chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
+            }
+
+            chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
+        }
+    }
+
     public void showChirpList() {
+
+
         chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
 
+        /**
         ParseUser currentUser = ParseUser.getCurrentUser();
         ArrayList<String> school = new ArrayList<String>();
         school.add(currentUser.getString("school"));
@@ -146,27 +236,33 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
         chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
         chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
         chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
+         **/
 
-        chirpQuery.findInBackground(new FindCallback<Chirp>() {
-            public void done(List<Chirp> chirps, ParseException e) {
-                if(chirps == null)
-                    return;
+        if(chirpQuery == null)
+            setQueryFromParams();
 
-                final String[] titleArray = new String[chirps.size()];
-                final Date[] expDateArray = new Date[chirps.size()];
-                idArray = new String[chirps.size()];
-                for (int i = 0; i < chirps.size(); i++) {
-                    titleArray[i] = chirps.get(i).getTitle();
-                    expDateArray[i] = chirps.get(i).getExpirationDate();
-                    idArray[i] = chirps.get(i).getObjectId();
+        if(chirpQuery != null) {
+            chirpQuery.findInBackground(new FindCallback<Chirp>() {
+                public void done(List<Chirp> chirps, ParseException e) {
+                    if (chirps == null)
+                        return;
+
+                    final String[] titleArray = new String[chirps.size()];
+                    final Date[] expDateArray = new Date[chirps.size()];
+                    idArray = new String[chirps.size()];
+                    for (int i = 0; i < chirps.size(); i++) {
+                        titleArray[i] = chirps.get(i).getTitle();
+                        expDateArray[i] = chirps.get(i).getExpirationDate();
+                        idArray[i] = chirps.get(i).getObjectId();
+                    }
+
+                    ChirpList chirpListAdapter = new ChirpList(getActivity(), titleArray, expDateArray);
+
+                    chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
+                    chirpListView.setAdapter(chirpListAdapter);
                 }
-
-                ChirpList chirpListAdapter = new ChirpList(getActivity(), titleArray, expDateArray);
-
-                chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
-                chirpListView.setAdapter(chirpListAdapter);
-            }
-        });
+            });
+        }
     }
 
 

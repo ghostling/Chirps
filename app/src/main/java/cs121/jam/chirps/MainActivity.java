@@ -39,7 +39,7 @@ import cs121.jam.model.Chirp;
 
 
 public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ChirpFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ChirpFragment.OnFragmentInteractionListener, MyChirpsFragment.OnFragmentInteractionListener {
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
 
     /**
@@ -107,10 +107,24 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, ChirpFragment.newInstance("", ""))
-                .commit();
+        if(position == 0) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
+                    .commit();
+        }
+        else if(position == 1) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, MyChirpsFragment.newInstance())
+                    .commit();
+        }
+        else if(position == 2) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, ""))
+                    .commit();
+        }
     }
 
     public void onSectionAttached(int number) {
@@ -177,6 +191,11 @@ public class MainActivity extends FragmentActivity
         Intent intent = new Intent(MainActivity.this, ChirpDetailsActivity.class);
         intent.putExtra(CHIRP_OBJECT_ID, chirpId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onFragmentInteraction(String chirpId) {
+        onFragmentChirpClick(chirpId);
     }
 
     /**

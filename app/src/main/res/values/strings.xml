@@ -64,6 +64,8 @@
     <string name="new_password_hint">Enter new password</string>
     <string name="confirm_new_password_hint">Confirm new password</string>
     <string name="set_new_password">Set new password</string>
-
+    <string name="unapproved_chirps">Unapproved Chirps</string>
+    <string name="approved_chirps">Approved Chirps</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

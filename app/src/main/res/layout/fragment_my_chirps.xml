@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="cs121.jam.chirps.MyChirpsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/unapproved_chirps_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/unapproved_chirps"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingTop="4pt"
+        android:paddingBottom="4pt"
+        />
+
+    <FrameLayout
+        android:id="@+id/unapproved_chirps_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <fragment android:id="@+id/unapproved_chirp_list_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="cs121.jam.chirps.ChirpFragment"
+            tools:layout="@layout/fragment_chirp_list" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/approved_chirps_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/approved_chirps"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingTop="4pt"
+        android:paddingBottom="4pt"
+        />
+
+    <FrameLayout
+        android:id="@+id/approved_chirps_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <fragment android:id="@+id/approved_chirp_list_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="cs121.jam.chirps.ChirpFragment"
+            tools:layout="@layout/fragment_chirp_list" />
+
+    </FrameLayout>
+
+</LinearLayout>
