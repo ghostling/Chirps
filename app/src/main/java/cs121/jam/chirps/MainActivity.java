@@ -64,6 +64,8 @@ public class MainActivity extends FragmentActivity
      */
     private SwipeRefreshLayout swipeListLayout;
 
+    boolean hideRefresh = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,24 +109,27 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        hideRefresh = false;
         if(position == 0) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
+                    .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
                     .commit();
         }
         else if(position == 1) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, MyChirpsFragment.newInstance())
+                    .replace(R.id.chirp_list_fragment, MyChirpsFragment.newInstance())
                     .commit();
+            hideRefresh = true;
         }
         else if(position == 2) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, ""))
+                    .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, ""))
                     .commit();
         }
+        invalidateOptionsMenu();
     }
 
     public void onSectionAttached(int number) {
@@ -155,7 +160,13 @@ public class MainActivity extends FragmentActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
+
             getMenuInflater().inflate(R.menu.main, menu);
+
+            if(hideRefresh)
+            {
+                menu.findItem(R.id.action_refresh_chirps).setVisible(false);
+            }
             restoreActionBar();
             return true;
         }

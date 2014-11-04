@@ -312,6 +312,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
 
     public void refreshList() {
         swipeListLayout.setRefreshing(true);
+        onRefresh();
     }
 
     @Override
