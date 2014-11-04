@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cs121.jam.chirps.dummy.DummyContent;
 import cs121.jam.model.Chirp;
 
 /**
@@ -309,6 +308,10 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
         if (emptyText instanceof TextView) {
             ((TextView) emptyView).setText(emptyText);
         }
+    }
+
+    public void refreshList() {
+        swipeListLayout.setRefreshing(true);
     }
 
     @Override
