@@ -3,8 +3,9 @@ package cs121.jam.chirps;
 import android.app.Activity;
 
 import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -111,20 +112,20 @@ public class MainActivity extends FragmentActivity
         // update the main content by replacing fragments
         hideRefresh = false;
         if(position == 0) {
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
                     .commit();
         }
         else if(position == 1) {
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.chirp_list_fragment, MyChirpsFragment.newInstance())
                     .commit();
             hideRefresh = true;
         }
         else if(position == 2) {
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, ""))
                     .commit();
@@ -182,7 +183,7 @@ public class MainActivity extends FragmentActivity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_refresh_chirps) {
-            ChirpFragment frag = (ChirpFragment) getFragmentManager().findFragmentById(R.id.chirp_list_fragment);
+            ChirpFragment frag = (ChirpFragment) getSupportFragmentManager().findFragmentById(R.id.chirp_list_fragment);
             if(frag.isVisible())
             {
                 frag.refreshList();

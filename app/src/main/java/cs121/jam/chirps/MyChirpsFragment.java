@@ -2,14 +2,18 @@ package cs121.jam.chirps;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 
 /**
@@ -57,51 +61,17 @@ public class MyChirpsFragment extends Fragment implements ChirpFragment.OnFragme
         super.onCreate(savedInstanceState);
         Bundle unapprovedBundle = new Bundle();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.unapproved_chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.USER_CHIRP_QUERY, "FALSE"))
-                .commit();
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.approved_chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.USER_CHIRP_QUERY, "TRUE"))
-                .commit();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_chirps, container, false);
-
-        unapprovedChirpsListTextView = (TextView) view.findViewById(R.id.unapproved_chirps_textview);
-        approvedChirpsListTextView = (TextView) view.findViewById(R.id.approved_chirps_textview);
-
-        unapprovedChirpsListLayout = (FrameLayout) view.findViewById(R.id.unapproved_chirps_layout);
-        approvedChirpsListLayout = (FrameLayout) view.findViewById(R.id.approved_chirps_layout);
-
-        unapprovedChirpsListTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                int isShown = unapprovedChirpsListLayout.getVisibility();
-                unapprovedChirpsListLayout.setVisibility((isShown == View.VISIBLE)?
-                        View.GONE : View.VISIBLE);
-            }
-        });
-
-        approvedChirpsListTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                int isShown = approvedChirpsListLayout.getVisibility();
-                approvedChirpsListLayout.setVisibility((isShown == View.VISIBLE)?
-                        View.GONE : View.VISIBLE);
-            }
-        });
-
+        View view = inflater.inflate(R.layout.viewpager_main, container, false);
+        // Locate the ViewPager in viewpager_main.xml
+        ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        // Set the ViewPagerAdapter into ViewPager
+        mViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
         return view;
     }
 
@@ -125,8 +95,20 @@ public class MyChirpsFragment extends Fragment implements ChirpFragment.OnFragme
     @Override
     public void onDetach() {
         super.onDetach();
+        super.onDetach();
+        try {
+            Field childFragmentManager = Fragment.class
+                    .getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         mListener = null;
     }
+
 
     @Override
     public void onFragmentChirpClick(String chirpId) {
