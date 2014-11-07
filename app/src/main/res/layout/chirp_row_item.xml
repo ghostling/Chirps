@@ -6,26 +6,45 @@
 
 </LinearLayout>-->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:padding="10dp" >
 
-    <TableRow>
-        <TextView
-            android:scrollHorizontally="true"
-            android:textSize="24sp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:id="@+id/chirp_item_title" />
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:textSize="12dp"
-            android:layout_width="fill_parent"
-            android:id="@+id/chirp_item_exp_date" />
-    </TableRow>
-</TableLayout>
+    <TextView
+        android:scrollHorizontally="true"
+        android:textSize="24sp"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/chirp_item_title" />
+
+    <TextView
+        android:textSize="12dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chirp_item_title"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/chirp_item_exp_date" />
+
+    <Button
+        android:id="@+id/chirp_item_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_chirp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/chirp_item_favorite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favorite_chirp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+
+</RelativeLayout>

@@ -255,7 +255,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                         idArray[i] = chirps.get(i).getObjectId();
                     }
 
-                    ChirpList chirpListAdapter = new ChirpList(getActivity(), titleArray, expDateArray);
+                    ChirpList chirpListAdapter = new ChirpList(getActivity(), titleArray, expDateArray, mParamQueryType.equals(USER_CHIRP_QUERY));
 
                     chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
                     chirpListView.setAdapter(chirpListAdapter);

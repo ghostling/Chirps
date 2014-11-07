@@ -93,7 +93,7 @@ public class UserProfileActivity extends Activity {
             idArray[i] = chirps.get(i).getObjectId();
         }
 
-        ChirpList chirpListAdapter = new ChirpList(this, titleArray, expDateArray);
+        ChirpList chirpListAdapter = new ChirpList(this, titleArray, expDateArray, true);
 
         final Activity thisActivity = this;
         ListView chirpListView = (ListView) findViewById(R.id.user_profile_chirp_list);

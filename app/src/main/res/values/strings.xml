@@ -67,5 +67,7 @@
     <string name="unapproved_chirps">Unapproved Chirps</string>
     <string name="approved_chirps">Approved Chirps</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete_chirp">Delete</string>
+    <string name="favorite_chirp">Favorite</string>
 
 </resources>
