@@ -110,6 +110,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                 String chirpExpirationTime = chirpExpirationTimeView.getText().toString();
                 String chirpDescription = chirpDescriptionView.getText().toString();
                 JSONArray chirpSchools = new JSONArray();
+                JSONArray chirpCategories = new JSONArray();
 
                 // Collect all the colleges submitted
                 for(CheckBox collegeCheckBox: collegesCheckBoxes) {
@@ -133,6 +134,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     chirp.setExpirationDate(expirationDate);
                     chirp.setDescription(chirpDescription);
                     chirp.setSchools(chirpSchools);
+                    chirp.setCategories(chirpCategories);
                     chirp.setUser(currentUser);
                     chirp.rejectChirp(); // All chirps are default not approved.
                     chirp.saveWithPermissions();
