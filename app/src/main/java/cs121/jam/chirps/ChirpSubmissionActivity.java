@@ -1,9 +1,13 @@
 package cs121.jam.chirps;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -35,12 +40,15 @@ import cs121.jam.model.Chirp;
 
 
 public class ChirpSubmissionActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener,
-        TimePickerDialog.OnTimeSetListener {
+        TimePickerDialog.OnTimeSetListener, View.OnClickListener {
     // All views from Chirp Submission Page
     EditText chirpTitleView;
     EditText chirpContactView;
     EditText chirpDescriptionView;
     Button submitChirpButtonView;
+    TextView chirpCategoriesTextView;
+    ArrayList<String> chirpCategories;
+
 
     CheckBox college_pmcCheckBox;
     CheckBox college_hmcCheckBox;
@@ -63,6 +71,8 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chirp_submission);
 
+        chirpCategories = new ArrayList<String>();
+
         // Update the current date and time.
         currentDateAndTime = new Date();
 
@@ -74,7 +84,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         chirpExpirationTextView = (TextView) findViewById(R.id.submit_chirp_expiration_text);
         chirpDescriptionView = (EditText) findViewById(R.id.chirp_description);
         submitChirpButtonView = (Button) findViewById(R.id.submit_chirp_button);
-
+        chirpCategoriesTextView = (TextView) findViewById(R.id.string_of_chirp_categories);
 
         // TODO(Alex): Make this more general for a list of schools, far down the line
         college_pmcCheckBox = (CheckBox) findViewById(R.id.school_checkbox_pmc);
@@ -99,6 +109,8 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         // Data validation for chirp submission fields.
         addInlineChirpValidation();
 
+        chirpCategoriesTextView.setOnClickListener(this);
+
         // Sign up Button Click Listener
         submitChirpButtonView.setOnClickListener(new View.OnClickListener() {
 
@@ -109,6 +121,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                 String chirpExpirationDate = chirpExpirationDateView.getText().toString();
                 String chirpExpirationTime = chirpExpirationTimeView.getText().toString();
                 String chirpDescription = chirpDescriptionView.getText().toString();
+
                 JSONArray chirpSchools = new JSONArray();
 
                 // Collect all the colleges submitted
@@ -348,5 +361,75 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+    ArrayList mSelectedCategories;
+
+    @Override
+    public void onClick(View view) {
+        ChooseCategoriesFragment catFrag = new ChooseCategoriesFragment();
+        catFrag.show(getFragmentManager(), "Category");
+    }
+
+    public class ChooseCategoriesFragment extends DialogFragment {
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            mSelectedCategories = new ArrayList<String>();  // Where we track the selected items
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            // Set the dialog title
+            builder.setTitle(R.string.set_chirp_categories_title)
+                    // Specify the list array, the items to be selected by default (null for none),
+                    // and the listener through which to receive callbacks when items are selected
+                    .setMultiChoiceItems(R.array.categories_array, null,
+                            new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which,
+                                                    boolean isChecked) {
+                                    if (isChecked) {
+                                        if(mSelectedCategories.size() >= 3) {
+                                            // Don't let them select any more
+
+                                        }
+                                        else {
+                                            // If the user checked the item, add it to the selected items
+                                            mSelectedCategories.add(getResources().getStringArray(R.array.categories_array)[which]);
+                                        }
+                                    } else if (mSelectedCategories.contains(which)) {
+                                        // Else, if the item is already in the array, remove it
+                                        mSelectedCategories.remove(getResources().getStringArray(R.array.categories_array)[which]);
+                                    }
+                                }
+                            })
+                            // Set the action buttons
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK, so save the mSelectedCategories results somewhere
+                            // or return them to the component that opened the dialog
+                            chirpCategories = mSelectedCategories;
+                            StringBuilder categoriesText = new StringBuilder("");
+
+                            boolean first = true;
+                            for (String cat : chirpCategories) {
+                                if (!first) {
+                                    categoriesText = categoriesText.append(", ");
+                                } else {
+                                    first = false;
+                                }
+                                categoriesText = categoriesText.append(cat);
+                            }
+
+                            if (categoriesText.toString().equals(""))
+                                chirpCategoriesTextView.setText(R.string.select_categories_text);
+                            else
+                                chirpCategoriesTextView.setText(categoriesText.toString());
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+
+            return builder.create();
+        }
     }
 }

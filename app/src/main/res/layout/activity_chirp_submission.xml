@@ -55,6 +55,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/chirp_category"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/string_of_chirp_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_categories_text"
+            android:layout_marginTop="4pt"
+            android:layout_marginBottom="4pt"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/chirp_schools"
             android:textAllCaps="true"
             android:textSize="20sp"
