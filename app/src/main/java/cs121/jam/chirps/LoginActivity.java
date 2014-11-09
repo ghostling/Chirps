@@ -64,10 +64,17 @@ public class LoginActivity extends Activity {
                                             Toast.LENGTH_LONG).show();
                                     finish();
                                 } else {
-                                    Toast.makeText(
-                                            getApplicationContext(),
-                                            "No such user exists, please try again or sign up.",
-                                            Toast.LENGTH_LONG).show();
+                                    if (e.getMessage().equals(ParseException.OBJECT_NOT_FOUND)) {
+                                        Toast.makeText(getApplicationContext(),
+                                                "Invalid email/password combination.",
+                                                Toast.LENGTH_LONG)
+                                                .show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(),
+                                                "Login failed. Please try again.",
+                                                Toast.LENGTH_LONG)
+                                                .show();
+                                    }
                                 }
                             }
                         });

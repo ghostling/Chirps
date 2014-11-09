@@ -31,6 +31,7 @@ public class Chirp extends ParseObject{
     public static String CATEGORIES = "categories";
     public static String USER = "user";
     public static String CHIRP_APPROVAL = "chirpApproval";
+    public static String KEYWORDS = "keywords";
 
     public String getTitle() {
         return getString(TITLE);
@@ -98,6 +99,14 @@ public class Chirp extends ParseObject{
 
     public ParseUser getUser() {
         return getParseUser(USER);
+    }
+
+    public void setKeywords(JSONArray keywords) {
+        put(KEYWORDS, keywords);
+    }
+
+    public JSONArray getKeywords() {
+        return getJSONArray(KEYWORDS);
     }
 
     public void setUser(ParseUser user) {

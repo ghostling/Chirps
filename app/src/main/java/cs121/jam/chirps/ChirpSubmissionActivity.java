@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -96,6 +97,10 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         chirpExpirationDateView.setText(DATE_FORMATTER.format(cal.getTime()));
         chirpExpirationTimeView.setText(TIME_FORMATTER.format(cal.getTime()));
 
+        // Setup default contact email.
+        String posterEmail = (ParseUser.getCurrentUser()).getEmail();
+        chirpContactView.setText(posterEmail);
+
         // Data validation for chirp submission fields.
         addInlineChirpValidation();
 
@@ -135,6 +140,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     chirp.setDescription(chirpDescription);
                     chirp.setSchools(chirpSchools);
                     chirp.setCategories(chirpCategories);
+                    chirp.setKeywords(generateKeywords(chirpTitle, chirpDescription));
                     chirp.setUser(currentUser);
                     chirp.rejectChirp(); // All chirps are default not approved.
                     chirp.saveWithPermissions();
@@ -151,6 +157,23 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                 }
             }
         });
+    }
+
+    public JSONArray generateKeywords(String title, String description) {
+        String titleAndDescription = title.concat(description);
+        String[] allWords = (titleAndDescription.toLowerCase()).trim().split("\\s+");
+        JSONArray keywords = new JSONArray();
+        // TODO(Mai): Change this to read a file of stop words.
+        String[] stopWords = {"the", "a", "in", "and"};
+
+        // Filter out the stop words.
+        for (String word : allWords) {
+            if (!Arrays.asList(stopWords).contains(word)) {
+                keywords.put(word);
+            }
+        }
+
+        return keywords;
     }
 
     public boolean titleValidation() {
