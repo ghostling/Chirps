@@ -38,7 +38,7 @@
     <string name="chirp_description_hint">Please give a brief description of the Chirp.</string>
     <string name="chirp_poster">Poster</string>
     <string name="log_out">Log out</string>
-    <string name="add_chirp">Add Chirp</string>
+    <string name="add_chirp">Add</string>
     <string name="title_activity_chirp_details">Chirp Details</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_user_page">User Page</string>
@@ -67,5 +67,9 @@
     <string name="unapproved_chirps">Unapproved Chirps</string>
     <string name="approved_chirps">Approved Chirps</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_search">Search</string>
+    <string name="app_label">Chirps</string>
+    <string name="search_hint">Search chirps.</string>
+    <string name="action_search">Search chirps.</string>
 
 </resources>
