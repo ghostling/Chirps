@@ -126,11 +126,14 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ArrayList<String> school = new ArrayList<String>();
                 school.add(currentUser.getString("school"));
+                ArrayList<String> category = new ArrayList<String>();
+                category.add(mParamQueryValue.toString());
                 // TODO: Maybe this goes somewhere else?
                 ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereContainsAll(Chirp.CATEGORIES, category);
                 chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
             } else if (mParamQueryType.equals(ALL_CHIRP_QUERY)) {
 
@@ -195,11 +198,14 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ArrayList<String> school = new ArrayList<String>();
                 school.add(currentUser.getString("school"));
+                ArrayList<String> category = new ArrayList<String>();
+                category.add(mParamQueryValue.toString());
                 // TODO: Maybe this goes somewhere else?
                 ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereContainsAll(Chirp.CATEGORIES, category);
                 chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
             } else if (mParamQueryType.equals(ALL_CHIRP_QUERY)) {
 

@@ -112,15 +112,17 @@ public class MainActivity extends FragmentActivity
         // update the main content by replacing fragments
         hideRefresh = false;
         if(position == 0) {
+            mTitle = "Chirps";
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
+                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
                     .commit();
         }
         else if(position == 1) {
+            mTitle = "My Chirps";
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.chirp_list_fragment, MyChirpsFragment.newInstance())
+                    .replace(R.id.container, MyChirpsFragment.newInstance())
                     .commit();
             hideRefresh = true;
         }
@@ -128,24 +130,30 @@ public class MainActivity extends FragmentActivity
 
         }
         else {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            String category = getResources().getStringArray(R.array.categories_array)[position-3];
+            mTitle = category;
+                    FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, getResources().getStringArray(R.array.categories_array)[position-4]))
+                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, category))
                     .commit();
         }
         invalidateOptionsMenu();
+        restoreActionBar();
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
+            case 0:
                 mTitle = getString(R.string.title_section1);
                 break;
-            case 2:
+            case 1:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case 2:
                 mTitle = getString(R.string.title_section3);
+                break;
+            default:
+                mTitle = getResources().getStringArray(R.array.categories_array)[number-3];
                 break;
         }
     }
@@ -186,7 +194,7 @@ public class MainActivity extends FragmentActivity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_refresh_chirps) {
-            ChirpFragment frag = (ChirpFragment) getSupportFragmentManager().findFragmentById(R.id.chirp_list_fragment);
+            ChirpFragment frag = (ChirpFragment) getSupportFragmentManager().findFragmentById(R.id.container);
             if(frag.isVisible())
             {
                 frag.refreshList();
