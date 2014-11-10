@@ -51,7 +51,9 @@ public class ChirpDetailsActivity extends Activity {
         Date expirationDate = null;
         String contact = "";
         JSONArray schoolsArray = chirp.getSchools();
+        JSONArray categoriesArray = chirp.getCategories();
         StringBuilder schools = new StringBuilder("");
+        StringBuilder categories = new StringBuilder("");
 
         if (chirp != null) {
             title = chirp.getTitle();
@@ -82,6 +84,20 @@ public class ChirpDetailsActivity extends Activity {
         }
         relevantSchoolsTextView = (TextView) findViewById(R.id.chirp_relevant_schools);
         relevantSchoolsTextView.setText(schools.toString());
+        if(categoriesArray != null) {
+            for (int i = 0; i < categoriesArray.length(); i++) {
+                if (i != 0)
+                    categories = categories.append(", ");
+
+                try {
+                    schools = categories.append(categoriesArray.getString(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        tv = (TextView) findViewById(R.id.chirp_details_categories);
+        tv.setText(categories);
     }
 
     @Override

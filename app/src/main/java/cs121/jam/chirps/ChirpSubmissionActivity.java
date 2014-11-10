@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -21,7 +20,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -47,7 +45,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
     EditText chirpDescriptionView;
     Button submitChirpButtonView;
     TextView chirpCategoriesTextView;
-    ArrayList<String> chirpCategories;
+    ArrayList<String> chirpCategoriesArray;
 
 
     CheckBox college_pmcCheckBox;
@@ -71,7 +69,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chirp_submission);
 
-        chirpCategories = new ArrayList<String>();
+        chirpCategoriesArray = new ArrayList<String>();
 
         // Update the current date and time.
         currentDateAndTime = new Date();
@@ -123,12 +121,16 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                 String chirpDescription = chirpDescriptionView.getText().toString();
 
                 JSONArray chirpSchools = new JSONArray();
-
+                JSONArray chirpCategories = new JSONArray();
                 // Collect all the colleges submitted
                 for(CheckBox collegeCheckBox: collegesCheckBoxes) {
                     if (collegeCheckBox.isChecked())
                         chirpSchools.put(collegeCheckBox.getText().toString());
                 }
+
+                // Collect all the categories
+                for(String cat : chirpCategoriesArray)
+                        chirpCategories.put(cat);
 
                 // Create Date object for the expiration date and time.
                 // The dateAndTime is of the format "MM-dd-yyyy hh:mm a"
@@ -146,6 +148,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     chirp.setExpirationDate(expirationDate);
                     chirp.setDescription(chirpDescription);
                     chirp.setSchools(chirpSchools);
+                    chirp.setCategories(chirpCategories);
                     chirp.setUser(currentUser);
                     chirp.rejectChirp(); // All chirps are default not approved.
                     chirp.saveWithPermissions();
@@ -404,11 +407,11 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                         public void onClick(DialogInterface dialog, int id) {
                             // User clicked OK, so save the mSelectedCategories results somewhere
                             // or return them to the component that opened the dialog
-                            chirpCategories = mSelectedCategories;
+                            chirpCategoriesArray = mSelectedCategories;
                             StringBuilder categoriesText = new StringBuilder("");
 
                             boolean first = true;
-                            for (String cat : chirpCategories) {
+                            for (String cat : chirpCategoriesArray) {
                                 if (!first) {
                                     categoriesText = categoriesText.append(", ");
                                 } else {

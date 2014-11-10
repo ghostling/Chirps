@@ -125,9 +125,12 @@ public class MainActivity extends FragmentActivity
             hideRefresh = true;
         }
         else if(position == 2) {
+
+        }
+        else {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, ""))
+                    .replace(R.id.chirp_list_fragment, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, getResources().getStringArray(R.array.categories_array)[position-4]))
                     .commit();
         }
         invalidateOptionsMenu();

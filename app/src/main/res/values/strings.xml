@@ -69,7 +69,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete_chirp">Delete</string>
     <string name="favorite_chirp">Favorite</string>
-    <string name="chirp_category">Categories</string>
+    <string name="chirp_categories">Categories</string>
     <string name="add_chirp_category">Set Categories</string>
     <string name="set_chirp_categories_title">Select Up To 3 Categories</string>
     <string name="ok">Ok</string>
