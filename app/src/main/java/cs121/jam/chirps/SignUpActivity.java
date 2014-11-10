@@ -83,10 +83,6 @@ public class SignUpActivity extends Activity {
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(getApplicationContext(),
-                                        "Sign up Error", Toast.LENGTH_LONG)
-                                        .show();
-
                                 switch (e.getCode()) {
                                     case ParseException.INVALID_EMAIL_ADDRESS:
                                         Toast.makeText(getApplicationContext(),
@@ -110,7 +106,6 @@ public class SignUpActivity extends Activity {
                                                 "Could not sign up, please try again later.",
                                                 Toast.LENGTH_LONG)
                                                 .show();
-
                                 }
                             }
                         }
@@ -141,9 +136,10 @@ public class SignUpActivity extends Activity {
     }
 
     public String getSchool() {
-        String email = emailView.getText().toString();
+        String email = (emailView.getText().toString()).toLowerCase();
         String school = "";
 
+        // TODO: Put to lowercase.
         if(email.matches(getString(R.string.email_regex_harveymudd)))
             school = getString(R.string.school_harveymudd);
         else if(email.matches(getString(R.string.email_regex_pomona)))
@@ -159,7 +155,7 @@ public class SignUpActivity extends Activity {
     }
 
     public boolean emailValidation() {
-        String email = emailView.getText().toString();
+        String email = (emailView.getText().toString()).toLowerCase();
 
         if (email.length() == 0) {
             emailView.setError("Contact is a required field.");

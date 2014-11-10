@@ -3,6 +3,9 @@ package cs121.jam.chirps;
 import android.app.Activity;
 
 import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 // Parse:
@@ -175,8 +179,16 @@ public class MainActivity extends FragmentActivity
 
             getMenuInflater().inflate(R.menu.main, menu);
 
-            if(hideRefresh)
-            {
+            // Associate searchable configuration with the SearchView
+            SearchManager searchManager =
+                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView =
+                    (SearchView) menu.findItem(R.id.action_search).getActionView();
+            ComponentName name = new ComponentName(this, SearchActivity.class);
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(name));
+
+            if(hideRefresh) {
                 menu.findItem(R.id.action_refresh_chirps).setVisible(false);
             }
             restoreActionBar();

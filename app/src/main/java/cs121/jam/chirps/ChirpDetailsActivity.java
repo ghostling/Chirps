@@ -25,6 +25,7 @@ import cs121.jam.model.Chirp;
 public class ChirpDetailsActivity extends Activity {
 
     TextView relevantSchoolsTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
