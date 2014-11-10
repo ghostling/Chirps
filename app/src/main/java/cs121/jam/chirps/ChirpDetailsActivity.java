@@ -90,7 +90,7 @@ public class ChirpDetailsActivity extends Activity {
                     categories = categories.append(", ");
 
                 try {
-                    schools = categories.append(categoriesArray.getString(i));
+                    categories = categories.append(categoriesArray.getString(i));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
