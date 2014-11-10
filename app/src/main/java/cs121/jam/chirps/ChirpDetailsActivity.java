@@ -84,6 +84,7 @@ public class ChirpDetailsActivity extends Activity {
         }
         relevantSchoolsTextView = (TextView) findViewById(R.id.chirp_relevant_schools);
         relevantSchoolsTextView.setText(schools.toString());
+
         if(categoriesArray != null) {
             for (int i = 0; i < categoriesArray.length(); i++) {
                 if (i != 0)

@@ -37,16 +37,19 @@ public class ChirpList extends ArrayAdapter<String> {
         View rowView= inflater.inflate(R.layout.chirp_row_item, null, true);
         TextView textTitle = (TextView) rowView.findViewById(R.id.chirp_item_title);
         TextView textExpDate = (TextView) rowView.findViewById(R.id.chirp_item_exp_date);
+
+        /*
         Button deleteChirpButton = (Button) rowView.findViewById(R.id.chirp_item_delete_button);
         Button favoriteChirpButton = (Button) rowView.findViewById(R.id.chirp_item_favorite_button);
-
-        textTitle.setText(title[position]);
-        textExpDate.append(PRETTY_DATE_TIME.format(expDate[position]));
 
         if(deleteButton)
             favoriteChirpButton.setVisibility(View.GONE);
         else
             deleteChirpButton.setVisibility(View.GONE);
+        */
+
+        textTitle.setText(title[position]);
+        textExpDate.append(PRETTY_DATE_TIME.format(expDate[position]));
 
         return rowView;
     }
