@@ -148,7 +148,7 @@ public class SearchActivity extends Activity {
                         idArray.add(chirps.get(i).getObjectId());
                     }
 
-                    searchResultsAdapter = new ChirpList(SearchActivity.this, titleArray, expDateArray);
+                    searchResultsAdapter = new ChirpList(SearchActivity.this, titleArray, expDateArray, true);
                     searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
                     searchResultsView.setVisibility(View.VISIBLE);
                     searchResultsView.setAdapter(searchResultsAdapter);
