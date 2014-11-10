@@ -164,10 +164,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                             "Successfully submitted chirp, " +
                                     "an admin will approve or reject it shortly.",
                             Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(
-                            ChirpSubmissionActivity.this,
-                            MainActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
             }
         });
