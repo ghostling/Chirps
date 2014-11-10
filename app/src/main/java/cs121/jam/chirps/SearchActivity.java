@@ -3,15 +3,22 @@ package cs121.jam.chirps;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -31,11 +38,26 @@ import cs121.jam.model.Chirp;
 public class SearchActivity extends Activity {
     public ListView searchResultsView;
     public ChirpList searchResultsAdapter;
+    public TextView messageView;
+    ProgressBar barView;
+    public ArrayList<String> idArray = new ArrayList<String>();
+    private AbsListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
+        searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent intent = new Intent(SearchActivity.this, ChirpDetailsActivity.class);
+                intent.putExtra(MainActivity.CHIRP_OBJECT_ID, idArray.get(position));
+                startActivity(intent);
+            }
+        });
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
@@ -47,6 +69,12 @@ public class SearchActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         return true;
     }
 
@@ -73,6 +101,13 @@ public class SearchActivity extends Activity {
     }
 
     private void handleIntent(Intent intent) {
+        messageView = (TextView) findViewById(R.id.search_message);
+        searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
+        barView = (ProgressBar) findViewById(R.id.search_progress);
+        messageView.setVisibility(View.GONE);
+        searchResultsView.setVisibility(View.GONE);
+        barView.setVisibility(View.VISIBLE);
+
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             doMySearch(query);
@@ -94,22 +129,32 @@ public class SearchActivity extends Activity {
 
         chirpQuery.findInBackground(new FindCallback<Chirp>() {
             public void done(List<Chirp> chirps, ParseException e) {
-                String[] titleArray = new String[chirps.size()];
-                Date[] expDateArray = new Date[chirps.size()];
-                String[] idArray = new String[chirps.size()];
+                barView = (ProgressBar) findViewById(R.id.search_progress);
+                barView.setVisibility(View.GONE);
 
-                // Extract the title and date for each chirp in the results.
-                for (int i = 0; i < chirps.size(); i++) {
-                    Log.i("Search Results", chirps.get(i).getTitle());
-                    titleArray[i] = chirps.get(i).getTitle();
-                    expDateArray[i] = chirps.get(i).getExpirationDate();
-                    idArray[i] = chirps.get(i).getObjectId();
+                if (chirps.size() == 0) {
+                    messageView = (TextView) findViewById(R.id.search_message);
+                    messageView.setText("No chirps found.");
+                    messageView.setVisibility(View.VISIBLE);
+                } else {
+                    String[] titleArray = new String[chirps.size()];
+                    Date[] expDateArray = new Date[chirps.size()];
+
+                    // Extract the title and date for each chirp in the results.
+                    for (int i = 0; i < chirps.size(); i++) {
+                        Log.i("Search Results", chirps.get(i).getTitle());
+                        titleArray[i] = chirps.get(i).getTitle();
+                        expDateArray[i] = chirps.get(i).getExpirationDate();
+                        idArray.add(chirps.get(i).getObjectId());
+                    }
+
+                    searchResultsAdapter = new ChirpList(SearchActivity.this, titleArray, expDateArray);
+                    searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
+                    searchResultsView.setVisibility(View.VISIBLE);
+                    searchResultsView.setAdapter(searchResultsAdapter);
                 }
-
-                searchResultsAdapter = new ChirpList(SearchActivity.this, titleArray, expDateArray);
-                searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
-                searchResultsView.setAdapter(searchResultsAdapter);
             }
         });
     }
+
 }
