@@ -8,6 +8,7 @@ import com.parse.ParseUser;
 public class User extends ParseUser {
     private String NAME = "name";
     private String SCHOOL = "school";
+    public static String USERNAME = "username";
 
     public String getName() {
         return getString(NAME);

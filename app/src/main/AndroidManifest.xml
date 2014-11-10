@@ -61,7 +61,9 @@
         </activity>
         <activity
             android:name="cs121.jam.chirps.ResetPasswordActivity"
-            android:label="@string/title_activity_reset_password" >
+            android:label="Reset Password"
+            android:parentActivityName="cs121.jam.chirps.MainActivity"
+            >
         </activity>
         <activity
             android:name="cs121.jam.chirps.SearchActivity"

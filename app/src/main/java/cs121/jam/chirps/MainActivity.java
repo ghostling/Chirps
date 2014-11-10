@@ -44,7 +44,7 @@ import cs121.jam.model.Chirp;
 
 
 public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ChirpFragment.OnFragmentInteractionListener, MyChirpsFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ChirpFragment.OnFragmentInteractionListener, MyChirpsFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
 
     /**
@@ -70,6 +70,7 @@ public class MainActivity extends FragmentActivity
     private SwipeRefreshLayout swipeListLayout;
 
     boolean hideRefresh = false;
+    boolean hideAddAndSearch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class MainActivity extends FragmentActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         hideRefresh = false;
+        hideAddAndSearch = false;
         if(position == 0) {
             mTitle = "Chirps";
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -123,6 +125,15 @@ public class MainActivity extends FragmentActivity
                     .commit();
         }
         else if(position == 1) {
+            mTitle = "My Profile";
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, UserProfileFragment.newInstance(ParseUser.getCurrentUser().getUsername()))
+                    .commit();
+            hideRefresh = true;
+            hideAddAndSearch = true;
+        }
+        else if(position == 2) {
             mTitle = "My Chirps";
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -130,11 +141,11 @@ public class MainActivity extends FragmentActivity
                     .commit();
             hideRefresh = true;
         }
-        else if(position == 2) {
+        else if(position == 3) {
 
         }
         else {
-            String category = getResources().getStringArray(R.array.categories_array)[position-3];
+            String category = getResources().getStringArray(R.array.categories_array)[position-4];
             mTitle = category;
                     FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -143,23 +154,6 @@ public class MainActivity extends FragmentActivity
         }
         invalidateOptionsMenu();
         restoreActionBar();
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 0:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 1:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section3);
-                break;
-            default:
-                mTitle = getResources().getStringArray(R.array.categories_array)[number-3];
-                break;
-        }
     }
 
     public void restoreActionBar() {
@@ -187,7 +181,12 @@ public class MainActivity extends FragmentActivity
             ComponentName name = new ComponentName(this, SearchActivity.class);
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(name));
-
+            menu.findItem(R.id.action_logout).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            if(hideAddAndSearch) {
+                menu.findItem(R.id.action_search).setVisible(false);
+                menu.findItem(R.id.action_add_chirp).setVisible(false);
+                menu.findItem(R.id.action_logout).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            }
             if(hideRefresh) {
                 menu.findItem(R.id.action_refresh_chirps).setVisible(false);
             }
@@ -218,10 +217,6 @@ public class MainActivity extends FragmentActivity
                     LoginActivity.class);
             startActivity(intent);
             finish();
-        } else if (id == R.id.user_profile) {
-            Intent intent = new Intent(MainActivity.this,
-                    UserProfileActivity.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -239,4 +234,11 @@ public class MainActivity extends FragmentActivity
     }
 
 
+    @Override
+    public void onFragmentResetPassword() {
+        Intent intent = new Intent(
+                MainActivity.this,
+                ResetPasswordActivity.class);
+        startActivity(intent);
+    }
 }

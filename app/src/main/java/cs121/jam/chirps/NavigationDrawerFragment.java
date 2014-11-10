@@ -106,6 +106,7 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.id.text1,
                 concat(new String[]{
                         getString(R.string.title_section1),
+                        "My Profile",
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
                 }, getResources().getStringArray(R.array.categories_array))));
