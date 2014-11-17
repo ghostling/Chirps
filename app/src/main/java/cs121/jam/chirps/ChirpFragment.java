@@ -1,7 +1,6 @@
 package cs121.jam.chirps;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -77,7 +76,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
     private ListView chirpListView;
     private ArrayAdapter<String> chirpListAdapter;
 
-    private String[] idArray;
+    private ArrayList<String> idArray;
 
     private ParseQuery<Chirp> chirpQuery;
 
@@ -252,18 +251,20 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                     if (chirps == null)
                         return;
 
-                    final String[] titleArray = new String[chirps.size()];
-                    final Date[] expDateArray = new Date[chirps.size()];
-                    idArray = new String[chirps.size()];
+                    final ArrayList<String> titleArray = new ArrayList<String>();
+                    final ArrayList<Date> expDateArray = new ArrayList<Date>();
+                    idArray = new ArrayList<String>();
                     for (int i = 0; i < chirps.size(); i++) {
-                        titleArray[i] = chirps.get(i).getTitle();
-                        expDateArray[i] = chirps.get(i).getExpirationDate();
-                        idArray[i] = chirps.get(i).getObjectId();
+                        titleArray.add(chirps.get(i).getTitle());
+                        expDateArray.add(chirps.get(i).getExpirationDate());
+                        idArray.add(chirps.get(i).getObjectId());
                     }
 
-                    ChirpList chirpListAdapter = new ChirpList(getActivity(), titleArray, expDateArray, mParamQueryType.equals(USER_CHIRP_QUERY));
+                    ChirpList chirpListAdapter = new ChirpList(getActivity(), titleArray, expDateArray, idArray, mParamQueryType.equals(USER_CHIRP_QUERY));
+
 
                     chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
+                    chirpListView.setItemsCanFocus(false);
                     chirpListView.setAdapter(chirpListAdapter);
                 }
             });
@@ -299,7 +300,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentChirpClick(idArray[position]);
+            mListener.onFragmentChirpClick(idArray.get(position));
         }
     }
 

@@ -9,6 +9,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:layout_weight="1"
     android:padding="10dp" >
 
@@ -30,23 +31,23 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/chirp_item_exp_date" />
 
-    <Button
+    <ImageButton
         android:visibility="gone"
         android:id="@+id/chirp_item_delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete_chirp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@android:drawable/ic_delete"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="#00ffffff" />
 
-    <Button
+    <ToggleButton
         android:visibility="gone"
         android:id="@+id/chirp_item_favorite_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/favorite_chirp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
-
+        android:layout_centerHorizontal="true"
+        android:background="#00ffffff" />
 
 </RelativeLayout>

@@ -93,19 +93,7 @@ public class UserProfileActivity extends Activity {
             idArray[i] = chirps.get(i).getObjectId();
         }
 
-        ChirpList chirpListAdapter = new ChirpList(this, titleArray, expDateArray, true);
 
-        final Activity thisActivity = this;
-        ListView chirpListView = (ListView) findViewById(R.id.user_profile_chirp_list);
-        chirpListView.setAdapter(chirpListAdapter);
-        chirpListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(thisActivity, ChirpDetailsActivity.class);
-                intent.putExtra(CHIRP_OBJECT_ID, idArray[+position]);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

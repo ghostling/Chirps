@@ -129,7 +129,7 @@ public class Chirp extends ParseObject{
         ParseACL chirpACL = new ParseACL();
         chirpACL.setPublicReadAccess(true);
         chirpACL.setRoleWriteAccess(Admin.ADMIN_ROLE, true);
-
+        chirpACL.setWriteAccess(getUser(), true);
         // Allows the current user to read/modify its own objects.
         ParseACL.setDefaultACL(chirpACL, true);
 

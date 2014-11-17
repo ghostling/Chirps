@@ -1,9 +1,7 @@
 package cs121.jam.chirps;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -24,8 +20,6 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,18 +131,18 @@ public class SearchActivity extends Activity {
                     messageView.setText("No chirps found.");
                     messageView.setVisibility(View.VISIBLE);
                 } else {
-                    String[] titleArray = new String[chirps.size()];
-                    Date[] expDateArray = new Date[chirps.size()];
+                    ArrayList<String> titleArray = new ArrayList<String>();
+                    ArrayList<Date> expDateArray = new ArrayList<Date>();
 
                     // Extract the title and date for each chirp in the results.
                     for (int i = 0; i < chirps.size(); i++) {
                         Log.i("Search Results", chirps.get(i).getTitle());
-                        titleArray[i] = chirps.get(i).getTitle();
-                        expDateArray[i] = chirps.get(i).getExpirationDate();
+                        titleArray.add(chirps.get(i).getTitle());
+                        expDateArray.add(chirps.get(i).getExpirationDate());
                         idArray.add(chirps.get(i).getObjectId());
                     }
 
-                    searchResultsAdapter = new ChirpList(SearchActivity.this, titleArray, expDateArray, true);
+                    searchResultsAdapter = new ChirpList(SearchActivity.this, titleArray, expDateArray, idArray, true);
                     searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
                     searchResultsView.setVisibility(View.VISIBLE);
                     searchResultsView.setAdapter(searchResultsAdapter);
