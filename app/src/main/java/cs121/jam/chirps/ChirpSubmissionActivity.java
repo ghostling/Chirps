@@ -396,13 +396,22 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
     @SuppressLint("ValidFragment")
     public class ChooseCategoriesFragment extends DialogFragment {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            mSelectedCategories = new ArrayList<String>();  // Where we track the selected items
+            if(mSelectedCategories == null)
+                mSelectedCategories = new ArrayList<String>();  // Where we track the selected items
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            String[] categories = getResources().getStringArray(R.array.categories_array);
+            final boolean[] catList = new boolean[categories.length];
+            for(int i = 0; i < categories.length; i++) {
+                if(mSelectedCategories.contains(categories[i])) {
+                    catList[i] = true;
+                }
+            }
             // Set the dialog title
             builder.setTitle(R.string.set_chirp_categories_title)
                     // Specify the list array, the items to be selected by default (null for none),
                     // and the listener through which to receive callbacks when items are selected
-                    .setMultiChoiceItems(R.array.categories_array, null,
+                    .setMultiChoiceItems(R.array.categories_array, catList,
                             new DialogInterface.OnMultiChoiceClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which,
@@ -410,15 +419,21 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                                     if (isChecked) {
                                         if(mSelectedCategories.size() >= 3) {
                                             // Don't let them select any more
-
+                                            ((AlertDialog) dialog).getListView().setItemChecked(which, false);
+                                            Toast.makeText(getApplicationContext(),
+                                                    "No more than 3 categories allowed for a Chirp.",
+                                                    Toast.LENGTH_LONG).show();
+                                            catList[which] = false;
                                         }
                                         else {
                                             // If the user checked the item, add it to the selected items
                                             mSelectedCategories.add(getResources().getStringArray(R.array.categories_array)[which]);
+                                            catList[which] = true;
                                         }
-                                    } else if (mSelectedCategories.contains(which)) {
+                                    } else{
                                         // Else, if the item is already in the array, remove it
-                                        mSelectedCategories.remove(getResources().getStringArray(R.array.categories_array)[which]);
+                                        mSelectedCategories.remove(mSelectedCategories.indexOf(getResources().getStringArray(R.array.categories_array)[which]));
+                                        catList[which] = false;
                                     }
                                 }
                             })
