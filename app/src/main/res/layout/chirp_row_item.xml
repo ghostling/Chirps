@@ -36,7 +36,7 @@
         android:id="@+id/chirp_item_delete_button"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@android:drawable/ic_delete"
+        android:src="@drawable/ic_action_cancel"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
         android:background="#00ffffff" />
