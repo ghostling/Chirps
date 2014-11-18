@@ -146,25 +146,34 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                         && descriptionValidation()) {
                     ParseUser currentUser = ParseUser.getCurrentUser();
 
-                    // Save new chirp into Parse.com Data Storage
-                    Chirp chirp = new Chirp();
-                    chirp.setTitle(chirpTitle);
-                    chirp.setContactEmail(chirpContact);
-                    chirp.setExpirationDate(expirationDate);
-                    chirp.setDescription(chirpDescription);
-                    chirp.setSchools(chirpSchools);
-                    chirp.setCategories(chirpCategories);
-                    chirp.setKeywords(generateKeywords(chirpTitle, chirpDescription));
-                    chirp.setUser(currentUser);
-                    chirp.rejectChirp(); // All chirps are default not approved.
-                    chirp.saveWithPermissions();
+                    Boolean emailVerification = (Boolean) currentUser.get("emailVerified");
+                    if(emailVerification == null || !emailVerification.booleanValue())
+                    {
+                        Toast.makeText(getApplicationContext(),
+                                "Email verification needed before submitting Chirps.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        // Save new chirp into Parse.com Data Storage
+                        Chirp chirp = new Chirp();
+                        chirp.setTitle(chirpTitle);
+                        chirp.setContactEmail(chirpContact);
+                        chirp.setExpirationDate(expirationDate);
+                        chirp.setDescription(chirpDescription);
+                        chirp.setSchools(chirpSchools);
+                        chirp.setCategories(chirpCategories);
+                        chirp.setKeywords(generateKeywords(chirpTitle, chirpDescription));
+                        chirp.setUser(currentUser);
+                        chirp.rejectChirp(); // All chirps are default not approved.
+                        chirp.saveWithPermissions();
 
-                    // Tell the user that the chirp is submitted and take them back to the main activity
-                    Toast.makeText(getApplicationContext(),
-                            "Successfully submitted chirp, " +
-                                    "an admin will approve or reject it shortly.",
-                            Toast.LENGTH_LONG).show();
-                    finish();
+                        // Tell the user that the chirp is submitted and take them back to the main activity
+                        Toast.makeText(getApplicationContext(),
+                                "Successfully submitted chirp, " +
+                                        "an admin will approve or reject it shortly.",
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    }
                 }
             }
         });
