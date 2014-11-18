@@ -117,14 +117,14 @@ public class MainActivity extends FragmentActivity
         // update the main content by replacing fragments
         hideRefresh = false;
         hideAddAndSearch = false;
-        if(position == 0) {
-            mTitle = "Chirps";
+        if(position == 3) {
+            mTitle = "All Chirps";
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
                     .commit();
         }
-        else if(position == 1) {
+        else if(position == 0) {
             mTitle = "My Profile";
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity
             hideRefresh = true;
             hideAddAndSearch = true;
         }
-        else if(position == 2) {
+        else if(position == 1) {
             mTitle = "My Chirps";
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -141,8 +141,12 @@ public class MainActivity extends FragmentActivity
                     .commit();
             hideRefresh = true;
         }
-        else if(position == 3) {
-
+        else if(position == 2) {
+            mTitle = "My Favorites";
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.FAVORITES_CHIRP_QUERY, ""))
+                    .commit();
         }
         else {
             String category = getResources().getStringArray(R.array.categories_array)[position-4];

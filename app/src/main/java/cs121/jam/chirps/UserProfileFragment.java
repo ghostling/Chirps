@@ -80,6 +80,8 @@ public class UserProfileFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseUser profileUser;
 
+        if(currentUser == null)
+            return view;
 
         if(currentUser.getUsername().equals(mParam1)) {
             profileUser = currentUser;

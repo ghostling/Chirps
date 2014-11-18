@@ -46,6 +46,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
     public static final String USER_CHIRP_QUERY = "UserQuery";
     public static final String CATEGORY_CHIRP_QUERY = "CatQuery";
     public static final String ALL_CHIRP_QUERY = "AllQuery";
+    public static final String FAVORITES_CHIRP_QUERY = "FavoriteQuery";
 
     // TODO: Rename and change types of parameters
     private String mParamQueryType;
@@ -159,6 +160,16 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
                 chirpQuery.whereContainsAll(Chirp.CATEGORIES, category);
                 chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
+            } else if (mParamQueryType.equals(FAVORITES_CHIRP_QUERY)) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ArrayList<String> userId = new ArrayList<String>();
+                userId.add(currentUser.getObjectId());
+                // TODO: Maybe this goes somewhere else?
+                ParseObject.registerSubclass(Chirp.class);
+
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+                chirpQuery.whereContainsAll(Chirp.FAVORITING, userId);
             } else if (mParamQueryType.equals(ALL_CHIRP_QUERY)) {
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -211,7 +222,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                         chirpList.add(chirps.get(i));
                         idArray.add(chirps.get(i).getObjectId());
                     }
-                    if(chirpList != null && !chirpList.isEmpty()) {
+                    if(chirpList != null && !chirpList.isEmpty() && getActivity() != null) {
                         ChirpList chirpListAdapter = new ChirpList(getActivity(), chirpList, mParamQueryType.equals(USER_CHIRP_QUERY));
 
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,6 +66,14 @@ public class NavigationDrawerFragment extends Fragment {
     public NavigationDrawerFragment() {
     }
 
+    public static NavigationDrawerFragment newInstance(int pos) {
+        NavigationDrawerFragment fragment = new NavigationDrawerFragment();
+        Bundle args = new Bundle();
+        args.putInt(STATE_SELECTED_POSITION, pos);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +93,19 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
+    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
+        super.onInflate(activity, attrs, savedInstanceState);
+
+        TypedArray a = activity.obtainStyledAttributes(R.styleable.NavigationDrawerFragment);
+
+        int startingPos = a.getInt(R.styleable.NavigationDrawerFragment_pos, -1);
+        if(startingPos == -1)
+            startingPos = 3;
+
+        mCurrentSelectedPosition = startingPos;
+    }
+
+    @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
@@ -94,6 +117,10 @@ public class NavigationDrawerFragment extends Fragment {
             Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+
+
+
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -105,10 +132,10 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 concat(new String[]{
-                        getString(R.string.title_section1),
                         "My Profile",
                         getString(R.string.title_section2),
-                        getString(R.string.title_section3),
+                        "My Favorites",
+                        getString(R.string.title_section1)
                 }, getResources().getStringArray(R.array.categories_array))));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
