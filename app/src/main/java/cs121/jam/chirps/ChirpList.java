@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +17,9 @@ import android.widget.ToggleButton;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,21 +30,16 @@ import cs121.jam.model.Chirp;
 /**
  * Created by jiexicao on 10/9/14.
  */
-public class ChirpList extends ArrayAdapter<String> {
+public class ChirpList extends ArrayAdapter<Chirp> {
     private final Activity context;
-    private final ArrayList<String> title;
-    private final ArrayList<Date> expDate;
-    private final ArrayList<String> objectId;
+    private final ArrayList<Chirp> chirps;
     private final boolean deleteButton;
     public static SimpleDateFormat PRETTY_DATE_TIME = new SimpleDateFormat("MMMM d, yyyy 'at' h:mm a");
 
-    public ChirpList(Activity context,
-                     ArrayList<String> title, ArrayList<Date> expDate, ArrayList<String> objectId, boolean deleteButton) {
-        super(context, R.layout.chirp_row_item, title);
+    public ChirpList(Activity context, ArrayList<Chirp> chirps, boolean deleteButton) {
+        super(context, R.layout.chirp_row_item, chirps);
         this.context = context;
-        this.title = title;
-        this.expDate = expDate;
-        this.objectId = objectId;
+        this.chirps = chirps;
         this.deleteButton = deleteButton;
 
 
@@ -59,48 +58,59 @@ public class ChirpList extends ArrayAdapter<String> {
 
         deleteChirpButton.setTag(position);
         favoriteChirpButton.setTag(position);
-        if(deleteButton)
+        try {
+            favoriteChirpButton.setChecked(chirps.get(position).isFavoriting(ParseUser.getCurrentUser()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(deleteButton) {
             deleteChirpButton.setVisibility(View.VISIBLE);
-        else
+            deleteChirpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(view.getId() == R.id.chirp_item_delete_button) {
+                        int position = ((Integer) view.getTag()).intValue();
+                        chirps.get(position).deleteInBackground();
+                        chirps.remove(position);
+                        notifyDataSetChanged();
+
+                        Toast.makeText(context,
+                                "Deleting Chirp",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+            });
+        }
+        else{
             favoriteChirpButton.setVisibility(View.VISIBLE);
 
-        deleteChirpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery(Chirp.class);
-                Chirp chirp = null;
-                try {
-                    int position = ((Integer) view.getTag()).intValue();
-                    String id = objectId.get(position);
-                    Log.e("Chirp Details", "Trying to delete chirpid: " + id);
-                    chirp = chirpQuery.get(id);
-                    if(chirp != null)
-                        Log.e("Chirp Details", "Chirp was created " + view.getTag().toString());
-                    chirp.deleteInBackground();
-                    title.remove(position);
-                    expDate.remove(position);
-                    objectId.remove(position);
-                    notifyDataSetChanged();
-                } catch (ParseException pe) {
-                    Log.e("Chirp Details", pe.getMessage());
+
+            favoriteChirpButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if(isChecked) {
+                        int position = ((Integer) compoundButton.getTag()).intValue();
+                        chirps.get(position).addToFavorites(ParseUser.getCurrentUser());
+                    }
+                    else {
+                        try {
+                            int position = ((Integer) compoundButton.getTag()).intValue();
+
+                            chirps.get(position).removeFromFavorites(ParseUser.getCurrentUser());
+                        }  catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
+            });
+        }
 
-                Toast.makeText(context,
-                        "Deleting Chirp",
-                        Toast.LENGTH_LONG)
-                        .show();
-            }
-        });
 
-        favoriteChirpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
-
-        textTitle.setText(title.get(position));
-        textExpDate.append(PRETTY_DATE_TIME.format(expDate.get(position)));
+        textTitle.setText(chirps.get(position).getTitle());
+        textExpDate.append(PRETTY_DATE_TIME.format(chirps.get(position).getExpirationDate()));
 
         return rowView;
 

@@ -131,18 +131,16 @@ public class SearchActivity extends Activity {
                     messageView.setText("No chirps found.");
                     messageView.setVisibility(View.VISIBLE);
                 } else {
-                    ArrayList<String> titleArray = new ArrayList<String>();
-                    ArrayList<Date> expDateArray = new ArrayList<Date>();
+                    ArrayList<Chirp> chirpList = new ArrayList<Chirp>();
 
                     // Extract the title and date for each chirp in the results.
                     for (int i = 0; i < chirps.size(); i++) {
                         Log.i("Search Results", chirps.get(i).getTitle());
-                        titleArray.add(chirps.get(i).getTitle());
-                        expDateArray.add(chirps.get(i).getExpirationDate());
+                        chirpList.add(chirps.get(i));
                         idArray.add(chirps.get(i).getObjectId());
                     }
 
-                    searchResultsAdapter = new ChirpList(SearchActivity.this, titleArray, expDateArray, idArray, true);
+                    searchResultsAdapter = new ChirpList(SearchActivity.this, chirpList, true);
                     searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
                     searchResultsView.setVisibility(View.VISIBLE);
                     searchResultsView.setAdapter(searchResultsAdapter);
