@@ -3,6 +3,8 @@ package cs121.jam.chirps;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,7 @@ import java.util.Date;
 import cs121.jam.model.Chirp;
 
 
-public class UserProfileActivity extends Activity {
+public class UserProfileActivity extends FragmentActivity {
     ParseUser currentUser = ParseUser.getCurrentUser();
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
     public Button resetPasswordButton;
@@ -33,67 +35,15 @@ public class UserProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        displayUserProfile();
-        displayChirpsList();
+        ParseUser user = ParseUser.getCurrentUser();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.profile_container, UserProfileFragment.newInstance(user.getUsername()))
+                .commit();
 
-        resetPasswordButton = (Button) findViewById(R.id.reset_password_button);
-
-        resetPasswordButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-                Intent intent = new Intent(
-                        UserProfileActivity.this,
-                        ResetPasswordActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void displayUserProfile() {
-        String name = currentUser.getString("name");
-        String email = currentUser.getEmail();
-        String school = currentUser.getString("school");
-
-
-        Log.e("User Profile", name);
-        TextView nameView = (TextView) findViewById(R.id.user_profile_name);
-        nameView.setText(name);
-
-        TextView emailView = (TextView) findViewById(R.id.user_profile_email);
-        emailView.setText(email);
-
-        TextView schoolView = (TextView) findViewById(R.id.user_profile_school);
-        schoolView.setText(school);
-
-        displayChirpsList();
-    }
-
-    public void displayChirpsList() {
-        // TODO: Maybe this goes somewhere else?
-        ParseObject.registerSubclass(Chirp.class);
-
-        ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
-        chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
-        chirpQuery.whereEqualTo("user", currentUser);
-        chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
-
-        List<Chirp> chirps = null;
-        try {
-            chirps = chirpQuery.find();
-        } catch (ParseException pe) {
-            Log.e("Chirp Query", pe.getMessage());
-        }
-
-        final String[] titleArray = new String[chirps.size()];
-        final Date[] expDateArray = new Date[chirps.size()];
-        final String[] idArray = new String[chirps.size()];
-        for (int i = 0; i < chirps.size(); i++) {
-            titleArray[i] = chirps.get(i).getTitle();
-            expDateArray[i] = chirps.get(i).getExpirationDate();
-            idArray[i] = chirps.get(i).getObjectId();
-        }
-
-
+        fragmentManager.beginTransaction()
+                .replace(R.id.chirps_container, ChirpFragment.newInstance(ChirpFragment.GENERAL_USER_CHIRP_QUERY, user.getObjectId()))
+                .commit();
     }
 
     @Override
@@ -118,10 +68,6 @@ public class UserProfileActivity extends Activity {
                     LoginActivity.class);
             startActivity(intent);
             finish();
-        } else if (id == R.id.user_profile) {
-            Intent intent = new Intent(UserProfileActivity.this,
-                    UserProfileActivity.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

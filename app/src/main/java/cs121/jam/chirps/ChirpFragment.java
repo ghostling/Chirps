@@ -44,6 +44,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
     public static final String ARG_PARAM2 = "QueryValue";
 
     public static final String USER_CHIRP_QUERY = "UserQuery";
+    public static final String GENERAL_USER_CHIRP_QUERY = "GeneralUserQuery";
     public static final String CATEGORY_CHIRP_QUERY = "CatQuery";
     public static final String ALL_CHIRP_QUERY = "AllQuery";
     public static final String FAVORITES_CHIRP_QUERY = "FavoriteQuery";
@@ -86,6 +87,9 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
 
     // TODO: Rename and change types of parameters
     public static ChirpFragment newInstance(String param1, String param2) {
+
+        // param1 = query type (For my chirps, all chirps, or by category, etc)
+        // param2 = query value (values needed to perform that specific query)
         ChirpFragment fragment = new ChirpFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -146,6 +150,9 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 chirpQuery.whereEqualTo(Chirp.USER, currentUser);
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, approved);
+            } else if (mParamQueryType.equals(GENERAL_USER_CHIRP_QUERY)) {
+                chirpQuery.whereEqualTo(Chirp.USER, mParamQueryValue);
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
             } else if (mParamQueryType.equals(CATEGORY_CHIRP_QUERY)) {
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
