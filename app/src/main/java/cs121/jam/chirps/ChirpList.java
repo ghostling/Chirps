@@ -1,6 +1,9 @@
 package cs121.jam.chirps;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +49,7 @@ public class ChirpList extends ArrayAdapter<Chirp> {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView= inflater.inflate(R.layout.chirp_row_item, null, true);
         TextView textTitle = (TextView) rowView.findViewById(R.id.chirp_item_title);
@@ -69,17 +72,8 @@ public class ChirpList extends ArrayAdapter<Chirp> {
             deleteChirpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(view.getId() == R.id.chirp_item_delete_button) {
-                        int position = ((Integer) view.getTag()).intValue();
-                        chirps.get(position).deleteInBackground();
-                        chirps.remove(position);
-                        notifyDataSetChanged();
+                    DeleteChirpDialog deleteChirpDialog = new DeleteChirpDialog(getContext(), position);
 
-                        Toast.makeText(context,
-                                "Deleting Chirp",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
                 }
             });
         }
@@ -116,4 +110,38 @@ public class ChirpList extends ArrayAdapter<Chirp> {
 
 
     }
+
+
+    public class DeleteChirpDialog extends AlertDialog implements  DialogInterface.OnClickListener {
+        private int chirpToDelete;
+        protected DeleteChirpDialog(Context context, int pos) {
+            super(context);
+            chirpToDelete = pos;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Are you sure?")
+                    .setPositiveButton("Yes", this)
+                    .setNegativeButton("No", this).show();
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            switch (i) {
+                case DialogInterface.BUTTON_POSITIVE: // Yes button clicked
+                    chirps.get(chirpToDelete).deleteInBackground();
+                    chirps.remove(chirpToDelete);
+                    notifyDataSetChanged();
+
+                    Toast.makeText(context,
+                            "Deleting Chirp",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE: // No button clicked
+                    // do nothing
+                    Toast.makeText(getContext(), "Chirp not deleted", Toast.LENGTH_SHORT).show();
+                    break; }
+        }
+    }
+
 }
