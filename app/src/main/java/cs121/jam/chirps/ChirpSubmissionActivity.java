@@ -147,7 +147,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     ParseUser currentUser = ParseUser.getCurrentUser();
 
                     Boolean emailVerification = (Boolean) currentUser.get("emailVerified");
-                    if(emailVerification == null || !emailVerification.booleanValue())
+                    if(emailVerification == null || !emailVerification)
                     {
                         Toast.makeText(getApplicationContext(),
                                 "Email verification needed before submitting Chirps.",

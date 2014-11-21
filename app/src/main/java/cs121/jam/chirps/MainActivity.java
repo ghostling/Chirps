@@ -69,6 +69,8 @@ public class MainActivity extends FragmentActivity
      */
     private SwipeRefreshLayout swipeListLayout;
 
+    private Fragment[] navigationFragments;
+
     boolean hideRefresh = false;
     boolean hideAddAndSearch = false;
 
@@ -98,6 +100,8 @@ public class MainActivity extends FragmentActivity
             }
         }
 
+        navigationFragments = new Fragment[10];
+
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -119,41 +123,54 @@ public class MainActivity extends FragmentActivity
         hideAddAndSearch = false;
         if(position == 3) {
             mTitle = "All Chirps";
+            if(navigationFragments[position] == null)
+                navigationFragments[position] = ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, "");
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.ALL_CHIRP_QUERY, ""))
+                    .replace(R.id.container, navigationFragments[position])
                     .commit();
         }
         else if(position == 0) {
             mTitle = "My Profile";
+            if(navigationFragments[position] == null)
+                navigationFragments[position] = UserProfileFragment.newInstance(ParseUser.getCurrentUser().getUsername());
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, UserProfileFragment.newInstance(ParseUser.getCurrentUser().getUsername()))
+                    .replace(R.id.container, navigationFragments[position])
                     .commit();
             hideRefresh = true;
             hideAddAndSearch = true;
         }
         else if(position == 1) {
             mTitle = "My Chirps";
+            if(navigationFragments[position] == null)
+                navigationFragments[position] = MyChirpsFragment.newInstance();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, MyChirpsFragment.newInstance())
+                    .replace(R.id.container, navigationFragments[position])
                     .commit();
             hideRefresh = true;
         }
         else if(position == 2) {
             mTitle = "My Favorites";
+            if(navigationFragments[position] == null)
+                navigationFragments[position] = ChirpFragment.newInstance(ChirpFragment.FAVORITES_CHIRP_QUERY, "");
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.FAVORITES_CHIRP_QUERY, ""))
+                    .replace(R.id.container, navigationFragments[position])
                     .commit();
         }
         else {
             String category = getResources().getStringArray(R.array.categories_array)[position-4];
             mTitle = category;
-                    FragmentManager fragmentManager = getSupportFragmentManager();
+            if(navigationFragments[position] == null)
+                navigationFragments[position] = ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, category);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, category))
+                    .replace(R.id.container, navigationFragments[position])
                     .commit();
         }
         invalidateOptionsMenu();

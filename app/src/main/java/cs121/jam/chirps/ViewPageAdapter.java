@@ -17,19 +17,31 @@ class ViewPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+    private Fragment[] fragments = new Fragment[2];
+
     @Override
     public Fragment getItem(int position) {
         switch (position) {
 
             // Open FragmentTab1.java
             case 0:
-                return ChirpFragment.newInstance(ChirpFragment.USER_CHIRP_QUERY, "FALSE");
+                if(fragments[0] == null)
+                    fragments[0] = ChirpFragment.newInstance(ChirpFragment.USER_CHIRP_QUERY, "FALSE");
+                return fragments[0];
 
             // Open FragmentTab2.java
             case 1:
-                return ChirpFragment.newInstance(ChirpFragment.USER_CHIRP_QUERY, "TRUE");
+                if(fragments[1] == null)
+                    fragments[1] = ChirpFragment.newInstance(ChirpFragment.USER_CHIRP_QUERY, "TRUE");
+                return fragments[1];
         }
         return null;
+    }
+
+    public void refreshFragments() {
+        for(Fragment frag : fragments) {
+            ((ChirpFragment) frag).refreshList();
+        }
     }
 
     public CharSequence getPageTitle(int position) {
