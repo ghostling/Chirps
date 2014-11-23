@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.parse.Parse;
@@ -26,6 +27,12 @@ public class ChirpDetailsActivity extends Activity {
 
     TextView relevantSchoolsTextView;
 
+    public static String USER_CLICKABLE = "userClickable?";
+
+    public Chirp chirp;
+
+    boolean userClickable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,19 +40,32 @@ public class ChirpDetailsActivity extends Activity {
 
         Intent intent = getIntent();
         String chirpObjectId = intent.getStringExtra(MainActivity.CHIRP_OBJECT_ID);
-        getAndDisplayChirpDetails(chirpObjectId);
+        userClickable = intent.getBooleanExtra(USER_CLICKABLE, true);
 
-
-    }
-
-    public void getAndDisplayChirpDetails(String chirpObjectId) {
         ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery(Chirp.class);
-        Chirp chirp = null;
         try {
             chirp = chirpQuery.get(chirpObjectId);
         } catch (ParseException pe) {
             Log.e("Chirp Details", pe.getMessage());
         }
+
+        if(userClickable) {
+            TextView userField = (TextView) findViewById(R.id.chirp_details_user);
+
+            userField.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ChirpDetailsActivity.this, UserProfileActivity.class);
+                    intent.putExtra(MainActivity.CHIRP_OBJECT_ID, chirp.getObjectId());
+                    startActivity(intent);
+                }
+            });
+        }
+
+        getAndDisplayChirpDetails(chirpObjectId);
+    }
+
+    public void getAndDisplayChirpDetails(String chirpObjectId) {
 
         String title = "";
         String description = "";

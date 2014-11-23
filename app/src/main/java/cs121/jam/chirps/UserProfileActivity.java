@@ -27,7 +27,7 @@ import cs121.jam.model.Chirp;
 
 public class UserProfileActivity extends FragmentActivity {
     ParseUser currentUser = ParseUser.getCurrentUser();
-    public static String CHIRP_OBJECT_ID = "chirpObjectId";
+    public static String USER_OBJECT_ID = "userObjectId";
     public Button resetPasswordButton;
 
     @Override
