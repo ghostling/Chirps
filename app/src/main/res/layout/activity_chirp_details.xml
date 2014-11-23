@@ -85,6 +85,22 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/chirp_user"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/chirp_details_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textAlignment="viewStart"
+        android:layout_gravity="start" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/chirp_contact_info"
         android:textAllCaps="true"
         android:textSize="10sp"

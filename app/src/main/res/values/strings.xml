@@ -87,4 +87,5 @@
     <string name="app_label">Chirps</string>
     <string name="search_hint">Search chirps.</string>
     <string name="action_search">Search chirps.</string>
+    <string name="chirp_user">User</string>
 </resources>
