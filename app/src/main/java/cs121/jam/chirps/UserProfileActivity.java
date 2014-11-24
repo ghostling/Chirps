@@ -85,4 +85,9 @@ public class UserProfileActivity extends FragmentActivity implements ChirpFragme
     public void onFragmentResetPassword() {
         // Cant Reset password from this view
     }
+
+    @Override
+    public void onFragmentResendVerification() {
+        // Can't resend verification from this activity
+    }
 }

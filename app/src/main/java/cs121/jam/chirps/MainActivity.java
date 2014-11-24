@@ -34,6 +34,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -261,5 +262,33 @@ public class MainActivity extends FragmentActivity
                 MainActivity.this,
                 ResetPasswordActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onFragmentResendVerification() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        String email = currentUser.getEmail();
+        currentUser.setEmail(email+"fake");
+        try {
+            currentUser.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        currentUser.setEmail(email);
+        currentUser.saveInBackground(new SaveCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(getApplicationContext(),
+                            "Email Verification Resent",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // Object not saved
+                    Toast.makeText(getApplicationContext(),
+                            "Problem Resending Email Verification",
+                            Toast.LENGTH_SHORT).show();
+                    Log.e("Saving chirp: ", e.getMessage());
+                }
+            }
+        });
     }
 }

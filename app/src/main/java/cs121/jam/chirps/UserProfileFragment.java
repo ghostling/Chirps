@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -84,9 +86,10 @@ public class UserProfileFragment extends Fragment {
 
 
         Button resetPasswordButton = (Button) view.findViewById(R.id.reset_password_button);
+        Button resendVerificationButton = (Button) view.findViewById(R.id.resend_verification_button);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseUser profileUser;
+        ParseUser profileUser = currentUser;
 
         if(currentUser == null)
             return view;
@@ -94,7 +97,7 @@ public class UserProfileFragment extends Fragment {
         Log.e("User Profile Fragment", mParam1 + ", " + currentUser.getObjectId());
 
         if(currentUser.getObjectId().equals(mParam1)) {
-            profileUser = currentUser;
+            profileUser = User.getCurrentUser();
             if(mParam2.equals("TRUE")) {
                 resetPasswordButton.setVisibility(View.VISIBLE);
                 resetPasswordButton.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +106,17 @@ public class UserProfileFragment extends Fragment {
                         mListener.onFragmentResetPassword();
                     }
                 });
+                Boolean emailVerification = (Boolean) profileUser.get("emailVerified");
+                if(emailVerification == null || !emailVerification) {
+                    resendVerificationButton.setVisibility(View.VISIBLE);
+                    resendVerificationButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mListener.onFragmentResendVerification();
+                        }
+                    });
+                }
+
             }
             displayUserProfile(profileUser, view);
         }
@@ -175,6 +189,7 @@ public class UserProfileFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentResetPassword();
+        public void onFragmentResendVerification();
     }
 
 }
