@@ -134,7 +134,7 @@ public class MainActivity extends FragmentActivity
         else if(position == 0) {
             mTitle = "My Profile";
             if(navigationFragments[position] == null)
-                navigationFragments[position] = UserProfileFragment.newInstance(ParseUser.getCurrentUser().getUsername());
+                navigationFragments[position] = UserProfileFragment.newInstance(ParseUser.getCurrentUser().getObjectId(), "TRUE");
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, navigationFragments[position])

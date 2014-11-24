@@ -6,7 +6,7 @@ import com.parse.ParseUser;
  * Created by maiho on 10/2/14.
  */
 public class User extends ParseUser {
-    private String NAME = "name";
+    public static String NAME = "name";
     private String SCHOOL = "school";
     public static String USERNAME = "username";
 

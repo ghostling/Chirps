@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import cs121.jam.model.Chirp;
+import cs121.jam.model.User;
 
 /**
  * A fragment representing a list of Items.
@@ -51,7 +53,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
 
     // TODO: Rename and change types of parameters
     private String mParamQueryType;
-    private Object mParamQueryValue;
+    private String mParamQueryValue;
 
     private OnFragmentInteractionListener mListener;
 
@@ -151,7 +153,9 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 chirpQuery.whereEqualTo(Chirp.USER, currentUser);
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, approved);
             } else if (mParamQueryType.equals(GENERAL_USER_CHIRP_QUERY)) {
-                chirpQuery.whereEqualTo(Chirp.USER, mParamQueryValue);
+                ParseQuery<User> user = new ParseQuery<User>(User.class);
+                ParseUser profUser = User.createWithoutData(User.class, mParamQueryValue);
+                chirpQuery.whereEqualTo(Chirp.USER, profUser);
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
             } else if (mParamQueryType.equals(CATEGORY_CHIRP_QUERY)) {
 
@@ -202,19 +206,6 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
 
         chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
 
-        /**
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ArrayList<String> school = new ArrayList<String>();
-        school.add(currentUser.getString("school"));
-        // TODO: Maybe this goes somewhere else?
-        ParseObject.registerSubclass(Chirp.class);
-
-        ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
-        chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
-        chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
-        chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
-        chirpQuery.orderByAscending(Chirp.EXPIRATION_DATE);
-         **/
         ParseQuery chirpQuery = setQueryFromParams();
 
         if(chirpQuery != null) {
@@ -230,6 +221,9 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                         idArray.add(chirps.get(i).getObjectId());
                     }
                     if(chirpList != null && getActivity() != null) {
+                        Log.e("Chirp Fragment", "Chirp List being created");
+                        Log.e("Chirp Fragment", "Number of Chirps in list: " + idArray.size());
+
                         ChirpList chirpListAdapter = new ChirpList(getActivity(), chirpList, mParamQueryType.equals(USER_CHIRP_QUERY));
 
 

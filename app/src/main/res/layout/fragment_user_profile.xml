@@ -1,7 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent" tools:context="cs121.jam.chirps.UserProfileFragment">
+    android:layout_height="wrap_content"
+
+    android:paddingLeft="10dp"
+    tools:context="cs121.jam.chirps.UserProfileFragment">
 
     <TextView
         android:layout_width="match_parent"

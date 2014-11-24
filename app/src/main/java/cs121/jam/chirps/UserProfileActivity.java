@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +26,7 @@ import java.util.Date;
 import cs121.jam.model.Chirp;
 
 
-public class UserProfileActivity extends FragmentActivity {
+public class UserProfileActivity extends FragmentActivity implements ChirpFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
     ParseUser currentUser = ParseUser.getCurrentUser();
     public static String USER_OBJECT_ID = "userObjectId";
     public Button resetPasswordButton;
@@ -33,17 +34,18 @@ public class UserProfileActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.viewpager_main);
 
-        ParseUser user = ParseUser.getCurrentUser();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.profile_container, UserProfileFragment.newInstance(user.getUsername()))
-                .commit();
+        Intent intent = getIntent();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.chirps_container, ChirpFragment.newInstance(ChirpFragment.GENERAL_USER_CHIRP_QUERY, user.getObjectId()))
-                .commit();
+        String userId = intent.getStringExtra(USER_OBJECT_ID);
+
+
+        Log.e("User Profile", "User id: " + userId);
+
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        // Set the ViewPagerAdapter into ViewPager
+        mViewPager.setAdapter(new UserProfileViewPagerAdapter(getSupportFragmentManager(), userId));
     }
 
     @Override
@@ -70,5 +72,17 @@ public class UserProfileActivity extends FragmentActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentChirpClick(String chirpId) {
+        Intent intent = new Intent(UserProfileActivity.this, ChirpDetailsActivity.class);
+        intent.putExtra(MainActivity.CHIRP_OBJECT_ID, chirpId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFragmentResetPassword() {
+        // Cant Reset password from this view
     }
 }

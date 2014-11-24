@@ -2,9 +2,11 @@ package cs121.jam.chirps;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +37,11 @@ public class UserProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "USERID";
+    private static final String ARG_PARAM2 = "CanResetPassword";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
+    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -45,14 +49,15 @@ public class UserProfileFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param userId Parameter 1.
      * @return A new instance of fragment UserProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserProfileFragment newInstance(String param1) {
+    public static UserProfileFragment newInstance(String userId, String canEditPassword) {
         UserProfileFragment fragment = new UserProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM1, userId);
+        args.putString(ARG_PARAM2, canEditPassword);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,6 +71,7 @@ public class UserProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -75,6 +81,8 @@ public class UserProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
+
+
         Button resetPasswordButton = (Button) view.findViewById(R.id.reset_password_button);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -83,30 +91,33 @@ public class UserProfileFragment extends Fragment {
         if(currentUser == null)
             return view;
 
-        if(currentUser.getUsername().equals(mParam1)) {
+        Log.e("User Profile Fragment", mParam1 + ", " + currentUser.getObjectId());
+
+        if(currentUser.getObjectId().equals(mParam1)) {
             profileUser = currentUser;
-            resetPasswordButton.setVisibility(View.VISIBLE);
-            resetPasswordButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onFragmentResetPassword();
-                }
-            });
+            if(mParam2.equals("TRUE")) {
+                resetPasswordButton.setVisibility(View.VISIBLE);
+                resetPasswordButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mListener.onFragmentResetPassword();
+                    }
+                });
+            }
+            displayUserProfile(profileUser, view);
         }
         else {
-            ParseQuery<ParseUser> getUser = ParseQuery.getQuery("User");
-            getUser.whereEqualTo(User.USERNAME, mParam1);
-            List<ParseUser> user = new ArrayList<ParseUser>();
+            ParseQuery<User> getUser = ParseQuery.getQuery(User.class);
             try {
-                user = getUser.find();
+                profileUser = getUser.get(mParam1);
+
+                displayUserProfile(profileUser, view);
             } catch (ParseException e) {
+                Log.e("User Profile Fragment", "User does not exist");
                 e.printStackTrace();
             }
-
-            profileUser = user.get(0);
         }
 
-        displayUserProfile(profileUser, view);
         return view;
     }
 
@@ -116,7 +127,7 @@ public class UserProfileFragment extends Fragment {
         String school = profileUser.getString("school");
 
 
-        Log.e("User Profile", name);
+        Log.e("User Profile Fragment", name);
         TextView nameView = (TextView) view.findViewById(R.id.user_profile_name);
         nameView.setText(name);
 

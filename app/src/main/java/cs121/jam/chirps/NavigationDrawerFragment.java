@@ -98,9 +98,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         TypedArray a = activity.obtainStyledAttributes(R.styleable.NavigationDrawerFragment);
 
-        int startingPos = a.getInt(R.styleable.NavigationDrawerFragment_pos, -1);
-        if(startingPos == -1)
-            startingPos = 3;
+        int startingPos = a.getInt(R.styleable.NavigationDrawerFragment_pos, 3);
 
         mCurrentSelectedPosition = startingPos;
     }

@@ -1,8 +1,6 @@
 package cs121.jam.chirps;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -71,7 +69,7 @@ public class MyChirpsFragment extends Fragment implements ChirpFragment.OnFragme
         // Locate the ViewPager in viewpager_main.xml
         ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
         // Set the ViewPagerAdapter into ViewPager
-        mViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
+        mViewPager.setAdapter(new MyChirpsViewPagerAdapter(getChildFragmentManager()));
         return view;
     }
 

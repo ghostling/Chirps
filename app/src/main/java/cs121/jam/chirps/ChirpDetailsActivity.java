@@ -21,6 +21,9 @@ import org.w3c.dom.Text;
 import java.util.Date;
 
 import cs121.jam.model.Chirp;
+import cs121.jam.model.User;
+
+import static cs121.jam.model.User.*;
 
 
 public class ChirpDetailsActivity extends Activity {
@@ -49,18 +52,7 @@ public class ChirpDetailsActivity extends Activity {
             Log.e("Chirp Details", pe.getMessage());
         }
 
-        if(userClickable) {
-            TextView userField = (TextView) findViewById(R.id.chirp_details_user);
 
-            userField.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(ChirpDetailsActivity.this, UserProfileActivity.class);
-                    intent.putExtra(MainActivity.CHIRP_OBJECT_ID, chirp.getObjectId());
-                    startActivity(intent);
-                }
-            });
-        }
 
         getAndDisplayChirpDetails(chirpObjectId);
     }
@@ -82,6 +74,28 @@ public class ChirpDetailsActivity extends Activity {
             expirationDate = chirp.getExpirationDate();
             contact = chirp.getContactEmail();
         }
+
+        TextView userField = (TextView) findViewById(R.id.chirp_details_user);
+
+        try {
+            userField.setText(chirp.getUser().fetchIfNeeded().getString(User.NAME));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(userClickable) {
+
+
+            userField.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ChirpDetailsActivity.this, UserProfileActivity.class);
+                    intent.putExtra(UserProfileActivity.USER_OBJECT_ID, chirp.getUser().getObjectId());
+                    startActivity(intent);
+                }
+            });
+        }
+
         Log.e("Chirp Details", title);
         TextView tv = (TextView) findViewById(R.id.chirp_details_title);
         tv.setText(title);
