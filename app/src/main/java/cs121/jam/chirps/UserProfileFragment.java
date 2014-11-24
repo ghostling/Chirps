@@ -135,9 +135,9 @@ public class UserProfileFragment extends Fragment {
         return view;
     }
 
-    public void displayUserProfile(ParseUser profileUser, View view) {
+    public void displayUserProfile(final ParseUser profileUser, View view) {
         String name = profileUser.getString("name");
-        String email = profileUser.getEmail();
+        final String email = profileUser.getEmail();
         String school = profileUser.getString("school");
 
 
@@ -147,6 +147,15 @@ public class UserProfileFragment extends Fragment {
 
         TextView emailView = (TextView) view.findViewById(R.id.user_profile_email);
         emailView.setText(email);
+        emailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("plain/text");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { profileUser.getEmail() });
+                startActivity(Intent.createChooser(intent, ""));
+            }
+        });
 
         TextView schoolView = (TextView) view.findViewById(R.id.user_profile_school);
         schoolView.setText(school);

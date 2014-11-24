@@ -46,13 +46,15 @@
     <TextView
         android:id="@+id/user_profile_email"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_blue_dark"/>
 
     <Button
         android:id="@+id/resend_verification_button"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Resend Email Verification"
         android:onClick="resendVerification"/>
 
@@ -61,6 +63,7 @@
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="@string/reset_password"/>
 
 </LinearLayout>

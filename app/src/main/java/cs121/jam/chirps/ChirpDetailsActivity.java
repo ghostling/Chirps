@@ -105,6 +105,16 @@ public class ChirpDetailsActivity extends Activity {
         tv.setText(ChirpList.PRETTY_DATE_TIME.format(expirationDate));
         tv = (TextView) findViewById(R.id.chirp_details_contact);
         tv.setText(contact);
+        final String finalContact = contact;
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("plain/text");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] {finalContact});
+                startActivity(Intent.createChooser(intent, ""));
+            }
+        });
         if(schoolsArray != null) {
             for (int i = 0; i < schoolsArray.length(); i++) {
                 if (i != 0)
