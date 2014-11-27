@@ -2,9 +2,13 @@ package cs121.jam.chirps;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import android.app.Application;
+import android.util.Log;
 
 /**
  * Created by maiho on 10/2/14.
@@ -22,6 +26,9 @@ public class ParseApplication extends Application {
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
         ParseACL.setDefaultACL(defaultACL, true);
+
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
     }
 
 }
