@@ -1,6 +1,8 @@
 package cs121.jam.chirps;
 
 import android.app.Activity;
+import android.view.MenuItem;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,8 +53,6 @@ public class ChirpDetailsActivity extends Activity {
         } catch (ParseException pe) {
             Log.e("Chirp Details", pe.getMessage());
         }
-
-
 
         getAndDisplayChirpDetails(chirpObjectId);
     }
@@ -150,6 +150,29 @@ public class ChirpDetailsActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.chirp_details, menu);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(chirp.getUser().equals(currentUser)) {
+            MenuItem favToggle = menu.findItem(R.id.favorite_toggle);
+            favToggle.setVisible(false);
+        }
+        else {
+            MenuItem item = menu.findItem(R.id.favorite_toggle);
+            menu.findItem(R.id.delete).setVisible(false);
+            try {
+                boolean fav = chirp.isFavoriting(currentUser);
+                if(!fav) {
+                    item.setIcon(R.drawable.btn_star_big_off);
+                    item.setTitle("Favorite");
+                }
+                else {
+                    item.setIcon(R.drawable.btn_star_big_on);
+                    item.setTitle("Un-Favorite");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         return true;
     }
 
@@ -166,10 +189,23 @@ public class ChirpDetailsActivity extends Activity {
                     LoginActivity.class);
             startActivity(intent);
             finish();
-        } else if (id == R.id.user_profile) {
-            Intent intent = new Intent(ChirpDetailsActivity.this,
-                    UserProfileActivity.class);
-            startActivity(intent);
+        } else if (id == R.id.favorite_toggle) {
+            try {
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                boolean fav = chirp.isFavoriting(currentUser);
+                if(fav) {
+                    item.setIcon(R.drawable.btn_star_big_off);
+                    item.setTitle("Favorite");
+                    chirp.removeFromFavorites(currentUser);
+                }
+                else {
+                    item.setIcon(R.drawable.btn_star_big_on);
+                    item.setTitle("Un-Favorite");
+                    chirp.addToFavorites(currentUser);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
