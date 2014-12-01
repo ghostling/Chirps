@@ -180,7 +180,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
     }
 
     public JSONArray generateKeywords(String title, String description) {
-        String titleAndDescription = title.concat(description);
+        String titleAndDescription = title + " " + description;
         String[] allWords = (titleAndDescription.toLowerCase()).trim().split("\\s+");
         JSONArray keywords = new JSONArray();
         // TODO(Mai): Change this to read a file of stop words.
@@ -378,9 +378,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_logout) {
+        if (id == R.id.action_logout) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentUser.logOut();
             Intent intent = new Intent(ChirpSubmissionActivity.this,

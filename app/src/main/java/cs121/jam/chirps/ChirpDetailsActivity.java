@@ -159,9 +159,7 @@ public class ChirpDetailsActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_logout) {
+        if (id == R.id.action_logout) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentUser.logOut();
             Intent intent = new Intent(ChirpDetailsActivity.this,

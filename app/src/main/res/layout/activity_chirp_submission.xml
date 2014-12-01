@@ -26,7 +26,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:capitalize="words"
+            android:singleLine="true"
             android:ems="10"
             android:textSize="14sp"
             android:id="@+id/chirp_title"
@@ -46,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
+            android:capitalize="words"
             android:ems="10"
             android:textSize="14sp"
             android:id="@+id/chirp_description"
@@ -141,6 +143,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:id="@+id/chirp_contact"
+            android:singleLine="true"
             android:layout_gravity="center_horizontal"
             android:hint="@string/chirp_contact_info_hint"/>
 
