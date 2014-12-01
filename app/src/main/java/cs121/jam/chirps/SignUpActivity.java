@@ -139,7 +139,6 @@ public class SignUpActivity extends Activity {
         String email = (emailView.getText().toString()).toLowerCase();
         String school = "";
 
-        // TODO: Put to lowercase.
         if(email.matches(getString(R.string.email_regex_harveymudd)))
             school = getString(R.string.school_harveymudd);
         else if(email.matches(getString(R.string.email_regex_pomona)))

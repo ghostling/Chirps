@@ -51,11 +51,11 @@
     <string name="school_harveymudd">Harvey Mudd</string>
     <string name="school_pitzer">Pitzer</string>
     <string name="school_claremontmckenna">Claremont McKenna</string>
-    <string name="email_regex_harveymudd">\\w+@(g.)?hmc.edu</string>
-    <string name="email_regex_pomona">\\w+@(mymail.)?pomona.edu</string>
-    <string name="email_regex_pitzer">\\w+@(students.)?pitzer.edu</string>
-    <string name="email_regex_claremontmckenna">\\w+@(students.claremontmckenna|cmc).edu</string>
-    <string name="email_regex_scripps">\\w+@scrippscollege.edu</string>
+    <string name="email_regex_harveymudd">\\w+((\\.\\w+)+)?@(g.)?hmc.edu</string>
+    <string name="email_regex_pomona">\\w+((\\.\\w+)+)?@(mymail.)?pomona.edu</string>
+    <string name="email_regex_pitzer">\\w+((\\.\\w+)+)?@(students.)?pitzer.edu</string>
+    <string name="email_regex_claremontmckenna">\\w+((\\.\\w+)+)?@(students.claremontmckenna|cmc).edu</string>
+    <string name="email_regex_scripps">\\w+((\\.\\w+)+)?@scrippscollege.edu</string>
     <string name="refresh_chirps">Refresh Chirps</string>
     <string name="post_until">Post Until</string>
     <string name="forgot_password">Forgot Password?</string>
