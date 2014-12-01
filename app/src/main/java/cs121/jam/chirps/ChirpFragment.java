@@ -23,6 +23,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
     public static final String CATEGORY_CHIRP_QUERY = "CatQuery";
     public static final String ALL_CHIRP_QUERY = "AllQuery";
     public static final String FAVORITES_CHIRP_QUERY = "FavoriteQuery";
+    public static final String SEARCH_CHIRP_QUERY = "SearchQuery";
 
     // TODO: Rename and change types of parameters
     private String mParamQueryType;
@@ -141,6 +143,8 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
             mParamQueryType = getArguments().getString(ARG_PARAM1);
             mParamQueryValue = getArguments().getString(ARG_PARAM2);
 
+            // TODO: Maybe this goes somewhere else?
+            ParseObject.registerSubclass(Chirp.class);
 
             // TODO: Change Adapter to display your content
             ParseQuery chirpQuery = ParseQuery.getQuery("Chirp");
@@ -164,8 +168,6 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 school.add(currentUser.getString("school"));
                 ArrayList<String> category = new ArrayList<String>();
                 category.add(mParamQueryValue.toString());
-                // TODO: Maybe this goes somewhere else?
-                ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
@@ -176,8 +178,6 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ArrayList<String> userId = new ArrayList<String>();
                 userId.add(currentUser.getObjectId());
-                // TODO: Maybe this goes somewhere else?
-                ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.FAVORITING, userId);
@@ -186,11 +186,20 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ArrayList<String> school = new ArrayList<String>();
                 school.add(currentUser.getString("school"));
-                // TODO: Maybe this goes somewhere else?
-                ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
+            } else if (mParamQueryType.equals(SEARCH_CHIRP_QUERY)) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ArrayList<String> school = new ArrayList<String>();
+                school.add(currentUser.getString("school"));
+                List<String> searchWords = Arrays.asList((mParamQueryValue.toLowerCase()).trim().split("\\s+"));
+
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+                chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereContainsAll(Chirp.KEYWORDS, searchWords);
                 chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
             }
 
