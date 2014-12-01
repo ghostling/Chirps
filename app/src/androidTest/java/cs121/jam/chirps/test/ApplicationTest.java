@@ -1,4 +1,4 @@
-package cs121.jam.chirps;
+package cs121.jam.chirps.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

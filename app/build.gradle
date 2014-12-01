@@ -10,7 +10,9 @@ android {
         targetSdkVersion 20
         versionCode 1
         versionName "1.0"
+        testApplicationId "cs121.jam.chirps.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testFunctionalTest true
     }
     buildTypes {
         release {
@@ -21,7 +23,7 @@ android {
 
     sourceSets {
         androidTest {
-            java.srcDirs = ['androidTest/java']
+            java.srcDirs = ['src/androidTest/java']
         }
     }
 }
