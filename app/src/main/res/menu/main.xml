@@ -10,7 +10,8 @@
         android:actionViewClass="android.widget.SearchView" />
     <item android:id="@+id/action_add_chirp"
         android:title="@string/add_chirp"
-        android:showAsAction="withText|ifRoom" />
+        android:icon="@drawable/add_chirp"
+        android:showAsAction="always" />
     <item android:id="@+id/action_refresh_chirps"
         android:title="@string/refresh_chirps"
         android:icon="@drawable/refresh"
