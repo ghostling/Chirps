@@ -46,7 +46,8 @@ public class ChirpDetailsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chirp_details);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
         Intent intent = getIntent();
         String chirpObjectId = intent.getStringExtra(MainActivity.CHIRP_OBJECT_ID);
         userClickable = intent.getBooleanExtra(USER_CLICKABLE, true);
@@ -186,7 +187,9 @@ public class ChirpDetailsActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
+        if (id == android.R.id.home) {
+            finish();
+        } else if (id == R.id.action_logout) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentUser.logOut();
             Intent intent = new Intent(ChirpDetailsActivity.this,

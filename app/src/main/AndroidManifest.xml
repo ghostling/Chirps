@@ -64,12 +64,13 @@
         <activity
             android:name="cs121.jam.chirps.ChirpDetailsActivity"
             android:label="@string/title_activity_chirp_details"
-            android:launchMode="singleTop"
-            android:parentActivityName="cs121.jam.chirps.MainActivity" >
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="cs121.jam.chirps.UserProfileActivity"
-            android:label="User Profile" >
+            android:label="User Profile"
+            android:launchMode="singleTop"
+            android:parentActivityName="cs121.jam.chirps.ChirpDetailsActivity">
         </activity>
         <activity
             android:name="cs121.jam.chirps.ResetPasswordActivity"
