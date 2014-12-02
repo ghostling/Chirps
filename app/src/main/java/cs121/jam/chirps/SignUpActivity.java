@@ -75,7 +75,7 @@ public class SignUpActivity extends Activity {
                                 // Show a simple Toast message upon successful registration
                                 Toast.makeText(getApplicationContext(),
                                         "Successfully Signed up, " +
-                                                "please log in to continue.",
+                                                "please confirm email before logging in to fully utilize all of Chirp's features.",
                                         Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(
                                         SignUpActivity.this,
