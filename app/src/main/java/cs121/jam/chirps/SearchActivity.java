@@ -1,10 +1,13 @@
 package cs121.jam.chirps;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,29 +32,18 @@ import java.util.List;
 import cs121.jam.model.Chirp;
 
 
-public class SearchActivity extends Activity {
-    public ListView searchResultsView;
+public class SearchActivity extends FragmentActivity implements ChirpFragment.OnFragmentInteractionListener {
     public ChirpList searchResultsAdapter;
-    public TextView messageView;
     ProgressBar barView;
     public ArrayList<String> idArray = new ArrayList<String>();
     private AbsListView mListView;
+    public ChirpFragment frag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
-        searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent intent = new Intent(SearchActivity.this, ChirpDetailsActivity.class);
-                intent.putExtra(MainActivity.CHIRP_OBJECT_ID, idArray.get(position));
-                startActivity(intent);
-            }
-        });
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
@@ -90,58 +82,30 @@ public class SearchActivity extends Activity {
     }
 
     private void handleIntent(Intent intent) {
-        messageView = (TextView) findViewById(R.id.search_message);
-        searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
         barView = (ProgressBar) findViewById(R.id.search_progress);
-        messageView.setVisibility(View.GONE);
-        searchResultsView.setVisibility(View.GONE);
         barView.setVisibility(View.VISIBLE);
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            if(frag != null)
+                fragmentManager.beginTransaction().remove(frag).commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.SEARCH_CHIRP_QUERY, query))
+                    .commit();
+
+            barView = (ProgressBar) findViewById(R.id.search_progress);
+            barView.setVisibility(View.GONE);
         }
     }
 
-    public void doMySearch(String query) {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ArrayList<String> school = new ArrayList<String>();
-        school.add(currentUser.getString("school"));
-        List<String> searchWords = Arrays.asList((query.toLowerCase()).trim().split("\\s+"));
 
-        ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery("Chirp");
-        chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
-        chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
-        chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
-        chirpQuery.whereContainsAll(Chirp.KEYWORDS, searchWords);
-        Log.i("Keywords searched.", query);
-
-        chirpQuery.findInBackground(new FindCallback<Chirp>() {
-            public void done(List<Chirp> chirps, ParseException e) {
-                barView = (ProgressBar) findViewById(R.id.search_progress);
-                barView.setVisibility(View.GONE);
-
-                if (chirps.size() == 0) {
-                    messageView = (TextView) findViewById(R.id.search_message);
-                    messageView.setText("No chirps found.");
-                    messageView.setVisibility(View.VISIBLE);
-                } else {
-                    ArrayList<Chirp> chirpList = new ArrayList<Chirp>();
-
-                    // Extract the title and date for each chirp in the results.
-                    for (int i = 0; i < chirps.size(); i++) {
-                        Log.i("Search Results", chirps.get(i).getTitle());
-                        chirpList.add(chirps.get(i));
-                        idArray.add(chirps.get(i).getObjectId());
-                    }
-
-                    searchResultsAdapter = new ChirpList(SearchActivity.this, chirpList, true);
-                    searchResultsView = (ListView) findViewById(R.id.chirp_search_list);
-                    searchResultsView.setVisibility(View.VISIBLE);
-                    searchResultsView.setAdapter(searchResultsAdapter);
-                }
-            }
-        });
+    @Override
+    public void onFragmentChirpClick(String chirpId) {
+        Intent intent = new Intent(SearchActivity.this, ChirpDetailsActivity.class);
+        intent.putExtra(MainActivity.CHIRP_OBJECT_ID, chirpId);
+        startActivity(intent);
     }
-
 }
