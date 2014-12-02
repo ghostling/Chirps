@@ -225,29 +225,31 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                     if (chirps == null)
                         return;
 
+                    chirpListView.setVisibility(View.VISIBLE);
+                    messageView.setVisibility(View.GONE);
                     if (chirps.size() == 0) {
-
+                        chirpListView.setVisibility(View.GONE);
                         messageView.setText("No Chirps Found");
                         messageView.setVisibility(View.VISIBLE);
-                    } else {
-
-                        final ArrayList<Chirp> chirpList = new ArrayList<Chirp>();
-                        idArray = new ArrayList<String>();
-                        for (int i = 0; i < chirps.size(); i++) {
-                            chirpList.add(chirps.get(i));
-                            idArray.add(chirps.get(i).getObjectId());
-                        }
-                        if (chirpList != null && getActivity() != null) {
-                            Log.e("Chirp Fragment", "Chirp List being created");
-                            Log.e("Chirp Fragment", "Number of Chirps in list: " + idArray.size());
-
-                            ChirpList chirpListAdapter = new ChirpList(getActivity(), chirpList, mParamQueryType.equals(USER_CHIRP_QUERY));
-
-                            chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
-                            chirpListView.setItemsCanFocus(false);
-                            chirpListView.setAdapter(chirpListAdapter);
-                        }
                     }
+
+                    final ArrayList<Chirp> chirpList = new ArrayList<Chirp>();
+                    idArray = new ArrayList<String>();
+                    for (int i = 0; i < chirps.size(); i++) {
+                        chirpList.add(chirps.get(i));
+                        idArray.add(chirps.get(i).getObjectId());
+                    }
+                    if (chirpList != null && getActivity() != null) {
+                        Log.e("Chirp Fragment", "Chirp List being created");
+                        Log.e("Chirp Fragment", "Number of Chirps in list: " + idArray.size());
+
+                        ChirpList chirpListAdapter = new ChirpList(getActivity(), chirpList, mParamQueryType.equals(USER_CHIRP_QUERY));
+
+                        chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);
+                        chirpListView.setItemsCanFocus(false);
+                        chirpListView.setAdapter(chirpListAdapter);
+                    }
+
                 }
             });
         }

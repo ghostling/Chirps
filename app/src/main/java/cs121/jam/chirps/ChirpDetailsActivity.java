@@ -1,6 +1,9 @@
 package cs121.jam.chirps;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.MenuItem;
 import android.content.ClipData;
 import android.content.Intent;
@@ -10,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -152,7 +156,7 @@ public class ChirpDetailsActivity extends Activity {
         getMenuInflater().inflate(R.menu.chirp_details, menu);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if(chirp.getUser().equals(currentUser)) {
+        if(chirp.getUser().getObjectId().equals(currentUser.getObjectId())) {
             MenuItem favToggle = menu.findItem(R.id.favorite_toggle);
             favToggle.setVisible(false);
         }
@@ -189,6 +193,8 @@ public class ChirpDetailsActivity extends Activity {
                     LoginActivity.class);
             startActivity(intent);
             finish();
+        } else if (id == R.id.delete) {
+            DeleteChirpDialog deleteChirpDialog = new DeleteChirpDialog(this);
         } else if (id == R.id.favorite_toggle) {
             try {
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -208,5 +214,36 @@ public class ChirpDetailsActivity extends Activity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class DeleteChirpDialog extends AlertDialog implements  DialogInterface.OnClickListener {
+        private int chirpToDelete;
+        protected DeleteChirpDialog(Context context) {
+            super(context);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Are you sure you want to delete this chirp?")
+                    .setPositiveButton("Yes", this)
+                    .setNegativeButton("No", this).show();
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            switch (i) {
+                case DialogInterface.BUTTON_POSITIVE: // Yes button clicked
+                    chirp.deleteInBackground();
+
+                    Toast.makeText(getContext(),
+                            "Deleting Chirp",
+                            Toast.LENGTH_LONG)
+                            .show();
+
+                    finish();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE: // No button clicked
+                    // do nothing
+                    Toast.makeText(getContext(), "Chirp not deleted", Toast.LENGTH_SHORT).show();
+                    break; }
+        }
     }
 }
