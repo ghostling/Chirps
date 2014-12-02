@@ -18,10 +18,6 @@
             android:indeterminate="true" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/search_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/container"
