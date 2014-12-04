@@ -50,14 +50,14 @@ import cs121.jam.model.Chirp;
 
 
 public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ChirpFragment.OnFragmentInteractionListener, MyChirpsFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, FilterDrawerFragment.FilterDrawerCallbacks, ChirpFragment.OnFragmentInteractionListener, MyChirpsFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
     public static String CHIRP_OBJECT_ID = "chirpObjectId";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
+    private FilterDrawerFragment mFilterDrawerFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -122,6 +122,14 @@ public class MainActivity extends FragmentActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        mFilterDrawerFragment = (FilterDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.filter_drawer);
+
+        // Set up the drawer.
+        mFilterDrawerFragment.setUp(
+                R.id.filter_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParsePush.subscribeInBackground("", new SaveCallback() {
             @Override
@@ -134,6 +142,11 @@ public class MainActivity extends FragmentActivity
             }
         });
 
+    }
+
+    @Override
+    public void onFilterDrawerItemSelected(int position) {
+        // TODO: Do the filtering here.
     }
 
 
