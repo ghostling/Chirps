@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -114,6 +116,7 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.activity_main);
         mTitle = getTitle();
 
+        // Navigation Drawer
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -122,6 +125,7 @@ public class MainActivity extends FragmentActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        // Filter Drawer
         mFilterDrawerFragment = (FilterDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.filter_drawer);
 
@@ -142,6 +146,18 @@ public class MainActivity extends FragmentActivity
             }
         });
 
+        setFilterToggleListener();
+    }
+
+    public void setFilterToggleListener() {
+        ImageButton filterBtn = (ImageButton) findViewById(R.id.filter_button);
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
     }
 
     @Override

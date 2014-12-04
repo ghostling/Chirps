@@ -37,5 +37,14 @@
         android:name="cs121.jam.chirps.NavigationDrawerFragment"
         app:pos="3"
         tools:layout="@layout/fragment_navigation_drawer" />
+
+    <fragment android:id="@+id/filter_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:actionBarSize"
+        android:layout_gravity="end"
+        android:name="cs121.jam.chirps.FilterDrawerFragment"
+        app:pos="3"
+        tools:layout="@layout/fragment_filter_drawer" />
     
 </android.support.v4.widget.DrawerLayout>

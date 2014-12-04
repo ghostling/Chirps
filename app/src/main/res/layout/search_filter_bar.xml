@@ -8,12 +8,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:gravity="center">
-    <TextView
+    <ImageButton
         android:id="@+id/filter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:text="Filter"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/filter"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true" />
     <View
@@ -29,7 +28,7 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@android:color/transparent"
         android:src="@android:drawable/ic_menu_search"
         android:layout_toLeftOf="@id/vertical_bar"
         android:layout_centerVertical="true" />
