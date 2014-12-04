@@ -5,8 +5,6 @@
 # Overview
 Chirps is a mobile announcement-type application. There is an existing system called Chirps on Pomona College, where students submit announcements, or "chirps", by email or through a web form for the Chirps administrator to approve or reject. The administrator manually generates a weekly email containing the approved Chirps while loosely categorized by preset categories like social, academic, and for-sale listings. Students have to read through the whole email to see what chirps are relevant to their interests and there's no easy way to keep track of the Chirps that you're interested in. This is **no good**! Students deserve *better*, so this is how the Chirps mobile application came to be. Our application aims to provide the same functionality, but *more*.
 
-<img src="https://raw.githubusercontent.com/MaiHo/Chirps-Images/master/Screenshots/Login.png" align="left" height="350"><img src="https://raw.githubusercontent.com/MaiHo/Chirps-Images/master/Screenshots/ChirpList.png" align="left" height="350"><img src="https://raw.githubusercontent.com/MaiHo/Chirps-Images/master/Screenshots/ChirpDetails.png" align="left" height="350"><img src="https://raw.githubusercontent.com/MaiHo/Chirps-Images/master/Screenshots/ChirpSubmission.png" align="left" height="350">
-
 Current Release
 -----
 The project is currently in the development phase, set for release on December 9, 2014.
