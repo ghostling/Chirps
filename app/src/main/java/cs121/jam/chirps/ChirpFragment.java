@@ -23,6 +23,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
     public static final String CATEGORY_CHIRP_QUERY = "CatQuery";
     public static final String ALL_CHIRP_QUERY = "AllQuery";
     public static final String FAVORITES_CHIRP_QUERY = "FavoriteQuery";
+    public static final String SEARCH_CHIRP_QUERY = "SearchQuery";
 
     // TODO: Rename and change types of parameters
     private String mParamQueryType;
@@ -87,6 +89,8 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
 
     private SwipeRefreshLayout swipeListLayout;
 
+    private TextView messageView;
+
     // TODO: Rename and change types of parameters
     public static ChirpFragment newInstance(String param1, String param2) {
 
@@ -116,7 +120,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chirp, container, false);
+        View view = inflater.inflate(R.layout.fragment_chirp_list, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(R.id.chirp_list_view);
@@ -131,7 +135,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
         int orange = getResources().getColor(R.color.orange_loading);
         swipeListLayout.setColorSchemeColors(orange, orange, orange, orange);
 
-
+        messageView = (TextView) view.findViewById(R.id.search_message);
         return view;
     }
 
@@ -141,6 +145,8 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
             mParamQueryType = getArguments().getString(ARG_PARAM1);
             mParamQueryValue = getArguments().getString(ARG_PARAM2);
 
+            // TODO: Maybe this goes somewhere else?
+            ParseObject.registerSubclass(Chirp.class);
 
             // TODO: Change Adapter to display your content
             ParseQuery chirpQuery = ParseQuery.getQuery("Chirp");
@@ -164,8 +170,6 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 school.add(currentUser.getString("school"));
                 ArrayList<String> category = new ArrayList<String>();
                 category.add(mParamQueryValue.toString());
-                // TODO: Maybe this goes somewhere else?
-                ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
@@ -176,8 +180,6 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ArrayList<String> userId = new ArrayList<String>();
                 userId.add(currentUser.getObjectId());
-                // TODO: Maybe this goes somewhere else?
-                ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.FAVORITING, userId);
@@ -186,11 +188,20 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ArrayList<String> school = new ArrayList<String>();
                 school.add(currentUser.getString("school"));
-                // TODO: Maybe this goes somewhere else?
-                ParseObject.registerSubclass(Chirp.class);
 
                 chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
                 chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
+            } else if (mParamQueryType.equals(SEARCH_CHIRP_QUERY)) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ArrayList<String> school = new ArrayList<String>();
+                school.add(currentUser.getString("school"));
+                List<String> searchWords = Arrays.asList((mParamQueryValue.toLowerCase()).trim().split("\\s+"));
+
+                chirpQuery.whereEqualTo(Chirp.CHIRP_APPROVAL, true);
+                chirpQuery.whereContainsAll(Chirp.SCHOOLS, school);
+                chirpQuery.whereContainsAll(Chirp.KEYWORDS, searchWords);
                 chirpQuery.whereGreaterThan(Chirp.EXPIRATION_DATE, new Date());
             }
 
@@ -214,13 +225,21 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                     if (chirps == null)
                         return;
 
+                    chirpListView.setVisibility(View.VISIBLE);
+                    messageView.setVisibility(View.GONE);
+                    if (chirps.size() == 0) {
+                        chirpListView.setVisibility(View.GONE);
+                        messageView.setText("No Chirps Found");
+                        messageView.setVisibility(View.VISIBLE);
+                    }
+
                     final ArrayList<Chirp> chirpList = new ArrayList<Chirp>();
                     idArray = new ArrayList<String>();
                     for (int i = 0; i < chirps.size(); i++) {
                         chirpList.add(chirps.get(i));
                         idArray.add(chirps.get(i).getObjectId());
                     }
-                    if(chirpList != null && getActivity() != null) {
+                    if (chirpList != null && getActivity() != null) {
                         Log.e("Chirp Fragment", "Chirp List being created");
                         Log.e("Chirp Fragment", "Number of Chirps in list: " + idArray.size());
 
@@ -230,6 +249,7 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                         chirpListView.setItemsCanFocus(false);
                         chirpListView.setAdapter(chirpListAdapter);
                     }
+
                 }
             });
         }

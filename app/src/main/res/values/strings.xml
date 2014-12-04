@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Chirps</string>
-    <string name="title_section1">Chirps</string>
+    <string name="title_section1">All Chirps</string>
     <string name="title_section2">My Chirps</string>
     <string name="title_section3">Categories</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
