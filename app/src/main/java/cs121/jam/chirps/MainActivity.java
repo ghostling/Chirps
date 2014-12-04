@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -81,6 +82,7 @@ public class MainActivity extends FragmentActivity
 
     boolean hideRefresh = false;
     boolean hideAddAndSearch = false;
+    boolean hideSearchAndFilter = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +148,6 @@ public class MainActivity extends FragmentActivity
             }
         });
 
-        setFilterToggleListener();
     }
 
     public void setFilterToggleListener() {
@@ -171,6 +172,8 @@ public class MainActivity extends FragmentActivity
         // update the main content by replacing fragments
         hideRefresh = false;
         hideAddAndSearch = false;
+        hideSearchAndFilter = false;
+        DrawerLayout mDrawerLayout = ((DrawerLayout) findViewById(R.id.drawer_layout));
         if(position == 3) {
             mTitle = "All Chirps";
             if(navigationFragments[position] == null)
@@ -180,6 +183,8 @@ public class MainActivity extends FragmentActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, navigationFragments[position])
                     .commit();
+            if (mDrawerLayout != null)
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
         }
         else if(position == 0) {
             mTitle = "My Profile";
@@ -191,6 +196,9 @@ public class MainActivity extends FragmentActivity
                     .commit();
             hideRefresh = true;
             hideAddAndSearch = true;
+            hideSearchAndFilter = true;
+            if (mDrawerLayout != null)
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         }
         else if(position == 1) {
             mTitle = "My Chirps";
@@ -201,6 +209,9 @@ public class MainActivity extends FragmentActivity
                     .replace(R.id.container, navigationFragments[position])
                     .commit();
             hideRefresh = true;
+            hideSearchAndFilter = true;
+            if (mDrawerLayout != null)
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         }
         else if(position == 2) {
             mTitle = "My Favorites";
@@ -211,6 +222,9 @@ public class MainActivity extends FragmentActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, navigationFragments[position])
                     .commit();
+            hideSearchAndFilter = true;
+            if (mDrawerLayout != null)
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         }
         else {
             String category = getResources().getStringArray(R.array.categories_array)[position-4];
@@ -260,6 +274,17 @@ public class MainActivity extends FragmentActivity
             }
             if(hideRefresh) {
                 menu.findItem(R.id.action_refresh_chirps).setVisible(false);
+            }
+            if(hideSearchAndFilter) {
+                (findViewById(R.id.search_filter_bar)).setVisibility(View.GONE);
+            } else {
+                ViewStub stub = (ViewStub) findViewById(R.id.search_filter_bar_stub);
+                if (stub != null) {
+                    stub.setVisibility(View.VISIBLE);
+                } else {
+                    (findViewById(R.id.search_filter_bar)).setVisibility(View.VISIBLE);
+                }
+                setFilterToggleListener();
             }
             restoreActionBar();
             return true;

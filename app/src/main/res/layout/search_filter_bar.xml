@@ -6,8 +6,7 @@
     android:layout_height="?android:actionBarSize"
     android:background="@drawable/border_bottom"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:gravity="center">
+    android:paddingRight="@dimen/activity_horizontal_margin">
     <ImageButton
         android:id="@+id/filter_button"
         android:layout_width="25dp"
@@ -35,7 +34,7 @@
     <EditText
         android:id="@+id/search_text"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="?android:actionBarSize"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/imageButton"
         android:text="Search"
