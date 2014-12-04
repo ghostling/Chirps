@@ -218,7 +218,6 @@ public class ChirpSubmissionActivityUnitTest extends ActivityUnitTestCase<ChirpS
                 .getTargetContext(), ChirpSubmissionActivity.class);
         startActivity(intent, null, null);
 
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         Boolean emailVerification = (Boolean) currentUser.get("emailVerified");
 
