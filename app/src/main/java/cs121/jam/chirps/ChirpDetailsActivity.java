@@ -36,6 +36,8 @@ public class ChirpDetailsActivity extends Activity {
 
     boolean userClickable;
 
+    public ParseQuery<Chirp> chirpQuery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class ChirpDetailsActivity extends Activity {
         String chirpObjectId = intent.getStringExtra(MainActivity.CHIRP_OBJECT_ID);
         userClickable = intent.getBooleanExtra(USER_CLICKABLE, true);
 
-        ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery(Chirp.class);
+        chirpQuery = ParseQuery.getQuery(Chirp.class);
         try {
             chirp = chirpQuery.get(chirpObjectId);
         } catch (ParseException pe) {
@@ -53,11 +55,17 @@ public class ChirpDetailsActivity extends Activity {
         }
 
 
-
         getAndDisplayChirpDetails(chirpObjectId);
     }
 
     public void getAndDisplayChirpDetails(String chirpObjectId) {
+        // Don't display the chirp if it doesn't exist!
+        if (chirp == null) {
+            if (chirpObjectId != null) {
+                Log.e("Chirp does not exist.", chirpObjectId);
+            }
+            return;
+        }
 
         String title = "";
         String description = "";
@@ -172,5 +180,9 @@ public class ChirpDetailsActivity extends Activity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setChirp(Chirp chirpObj) {
+        chirp = chirpObj;
     }
 }

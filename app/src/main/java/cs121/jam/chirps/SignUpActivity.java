@@ -35,7 +35,8 @@ public class SignUpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        // TODO: Handle nullpointerexception here.
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Connect views to values in xml file using their id's
         firstNameView = (EditText) findViewById(R.id.sign_up_first_name_input);

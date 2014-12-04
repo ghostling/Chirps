@@ -32,9 +32,6 @@ public class SignUpActivityUnitTest extends ActivityUnitTestCase<SignUpActivity>
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Intent mLoginIntent = new Intent(getInstrumentation()
-                .getTargetContext(), SignUpActivity.class);
-        startActivity(mLoginIntent, null, null);
     }
 
     @Override
@@ -43,16 +40,14 @@ public class SignUpActivityUnitTest extends ActivityUnitTestCase<SignUpActivity>
     }
 
     /*
-    Tests to make sure that a user isn't logged in when signing up.
+    Tests that we do not start the LoginActivity if we didn't register an account.
      */
     @SmallTest
-    public void testNotSignedIn() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        assertTrue(currentUser == null);
-    }
-
-    @SmallTest
     public void testLoginActivityWasNotLaunchedWithIntent() {
+        Intent mLoginIntent = new Intent(getInstrumentation()
+                .getTargetContext(), SignUpActivity.class);
+        startActivity(mLoginIntent, null, null);
+
         signUpButtonView =
                 (Button) getActivity().findViewById(R.id.sign_up_button);
         signUpButtonView.performClick();
@@ -60,5 +55,7 @@ public class SignUpActivityUnitTest extends ActivityUnitTestCase<SignUpActivity>
         // Sign up fields are empty.
         final Intent launchIntent = getStartedActivityIntent();
         assertNull("Intent was not null", launchIntent);
+
+        getActivity().finish();
     }
 }

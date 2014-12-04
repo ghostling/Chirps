@@ -22,9 +22,6 @@ public class LoginActivityUnitTest extends ActivityUnitTestCase<LoginActivity> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Intent mLoginIntent = new Intent(getInstrumentation()
-                .getTargetContext(), LoginActivity.class);
-        startActivity(mLoginIntent, null, null);
     }
 
     @Override
@@ -36,6 +33,10 @@ public class LoginActivityUnitTest extends ActivityUnitTestCase<LoginActivity> {
      */
     @SmallTest
     public void testSignUpActivityWasLaunchedWithIntent() {
+        Intent mLoginIntent = new Intent(getInstrumentation()
+                .getTargetContext(), LoginActivity.class);
+        startActivity(mLoginIntent, null, null);
+
         final Button signUpButton =
                 (Button) getActivity().findViewById(R.id.sign_up_button);
         signUpButton.performClick();
@@ -47,7 +48,11 @@ public class LoginActivityUnitTest extends ActivityUnitTestCase<LoginActivity> {
     /* Tests to make sure an intent is not sent to the MainActivity if the login fields are empty.
      */
     @SmallTest
-    public void testMainActivityWasLaunchedWithIntent() {
+    public void testMainActivityWasNotLaunchedWithIntent() {
+        Intent mLoginIntent = new Intent(getInstrumentation()
+                .getTargetContext(), LoginActivity.class);
+        startActivity(mLoginIntent, null, null);
+
         final Button loginButton =
                 (Button) getActivity().findViewById(R.id.login_button);
         loginButton.performClick();
