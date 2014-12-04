@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_filter_bar"
+    android:layout_width="match_parent"
+    android:layout_height="?android:actionBarSize"
+    android:background="@drawable/border_bottom"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:gravity="center">
+    <TextView
+        android:id="@+id/filter_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="Filter"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+    <View
+        android:id="@+id/vertical_bar"
+        android:layout_width="1dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/gray"
+        android:layout_toLeftOf="@id/filter_button"
+        android:layout_centerVertical="true" />
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:src="@android:drawable/ic_menu_search"
+        android:layout_toLeftOf="@id/vertical_bar"
+        android:layout_centerVertical="true" />
+    <EditText
+        android:id="@+id/search_text"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/imageButton"
+        android:text="Search"
+        android:layout_centerVertical="true" />
+</RelativeLayout>

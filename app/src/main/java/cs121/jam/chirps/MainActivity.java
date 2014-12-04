@@ -109,13 +109,13 @@ public class MainActivity extends FragmentActivity
         ParseInstallation inst = ParseInstallation.getCurrentInstallation();
         inst.put("user", ParseUser.getCurrentUser());
         inst.saveInBackground();
-        navigationFragments = new Fragment[10];
 
+        navigationFragments = new Fragment[10];
         setContentView(R.layout.activity_main);
+        mTitle = getTitle();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -123,7 +123,6 @@ public class MainActivity extends FragmentActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
-
         ParsePush.subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -134,7 +133,6 @@ public class MainActivity extends FragmentActivity
                 }
             }
         });
-
 
     }
 

@@ -10,12 +10,17 @@
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
-    <FrameLayout
-        android:id="@+id/container"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </FrameLayout>
+        <include layout="@layout/search_filter_bar"/>
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/search_filter_bar">
+        </FrameLayout>
+    </RelativeLayout>
 
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
