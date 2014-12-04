@@ -42,17 +42,23 @@ public class ChirpDetailsActivity extends Activity {
 
     boolean userClickable;
 
+    public ParseQuery<Chirp> chirpQuery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chirp_details);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        try {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setHomeButtonEnabled(true);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         Intent intent = getIntent();
         String chirpObjectId = intent.getStringExtra(MainActivity.CHIRP_OBJECT_ID);
         userClickable = intent.getBooleanExtra(USER_CLICKABLE, true);
 
-        ParseQuery<Chirp> chirpQuery = ParseQuery.getQuery(Chirp.class);
+        chirpQuery = ParseQuery.getQuery(Chirp.class);
         try {
             chirp = chirpQuery.get(chirpObjectId);
         } catch (ParseException pe) {
@@ -63,6 +69,13 @@ public class ChirpDetailsActivity extends Activity {
     }
 
     public void getAndDisplayChirpDetails(String chirpObjectId) {
+        // Don't display the chirp if it doesn't exist!
+        if (chirp == null) {
+            if (chirpObjectId != null) {
+                Log.e("Chirp does not exist.", chirpObjectId);
+            }
+            return;
+        }
 
         String title = "";
         String description = "";
@@ -219,8 +232,13 @@ public class ChirpDetailsActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void setChirp(Chirp chirpObj) {
+        chirp = chirpObj;
+    }
+
     public class DeleteChirpDialog extends AlertDialog implements  DialogInterface.OnClickListener {
         private int chirpToDelete;
+
         protected DeleteChirpDialog(Context context) {
             super(context);
 
@@ -246,7 +264,8 @@ public class ChirpDetailsActivity extends Activity {
                 case DialogInterface.BUTTON_NEGATIVE: // No button clicked
                     // do nothing
                     Toast.makeText(getContext(), "Chirp not deleted", Toast.LENGTH_SHORT).show();
-                    break; }
+                    break;
+            }
         }
     }
 }
