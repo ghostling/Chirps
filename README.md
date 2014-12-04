@@ -41,8 +41,11 @@ Alex: aputman@hmc.edu
 
 In your bug report, please describe the steps leading up the bug and any other useful information.
 
+LICENSE
+-----
+TODO
+
 Authors
 -----
-Mai Ho (MaiHo@GitHub)
-Jiexi Cao (ghostling@GitHub)
-Alex Putman (aputman@GitHub)
+Project Idea by Vicky Gyorffy, Reece Denzel, Noam Hurwitz, Joanna Finkelstein
+Project Development by Mai Ho, Jiexi Cao, Alex Putman
