@@ -49,6 +49,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
     TextView chirpCategoriesTextView;
     ArrayList<String> chirpCategoriesArray;
 
+    Chirp chirp;
 
     CheckBox college_pmcCheckBox;
     CheckBox college_hmcCheckBox;
@@ -62,9 +63,10 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
     TextView chirpExpirationTextView; // This is so we can put the error message on a line that fits.
     Date currentDateAndTime;
 
-    SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("MM-dd-yyyy");
-    SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("hh:mm a");
-    SimpleDateFormat DATE_AND_TIME_FORMATTER = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+    public static SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("MM-dd-yyyy");
+    public static SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("hh:mm a");
+    public static SimpleDateFormat DATE_AND_TIME_FORMATTER = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+    public static final Pattern UNDESIRABLES = Pattern.compile("[\\Q][(){},.;!?<>%\\E]");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,8 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         // Data validation for chirp submission fields.
         addInlineChirpValidation();
 
+        chirp = new Chirp();
+
         chirpCategoriesTextView.setOnClickListener(this);
 
         // Sign up Button Click Listener
@@ -155,17 +159,8 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     }
                     else {
                         // Save new chirp into Parse.com Data Storage
-                        Chirp chirp = new Chirp();
-                        chirp.setTitle(chirpTitle);
-                        chirp.setContactEmail(chirpContact);
-                        chirp.setExpirationDate(expirationDate);
-                        chirp.setDescription(chirpDescription);
-                        chirp.setSchools(chirpSchools);
-                        chirp.setCategories(chirpCategories);
-                        chirp.setKeywords(generateKeywords(chirpTitle, chirpDescription));
-                        chirp.setUser(currentUser);
-                        chirp.rejectChirp(); // All chirps are default not approved.
-                        chirp.saveWithPermissions();
+                        saveChirp(chirpTitle, chirpContact, expirationDate, chirpDescription,
+                                chirpSchools, chirpCategories, currentUser);
 
                         // Tell the user that the chirp is submitted and take them back to the main activity
                         Toast.makeText(getApplicationContext(),
@@ -179,8 +174,30 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         });
     }
 
+    public void setChirp(Chirp newChirp) {
+        chirp = newChirp;
+    }
+
+    public void saveChirp(String title, String contact, Date expirationDate,
+                          String description, JSONArray schools, JSONArray categories,
+                          ParseUser user) {
+        chirp.setTitle(title);
+        chirp.setContactEmail(contact);
+        chirp.setExpirationDate(expirationDate);
+        chirp.setDescription(description);
+        chirp.setSchools(schools);
+        chirp.setCategories(categories);
+        chirp.setKeywords(generateKeywords(title, description));
+        chirp.setUser(user);
+        chirp.rejectChirp(); // All chirps are default not approved.
+        chirp.saveWithPermissions();
+    }
+
     public JSONArray generateKeywords(String title, String description) {
+        // Gets rid of all unwanted characters like punctuation.
         String titleAndDescription = title + " " + description;
+        titleAndDescription = UNDESIRABLES.matcher(titleAndDescription).replaceAll("");
+
         String[] allWords = (titleAndDescription.toLowerCase()).trim().split("\\s+");
         JSONArray keywords = new JSONArray();
         // TODO(Mai): Change this to read a file of stop words.
@@ -196,6 +213,9 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         return keywords;
     }
 
+    /*
+    Checks if the title field has been filled.
+     */
     public boolean titleValidation() {
         if (chirpTitleView.getText().length() == 0) {
             chirpTitleView.setError("Title is a required field.");
@@ -206,6 +226,9 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         return true;
     }
 
+    /*
+    Checks if the contact field is filled and also contains a valid email.
+     */
     public boolean contactValidation() {
         if (chirpContactView.getText().length() == 0) {
             chirpContactView.setError("Contact is a required field.");
@@ -220,6 +243,9 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         return true;
     }
 
+    /*
+    Checks that the expiration date entered is in the future.
+     */
     public boolean expirationDateValidation() {
         String chirpExpirationDate = chirpExpirationDateView.getText().toString();
         String chirpExpirationTime = chirpExpirationTimeView.getText().toString();
@@ -237,6 +263,9 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         return true;
     }
 
+    /*
+    Checks that there is a description.
+     */
     public boolean descriptionValidation() {
         if (chirpDescriptionView.getText().length() == 0) {
             chirpDescriptionView.setError("Description is a required field.");
@@ -248,6 +277,9 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         return true;
     }
 
+    /*
+    Sets up inline data validation using text watchers.
+     */
     public void addInlineChirpValidation() {
         chirpTitleView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -328,7 +360,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
     }
 
     // Checking if an email is valid or not.
-    private boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
@@ -336,6 +368,7 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
     public void showDatePickerDialog(View v) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         DialogFragment newFragment = new DatePickerDialogFragment(ChirpSubmissionActivity.this);
