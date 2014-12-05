@@ -53,8 +53,9 @@ In your bug report, please describe the steps leading up the bug and any other u
 
 Authors
 -----
-Project Idea by Vicky Gyorffy, Reece Denzel, Noam Hurwitz, Joanna Finkelstein
-Project Development by Mai Ho, Jiexi Cao, Alex Putman
+**Project Idea** by Vicky Gyorffy, Reece Denzel, Noam Hurwitz, Joanna Finkelstein
+
+**Project Development** by Mai Ho, Jiexi Cao, Alex Putman
 
 LICENSE
 -----
@@ -63,4 +64,5 @@ Chirps is free software: you can redistribute it and/or modify it under the term
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Copyright (c) 2014, Chirps
+
 All rights reserved.
