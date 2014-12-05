@@ -1,29 +1,14 @@
 package cs121.jam.chirps;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.util.List;
-import java.util.Date;
-
-import cs121.jam.model.Chirp;
 
 
 public class UserProfileActivity extends FragmentActivity implements ChirpFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
@@ -39,9 +24,6 @@ public class UserProfileActivity extends FragmentActivity implements ChirpFragme
         Intent intent = getIntent();
 
         String userId = intent.getStringExtra(USER_OBJECT_ID);
-
-
-        Log.e("User Profile", "User id: " + userId);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPager);
         // Set the ViewPagerAdapter into ViewPager

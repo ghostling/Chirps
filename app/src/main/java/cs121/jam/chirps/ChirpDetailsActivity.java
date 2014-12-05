@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.view.MenuItem;
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,21 +13,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.util.Date;
 
 import cs121.jam.model.Chirp;
 import cs121.jam.model.User;
-
-import static cs121.jam.model.User.*;
 
 
 public class ChirpDetailsActivity extends Activity {
@@ -114,7 +108,6 @@ public class ChirpDetailsActivity extends Activity {
             });
         }
 
-        Log.e("Chirp Details", title);
         TextView tv = (TextView) findViewById(R.id.chirp_details_title);
         tv.setText(title);
         tv = (TextView) findViewById(R.id.chirp_details_description);

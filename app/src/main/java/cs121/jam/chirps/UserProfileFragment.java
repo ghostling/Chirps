@@ -2,27 +2,19 @@ package cs121.jam.chirps;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 import cs121.jam.model.User;
 
@@ -94,8 +86,6 @@ public class UserProfileFragment extends Fragment {
         if(currentUser == null)
             return view;
 
-        Log.e("User Profile Fragment", mParam1 + ", " + currentUser.getObjectId());
-
         if(currentUser.getObjectId().equals(mParam1)) {
             profileUser = User.getCurrentUser();
             if(mParam2.equals("TRUE")) {
@@ -140,8 +130,6 @@ public class UserProfileFragment extends Fragment {
         final String email = profileUser.getEmail();
         String school = profileUser.getString("school");
 
-
-        Log.e("User Profile Fragment", name);
         TextView nameView = (TextView) view.findViewById(R.id.user_profile_name);
         nameView.setText(name);
 

@@ -7,6 +7,7 @@
     android:background="@drawable/border_bottom"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
+
     <ImageButton
         android:id="@+id/filter_button"
         android:layout_width="25dp"
@@ -30,4 +31,5 @@
         android:layout_toLeftOf="@id/vertical_bar"
         android:queryHint="@string/search_hint"
         android:iconifiedByDefault="true" />
+
 </RelativeLayout>

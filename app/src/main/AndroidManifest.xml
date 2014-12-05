@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
     <permission android:protectionLevel="signature"
         android:name="cs121.jam.chirps.permission.C2D_MESSAGE" />
     <uses-permission android:name="cs121.jam.chirps.permission.C2D_MESSAGE" />
@@ -97,5 +96,4 @@
             </intent-filter>
         </receiver>
     </application>
-
 </manifest>
