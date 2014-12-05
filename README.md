@@ -31,6 +31,14 @@ Minimum System Requirements
 -----
 - A device with Android SDK Version 16 installed.
 
+Dependencies
+-----
+- Parse.com API
+
+Directory Structure
+-----
+All source code relating to the application are in the app/ directory. Tests are located in app/src/androidTest.
+
 Bug Reporting
 -----
 You can send us bug reports to any of the following emails:
