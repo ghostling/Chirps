@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -240,9 +238,6 @@ public class ChirpFragment extends Fragment implements AbsListView.OnItemClickLi
                         idArray.add(chirps.get(i).getObjectId());
                     }
                     if (chirpList != null && getActivity() != null) {
-                        Log.e("Chirp Fragment", "Chirp List being created");
-                        Log.e("Chirp Fragment", "Number of Chirps in list: " + idArray.size());
-
                         ChirpList chirpListAdapter = new ChirpList(getActivity(), chirpList, mParamQueryType.equals(USER_CHIRP_QUERY));
 
                         chirpListView = (ListView) getView().findViewById(R.id.chirp_list_view);

@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.parse.ParseUser;
 
+
 /**
- * Created by aputman.
- *
  * Activity to show a user's profile.
  */
 public class UserProfileActivity extends FragmentActivity implements
@@ -28,8 +27,6 @@ public class UserProfileActivity extends FragmentActivity implements
         // Handle intent
         Intent intent = getIntent();
         String userId = intent.getStringExtra(USER_OBJECT_ID);
-
-        Log.e("User Profile", "User id: " + userId);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
@@ -71,7 +68,6 @@ public class UserProfileActivity extends FragmentActivity implements
         intent.putExtra(MainActivity.CHIRP_OBJECT_ID, chirpId);
         startActivity(intent);
     }
-
 
     @Override
     public void onFragmentResetPassword() {

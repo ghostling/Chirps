@@ -1,10 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cs121.jam.chirps.ChirpSubmissionActivity" >
-    <item android:id="@+id/user_profile"
-        android:title="@string/user_profile"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
     <item android:id="@+id/action_logout"
         android:title="@string/log_out"
         android:orderInCategory="100"

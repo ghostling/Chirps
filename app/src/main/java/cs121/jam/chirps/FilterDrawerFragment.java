@@ -1,19 +1,16 @@
 package cs121.jam.chirps;
 
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,47 +21,37 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
 /**
- * Fragment used for managing interactions for and presentation of the left navigation drawer that
- * is used to navigate through different "pages" of the application.
+ * Fragment used for managing interactions for and presentation of the right filter drawer that
+ * filters the chirps on the "All Chirps" page.
  */
-public class NavigationDrawerFragment extends Fragment {
-
+public class FilterDrawerFragment extends Fragment {
 
     // Remember the position of the selected item.
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+    private static final String STATE_SELECTED_POSITION = "selected_filter_drawer_position";
 
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
      */
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String PREF_USER_LEARNED_DRAWER = "filter_drawer_learned";
 
     // A pointer to the current callbacks instance (the Activity).
-    private NavigationDrawerCallbacks mCallbacks;
+    private FilterDrawerCallbacks mCallbacks;
 
-    // Helper component that ties the action bar to the navigation drawer.
+    // Helper component that ties the action bar to the filter drawer.
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    public NavigationDrawerFragment() {
+    public FilterDrawerFragment() {
         // Empty constructor.
-    }
-
-    public static NavigationDrawerFragment newInstance(int pos) {
-        NavigationDrawerFragment fragment = new NavigationDrawerFragment();
-        Bundle args = new Bundle();
-        args.putInt(STATE_SELECTED_POSITION, pos);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -79,26 +66,8 @@ public class NavigationDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
+            selectItem(mCurrentSelectedPosition);
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
-    }
-
-    /**
-     * Renders the navigation bar and sets the starting position at the defined "home" position,
-     * which is the "All Chirps" view.
-     * @param activity
-     * @param attrs
-     * @param savedInstanceState
-     */
-    @Override
-    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
-        super.onInflate(activity, attrs, savedInstanceState);
-        TypedArray a = activity.obtainStyledAttributes(R.styleable.NavigationDrawerFragment);
-        int positionOfHome = 3;
-        int startingPos = a.getInt(R.styleable.NavigationDrawerFragment_pos, positionOfHome);
-        mCurrentSelectedPosition = startingPos;
     }
 
     @Override
@@ -109,17 +78,18 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     /**
-     * Populates the ListView of the navigation drawer.
+     * Populates the ListView of the filter drawer.
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return ListView containing all the sections of the app.
+     * @return ListView containing all the categories.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+                R.layout.fragment_filter_drawer, container, false);
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -130,12 +100,7 @@ public class NavigationDrawerFragment extends Fragment {
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                new String[]{
-                        getString(R.string.my_profile_section),
-                        getString(R.string.my_chirps_section),
-                        getString(R.string.my_favorites_section),
-                        getString(R.string.all_chirps_section)
-                }));
+                getResources().getStringArray(R.array.categories_array)));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -148,7 +113,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     /**
-     * Users of this fragment must call this method to set up the navigation drawer interactions.
+     * Users of this fragment must call this method to set up the filter drawer interactions.
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
@@ -156,19 +121,20 @@ public class NavigationDrawerFragment extends Fragment {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
-        // Set a custom shadow that overlays the main content when the drawer opens.
+        // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        // set up the drawer's list view with items and click listener
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
         // ActionBarDrawerToggle ties together the the proper interactions
-        // between the navigation drawer and the action bar app icon.
+        // between the filter drawer and the action bar app icon.
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
                 mDrawerLayout,                    /* DrawerLayout object */
-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
+                R.drawable.ic_drawer,             /* filter drawer image to replace 'Up' caret */
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
         ) {
@@ -191,7 +157,7 @@ public class NavigationDrawerFragment extends Fragment {
 
                 if (!mUserLearnedDrawer) {
                     // The user manually opened the drawer; store this flag to prevent auto-showing
-                    // the navigation drawer automatically in the future.
+                    // the filter drawer automatically in the future.
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(getActivity());
@@ -203,7 +169,7 @@ public class NavigationDrawerFragment extends Fragment {
         };
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
-        // per the navigation drawer design guidelines.
+        // per the filter drawer design guidelines.
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
             mDrawerLayout.openDrawer(mFragmentContainerView);
         }
@@ -228,7 +194,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onFilterDrawerItemSelected(position);
         }
     }
 
@@ -236,9 +202,9 @@ public class NavigationDrawerFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallbacks = (NavigationDrawerCallbacks) activity;
+            mCallbacks = (FilterDrawerCallbacks) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
+            throw new ClassCastException("Activity must implement FilterDrawerCallbacks.");
         }
     }
 
@@ -288,7 +254,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
+     * Per the filter drawer design guidelines, updates the action bar to show the global app
      * 'context', rather than just what's in the current screen.
      */
     private void showGlobalContextActionBar() {
@@ -304,10 +270,10 @@ public class NavigationDrawerFragment extends Fragment {
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
-    public static interface NavigationDrawerCallbacks {
+    public static interface FilterDrawerCallbacks {
         /**
-         * Called when an item in the navigation drawer is selected.
+         * Called when an item in the filter drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onFilterDrawerItemSelected(int position);
     }
 }

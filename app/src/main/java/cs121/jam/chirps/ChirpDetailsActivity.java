@@ -25,9 +25,8 @@ import java.util.Date;
 import cs121.jam.model.Chirp;
 import cs121.jam.model.User;
 
+
 /**
- * Created by jiexicao. Modified by alexputman.
- *
  * Activity for viewing the details of a specific chirp. Navigation to this activity should
  * include selecting a chirp.
  */
@@ -111,6 +110,8 @@ public class ChirpDetailsActivity extends Activity {
         // If they have a public profile, set up the button handler to bring the user to the
         // appropriate profile page.
         if(userClickable) {
+
+
             userField.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

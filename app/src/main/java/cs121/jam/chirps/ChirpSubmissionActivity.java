@@ -24,11 +24,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import com.parse.ParseUser;
+
 import org.json.JSONArray;
-import java.util.ArrayList;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -473,7 +476,6 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                           int dayOfMonth) {
         Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
         chirpExpirationDateView.setText(DATE_FORMATTER.format(cal.getTime()));
-        Log.e("Expiration date is ", DATE_FORMATTER.format(cal.getTime()));
     }
 
     /**
@@ -488,7 +490,6 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, minute);
         chirpExpirationTimeView.setText(TIME_FORMATTER.format(cal.getTime()));
-        Log.i("Expiration time is ", TIME_FORMATTER.format(cal.getTime()));
     }
 
     @Override
@@ -511,10 +512,6 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     LoginActivity.class);
             startActivity(intent);
             finish();
-        } else if (id == R.id.user_profile) {
-            Intent intent = new Intent(ChirpSubmissionActivity.this,
-                    UserProfileActivity.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

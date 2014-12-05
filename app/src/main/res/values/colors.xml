@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="orange_loading">#FF8800</color>
+    <color name="light_gray">#e0e0e0</color>
+    <color name="gray">#bdbdbd</color>
+    <color name="white">#fff</color>
 </resources>

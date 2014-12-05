@@ -1,4 +1,5 @@
-<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
+<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for
+     both width and height to consume the full space available. -->
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,23 +9,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- As the main content view, the view below consumes the entire
-         space available using match_parent in both dimensions. -->
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!-- Main content. -->
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <ViewStub
+            android:id="@+id/search_filter_bar_stub"
+            android:inflatedId="@+id/search_filter_bar"
+            android:layout="@layout/search_filter_bar"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_filter_bar">
+        </FrameLayout>
+        <ProgressBar
+            android:id="@+id/search_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
-    </FrameLayout>
-
-
-    <!-- android:layout_gravity="start" tells DrawerLayout to treat
-         this as a sliding drawer on the left side for left-to-right
-         languages and on the right side for right-to-left languages.
-         If you're not building against API 17 or higher, use
-         android:layout_gravity="left" instead. -->
-    <!-- The drawer is given a fixed width in dp and extends the full height of
-         the container. -->
+    <!-- Navigation and filter drawers. -->
     <fragment android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
@@ -32,5 +41,14 @@
         android:name="cs121.jam.chirps.NavigationDrawerFragment"
         app:pos="3"
         tools:layout="@layout/fragment_navigation_drawer" />
-    
+
+    <fragment android:id="@+id/filter_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:actionBarSize"
+        android:layout_gravity="end"
+        android:name="cs121.jam.chirps.FilterDrawerFragment"
+        app:pos="3"
+        tools:layout="@layout/fragment_filter_drawer" />
+
 </android.support.v4.widget.DrawerLayout>
