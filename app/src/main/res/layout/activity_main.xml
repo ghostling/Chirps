@@ -25,6 +25,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/search_filter_bar">
         </FrameLayout>
+        <ProgressBar
+            android:id="@+id/search_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 

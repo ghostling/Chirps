@@ -36,11 +36,11 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"
-                android:value=".SearchActivity"/>
+                android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name="cs121.jam.chirps.LoginActivity"
@@ -72,17 +72,6 @@
             android:label="Reset Password"
             android:parentActivityName="cs121.jam.chirps.MainActivity"
             >
-        </activity>
-        <activity
-            android:name="cs121.jam.chirps.SearchActivity"
-            android:label="@string/title_activity_search"
-            android:launchMode="singleTop"
-            android:parentActivityName="cs121.jam.chirps.MainActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
 
         <service android:name="com.parse.PushService" />

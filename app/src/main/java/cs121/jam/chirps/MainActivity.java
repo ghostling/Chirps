@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -67,6 +68,10 @@ public class MainActivity extends FragmentActivity
      */
     private CharSequence mTitle;
 
+    // For search
+    private ProgressBar barView;
+    public ChirpFragment frag;
+
     /**
      * Used to display the list of Chirps.
      */
@@ -81,7 +86,7 @@ public class MainActivity extends FragmentActivity
     private Fragment[] navigationFragments;
 
     boolean hideRefresh = false;
-    boolean hideAddAndSearch = false;
+    boolean hideAdd = false;
     boolean hideSearchAndFilter = false;
 
     @Override
@@ -148,6 +153,69 @@ public class MainActivity extends FragmentActivity
             }
         });
 
+        if (!hideSearchAndFilter) {
+            ViewStub stub = (ViewStub) findViewById(R.id.search_filter_bar_stub);
+            stub.inflate();
+
+            // Initially is a fragment switch.
+            onFragmentSwitch();
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        barView = (ProgressBar) findViewById(R.id.search_progress);
+        barView.setVisibility(View.VISIBLE);
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            if(frag != null)
+                fragmentManager.beginTransaction().remove(frag).commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.SEARCH_CHIRP_QUERY, query))
+                        .commit();
+
+            barView = (ProgressBar) findViewById(R.id.search_progress);
+            barView.setVisibility(View.GONE);
+        }
+    }
+
+    public void onFragmentSwitch() {
+        Log.e("onFragmentSwitch", "called");
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) findViewById(R.id.action_search);
+        if (getComponentName() != null && searchView != null) {
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(getComponentName()));
+        }
+        if(hideSearchAndFilter) {
+            (findViewById(R.id.search_filter_bar)).setVisibility(View.GONE);
+        } else {
+            ViewStub stub = (ViewStub) findViewById(R.id.search_filter_bar_stub);
+            if (stub != null) {
+                stub.setVisibility(View.VISIBLE);
+                setFilterToggleListener();
+            } else {
+                try {
+                    (findViewById(R.id.search_filter_bar)).setVisibility(View.VISIBLE);
+                    setFilterToggleListener();
+                } catch (NullPointerException e) {
+                }
+            }
+        }
     }
 
     public void setFilterToggleListener() {
@@ -171,7 +239,7 @@ public class MainActivity extends FragmentActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         hideRefresh = false;
-        hideAddAndSearch = false;
+        hideAdd = false;
         hideSearchAndFilter = false;
         DrawerLayout mDrawerLayout = ((DrawerLayout) findViewById(R.id.drawer_layout));
         if(position == 3) {
@@ -195,7 +263,7 @@ public class MainActivity extends FragmentActivity
                     .replace(R.id.container, navigationFragments[position])
                     .commit();
             hideRefresh = true;
-            hideAddAndSearch = true;
+            hideAdd = true;
             hideSearchAndFilter = true;
             if (mDrawerLayout != null)
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
@@ -239,6 +307,7 @@ public class MainActivity extends FragmentActivity
         }
         invalidateOptionsMenu();
         restoreActionBar();
+        onFragmentSwitch();
     }
 
     public void restoreActionBar() {
@@ -252,40 +321,21 @@ public class MainActivity extends FragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
+            // Only show items in the action bar relevant to this screen if the left drawer is not
+            // showing. Otherwise, let the drawer decide what to show in the action bar.
 
             getMenuInflater().inflate(R.menu.main, menu);
 
-            // Associate searchable configuration with the SearchView
-            SearchManager searchManager =
-                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            SearchView searchView =
-                    (SearchView) menu.findItem(R.id.action_search).getActionView();
-            ComponentName name = new ComponentName(this, SearchActivity.class);
-            searchView.setSearchableInfo(
-                    searchManager.getSearchableInfo(name));
             menu.findItem(R.id.action_logout).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-            if(hideAddAndSearch) {
-                menu.findItem(R.id.action_search).setVisible(false);
+            if (hideAdd) {
                 menu.findItem(R.id.action_add_chirp).setVisible(false);
                 menu.findItem(R.id.action_logout).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             }
-            if(hideRefresh) {
+            if (hideRefresh) {
                 menu.findItem(R.id.action_refresh_chirps).setVisible(false);
             }
-            if(hideSearchAndFilter) {
-                (findViewById(R.id.search_filter_bar)).setVisibility(View.GONE);
-            } else {
-                ViewStub stub = (ViewStub) findViewById(R.id.search_filter_bar_stub);
-                if (stub != null) {
-                    stub.setVisibility(View.VISIBLE);
-                } else {
-                    (findViewById(R.id.search_filter_bar)).setVisibility(View.VISIBLE);
-                }
-                setFilterToggleListener();
-            }
+
+
             restoreActionBar();
             return true;
         }

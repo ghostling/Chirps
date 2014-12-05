@@ -23,20 +23,11 @@
         android:background="@color/gray"
         android:layout_toLeftOf="@id/filter_button"
         android:layout_centerVertical="true" />
-    <ImageButton
-        android:id="@+id/imageButton"
+    <SearchView
+        android:id="@+id/action_search"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_menu_search"
-        android:layout_toLeftOf="@id/vertical_bar"
-        android:layout_centerVertical="true" />
-    <EditText
-        android:id="@+id/search_text"
-        android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/imageButton"
-        android:text="Search"
-        android:layout_centerVertical="true" />
+        android:layout_toLeftOf="@id/vertical_bar"
+        android:queryHint="@string/search_hint"
+        android:iconifiedByDefault="true" />
 </RelativeLayout>
