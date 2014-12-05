@@ -15,12 +15,13 @@
 
     <TextView
         android:scrollHorizontally="true"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
         android:ellipsize="end"
         android:maxLines="1"
         android:layout_alignParentLeft="true"
+        android:layout_marginRight="60dp"
         android:id="@+id/chirp_item_title" />
 
     <TextView

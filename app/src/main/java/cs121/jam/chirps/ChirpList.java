@@ -20,6 +20,7 @@ import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import cs121.jam.model.Chirp;
 
@@ -48,7 +49,7 @@ public class ChirpList extends ArrayAdapter<Chirp> {
         TextView textTitle = (TextView) rowView.findViewById(R.id.chirp_item_title);
         TextView textExpDate = (TextView) rowView.findViewById(R.id.chirp_item_exp_date);
 
-
+        // The delete and favorite button never appear together, since they will always apply to different chirps
         final ImageButton deleteChirpButton = (ImageButton) rowView.findViewById(R.id.chirp_item_delete_button);
         final ToggleButton favoriteChirpButton = (ToggleButton) rowView.findViewById(R.id.chirp_item_favorite_button);
 
@@ -94,10 +95,43 @@ public class ChirpList extends ArrayAdapter<Chirp> {
             });
         }
 
-
-
         textTitle.setText(chirps.get(position).getTitle());
-        textExpDate.append(PRETTY_DATE_TIME.format(chirps.get(position).getExpirationDate()));
+
+        // Days until chirp
+
+        long different = chirps.get(position).getExpirationDate().getTime() - (new Date()).getTime();
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+        long weeksInMilli = daysInMilli * 7;
+
+        // Show the most relevant time span till the chirp
+
+        String showTime = "In ";
+
+        long elapsedWeeks = different / weeksInMilli;
+        different = different % weeksInMilli;
+
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        if(elapsedWeeks != 0)
+            showTime += elapsedWeeks + " weeks";
+        else if(elapsedDays != 0)
+            showTime += elapsedDays + " days";
+        else if(elapsedHours != 0)
+            showTime += elapsedHours + " hours";
+        else
+            showTime += elapsedMinutes + " minutes";
+        textExpDate.setText(showTime);
 
         return rowView;
 
