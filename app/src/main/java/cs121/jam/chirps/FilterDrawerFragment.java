@@ -21,8 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.logging.Filter;
-
 /**
  * Created by jiexicao on 12/3/14.
  */
@@ -52,7 +50,7 @@ public class FilterDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     public FilterDrawerFragment() {
@@ -71,10 +69,8 @@ public class FilterDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
+            selectItem(mCurrentSelectedPosition);
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -100,12 +96,7 @@ public class FilterDrawerFragment extends Fragment {
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                new String[]{
-                        "My Profile",
-                        getString(R.string.title_section2),
-                        "My Favorites",
-                        getString(R.string.title_section1)
-                }));
+                getResources().getStringArray(R.array.categories_array)));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }

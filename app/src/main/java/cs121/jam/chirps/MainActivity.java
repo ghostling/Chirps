@@ -1,29 +1,22 @@
 package cs121.jam.chirps;
 
-import android.app.Activity;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.view.ViewStub;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,26 +24,14 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-// Parse:
-import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParseObject;
 import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.PushService;
-import com.parse.SaveCallback;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-
-
-import cs121.jam.model.Chirp;
+// Parse:
 
 
 public class MainActivity extends FragmentActivity
@@ -61,7 +42,10 @@ public class MainActivity extends FragmentActivity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private Fragment[] navigationFragments;
+
     private FilterDrawerFragment mFilterDrawerFragment;
+    private Fragment[] filterFragments;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -69,7 +53,6 @@ public class MainActivity extends FragmentActivity
     private CharSequence mTitle;
 
     // For search
-    private ProgressBar barView;
     public ChirpFragment frag;
 
     /**
@@ -82,8 +65,6 @@ public class MainActivity extends FragmentActivity
      * Used for swipeRefresh
      */
     private SwipeRefreshLayout swipeListLayout;
-
-    private Fragment[] navigationFragments;
 
     boolean hideRefresh = false;
     boolean hideAdd = false;
@@ -120,6 +101,8 @@ public class MainActivity extends FragmentActivity
         inst.saveInBackground();
 
         navigationFragments = new Fragment[10];
+        filterFragments = new Fragment[10];
+
         setContentView(R.layout.activity_main);
         mTitle = getTitle();
 
@@ -170,28 +153,24 @@ public class MainActivity extends FragmentActivity
     }
 
     private void handleIntent(Intent intent) {
-        barView = (ProgressBar) findViewById(R.id.search_progress);
-        barView.setVisibility(View.VISIBLE);
-
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.search_progress);
             String query = intent.getStringExtra(SearchManager.QUERY);
-
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             if(frag != null)
                 fragmentManager.beginTransaction().remove(frag).commit();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, ChirpFragment.newInstance(ChirpFragment.SEARCH_CHIRP_QUERY, query))
-                        .commit();
+            progressBar.setVisibility(View.VISIBLE);
 
-            barView = (ProgressBar) findViewById(R.id.search_progress);
-            barView.setVisibility(View.GONE);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container,
+                            ChirpFragment.newInstance(ChirpFragment.SEARCH_CHIRP_QUERY, query))
+                    .commit();
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
     public void onFragmentSwitch() {
-        Log.e("onFragmentSwitch", "called");
-
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -231,9 +210,17 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onFilterDrawerItemSelected(int position) {
-        // TODO: Do the filtering here.
-    }
+        String category = getResources().getStringArray(R.array.categories_array)[position];
+        mTitle = category;
 
+        if(filterFragments[position] == null)
+            filterFragments[position] = ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, category);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, filterFragments[position])
+                .commit();
+    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -294,17 +281,7 @@ public class MainActivity extends FragmentActivity
             if (mDrawerLayout != null)
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         }
-        else {
-            String category = getResources().getStringArray(R.array.categories_array)[position-4];
-            mTitle = category;
-            if(navigationFragments[position] == null)
-                navigationFragments[position] = ChirpFragment.newInstance(ChirpFragment.CATEGORY_CHIRP_QUERY, category);
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, navigationFragments[position])
-                    .commit();
-        }
         invalidateOptionsMenu();
         restoreActionBar();
         onFragmentSwitch();
@@ -316,7 +293,6 @@ public class MainActivity extends FragmentActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

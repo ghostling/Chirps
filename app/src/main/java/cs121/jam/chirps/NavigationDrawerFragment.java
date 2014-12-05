@@ -1,18 +1,18 @@
 package cs121.jam.chirps;
 
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,14 +23,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.Arrays;
 
 /**
- * Fragment used for managing interactions for and presentation of a navigation drawer.
- * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
- * design guidelines</a> for a complete explanation of the behaviors implemented here.
+ * Fragment used for managing interactions for and presentation of the left navigation drawer that
+ * is used to navigate through different "pages" of the application.
  */
 public class NavigationDrawerFragment extends Fragment {
 
@@ -66,6 +63,10 @@ public class NavigationDrawerFragment extends Fragment {
     public NavigationDrawerFragment() {
     }
 
+    /**
+     * @param pos
+     * @return
+     */
     public static NavigationDrawerFragment newInstance(int pos) {
         NavigationDrawerFragment fragment = new NavigationDrawerFragment();
         Bundle args = new Bundle();
@@ -74,6 +75,9 @@ public class NavigationDrawerFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,17 +96,25 @@ public class NavigationDrawerFragment extends Fragment {
         selectItem(mCurrentSelectedPosition);
     }
 
+    /**
+     * Renders the navigation bar and sets the starting position at the defined "home" position,
+     * which is the "All Chirps" view.
+     * @param activity
+     * @param attrs
+     * @param savedInstanceState
+     */
     @Override
     public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
         super.onInflate(activity, attrs, savedInstanceState);
-
         TypedArray a = activity.obtainStyledAttributes(R.styleable.NavigationDrawerFragment);
-
-        int startingPos = a.getInt(R.styleable.NavigationDrawerFragment_pos, 3);
-
+        int positionOfHome = 3;
+        int startingPos = a.getInt(R.styleable.NavigationDrawerFragment_pos, positionOfHome);
         mCurrentSelectedPosition = startingPos;
     }
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -110,15 +122,18 @@ public class NavigationDrawerFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-
-
-
-
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -129,22 +144,19 @@ public class NavigationDrawerFragment extends Fragment {
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                concat(new String[]{
+                new String[]{
                         "My Profile",
                         getString(R.string.title_section2),
                         "My Favorites",
                         getString(R.string.title_section1)
-                }, getResources().getStringArray(R.array.categories_array))));
+                }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
 
-    public static <T> T[] concat(T[] first, T[] second) {
-        T[] result = Arrays.copyOf(first, first.length + second.length);
-        System.arraycopy(second, 0, result, first.length, second.length);
-        return result;
-    }
-
+    /**
+     * @return True if the navigation drawer is open.
+     */
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
@@ -223,6 +235,10 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    /**
+     *
+     * @param position
+     */
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
@@ -236,6 +252,10 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+    /**
+     *
+     * @param activity
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
