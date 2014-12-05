@@ -30,7 +30,7 @@
     <string name="chirp_schools_hint">Please select the schools relevant to this Chirp.</string>
     <string name="chirp_contact_info">Contact Info</string>
     <string name="chirp_contact_info_hint">Email to contact.</string>
-    <string name="chirp_expires">Expires</string>
+    <string name="chirp_expires">Posted Until</string>
     <string name="chirp_expiration_date">Expiration Date (Optional)</string>
     <string name="chirp_expiration_date_hint">This chirp will disappear on this date.</string>
     <string name="chirp_expiration_time">Expiration Time (Optional)</string>
