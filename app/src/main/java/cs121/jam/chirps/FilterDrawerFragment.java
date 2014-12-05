@@ -22,12 +22,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
- * Created by jiexicao on 12/3/14.
+ * Fragment used for managing interactions for and presentation of the right filter drawer that
+ * filters the chirps on the "All Chirps" page.
  */
 public class FilterDrawerFragment extends Fragment {
-    /**
-     * Remember the position of the selected item.
-     */
+
+    // Remember the position of the selected item.
     private static final String STATE_SELECTED_POSITION = "selected_filter_drawer_position";
 
     /**
@@ -36,14 +36,10 @@ public class FilterDrawerFragment extends Fragment {
      */
     private static final String PREF_USER_LEARNED_DRAWER = "filter_drawer_learned";
 
-    /**
-     * A pointer to the current callbacks instance (the Activity).
-     */
+    // A pointer to the current callbacks instance (the Activity).
     private FilterDrawerCallbacks mCallbacks;
 
-    /**
-     * Helper component that ties the action bar to the filter drawer.
-     */
+    // Helper component that ties the action bar to the filter drawer.
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
@@ -53,8 +49,9 @@ public class FilterDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-    public FilterDrawerFragment() {
 
+    public FilterDrawerFragment() {
+        // Empty constructor.
     }
 
     @Override
@@ -80,6 +77,13 @@ public class FilterDrawerFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    /**
+     * Populates the ListView of the filter drawer.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return ListView containing all the categories.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -101,13 +105,15 @@ public class FilterDrawerFragment extends Fragment {
         return mDrawerListView;
     }
 
+    /**
+     * @return True if the navigation drawer is open.
+     */
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
     /**
      * Users of this fragment must call this method to set up the filter drawer interactions.
-     *
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
@@ -237,7 +243,6 @@ public class FilterDrawerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         if (item.getItemId() == R.id.action_add_chirp) {
             Intent intent = new Intent(
                     getActivity(),
@@ -245,7 +250,6 @@ public class FilterDrawerFragment extends Fragment {
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

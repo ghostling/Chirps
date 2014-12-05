@@ -31,9 +31,8 @@ import android.widget.ListView;
  */
 public class NavigationDrawerFragment extends Fragment {
 
-    /**
-     * Remember the position of the selected item.
-     */
+
+    // Remember the position of the selected item.
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
     /**
@@ -42,14 +41,10 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
-    /**
-     * A pointer to the current callbacks instance (the Activity).
-     */
+    // A pointer to the current callbacks instance (the Activity).
     private NavigationDrawerCallbacks mCallbacks;
 
-    /**
-     * Helper component that ties the action bar to the navigation drawer.
-     */
+    // Helper component that ties the action bar to the navigation drawer.
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
@@ -61,12 +56,9 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mUserLearnedDrawer;
 
     public NavigationDrawerFragment() {
+        // Empty constructor.
     }
 
-    /**
-     * @param pos
-     * @return
-     */
     public static NavigationDrawerFragment newInstance(int pos) {
         NavigationDrawerFragment fragment = new NavigationDrawerFragment();
         Bundle args = new Bundle();
@@ -75,9 +67,6 @@ public class NavigationDrawerFragment extends Fragment {
         return fragment;
     }
 
-    /**
-     * @param savedInstanceState
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +101,6 @@ public class NavigationDrawerFragment extends Fragment {
         mCurrentSelectedPosition = startingPos;
     }
 
-    /**
-     * @param savedInstanceState
-     */
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -123,11 +109,11 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     /**
-     *
+     * Populates the ListView of the navigation drawer.
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return ListView containing all the sections of the app.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -145,10 +131,10 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        "My Profile",
-                        getString(R.string.title_section2),
-                        "My Favorites",
-                        getString(R.string.title_section1)
+                        getString(R.string.my_profile_section),
+                        getString(R.string.my_chirps_section),
+                        getString(R.string.my_favorites_section),
+                        getString(R.string.all_chirps_section)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -163,7 +149,6 @@ public class NavigationDrawerFragment extends Fragment {
 
     /**
      * Users of this fragment must call this method to set up the navigation drawer interactions.
-     *
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
@@ -171,9 +156,8 @@ public class NavigationDrawerFragment extends Fragment {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
-        // set a custom shadow that overlays the main content when the drawer opens
+        // Set a custom shadow that overlays the main content when the drawer opens.
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -235,10 +219,6 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    /**
-     *
-     * @param position
-     */
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
@@ -252,10 +232,6 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
-    /**
-     *
-     * @param activity
-     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -301,7 +277,6 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         if (item.getItemId() == R.id.action_add_chirp) {
             Intent intent = new Intent(
                     getActivity(),
@@ -309,7 +284,6 @@ public class NavigationDrawerFragment extends Fragment {
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

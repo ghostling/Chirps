@@ -419,10 +419,6 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
                     LoginActivity.class);
             startActivity(intent);
             finish();
-        } else if (id == R.id.user_profile) {
-            Intent intent = new Intent(ChirpSubmissionActivity.this,
-                    UserProfileActivity.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
