@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,14 +17,12 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-//import cs121.jam.model.User;
-
-
+/**
+ * Created by maiho.
+ *
+ * Activity for a user to sign up for an account.
+ */
 public class SignUpActivity extends Activity {
-    // All views from Login
     EditText firstNameView;
     EditText lastNameView;
     EditText emailView;
@@ -35,18 +34,16 @@ public class SignUpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        // TODO: Handle nullpointerexception here.
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Connect views to values in xml file using their id's
-        firstNameView = (EditText) findViewById(R.id.sign_up_first_name_input);
-        lastNameView = (EditText) findViewById(R.id.sign_up_last_name_input);
-        emailView = (EditText) findViewById(R.id.sign_up_email_input);
-        passwordView = (EditText) findViewById(R.id.sign_up_password_input);
-        reenterPasswordView = (EditText) findViewById(R.id.sign_up_reenter_password_input);
-        signUpButtonView = (Button) findViewById(R.id.sign_up_button);
+        try {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            Log.e("No activity to go back to.", "SignUpActivity");
+        }
 
-        // Data validation for sign up fields.
+        connectViews();
+
+        // Inline data validation for sign up fields.
         addInlineSignUpValidation();
 
         // Sign up Button Click Listener
@@ -62,60 +59,82 @@ public class SignUpActivity extends Activity {
 
                 // Validate fields before creating the new user.
                 if (emailValidation() && reenterPasswordViewValidation()) {
-                    // Save new user data into Parse.com Data Storage
-                    ParseUser user = new ParseUser();
-                    user.setUsername(email);
-                    user.setPassword(password);
-                    user.setEmail(email);
-                    user.put("name", name);
-                    user.put("school", school);
-
-                    user.signUpInBackground(new SignUpCallback() {
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                // Show a simple Toast message upon successful registration
-                                Toast.makeText(getApplicationContext(),
-                                        "Successfully Signed up, " +
-                                                "please confirm email before logging in to fully utilize all of Chirp's features.",
-                                        Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(
-                                        SignUpActivity.this,
-                                        LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                switch (e.getCode()) {
-                                    case ParseException.INVALID_EMAIL_ADDRESS:
-                                        Toast.makeText(getApplicationContext(),
-                                                "Invalid email address.", Toast.LENGTH_LONG)
-                                                .show();
-                                        break;
-                                    case ParseException.USERNAME_TAKEN:
-                                        Toast.makeText(getApplicationContext(),
-                                                "Username is already taken. Please enter a different one.",
-                                                Toast.LENGTH_LONG)
-                                                .show();
-                                        break;
-                                    case ParseException.EMAIL_TAKEN:
-                                        Toast.makeText(getApplicationContext(),
-                                                "Username is already taken. Please enter a different one.",
-                                                Toast.LENGTH_LONG)
-                                                .show();
-                                        break;
-                                    default:
-                                        Toast.makeText(getApplicationContext(),
-                                                "Could not sign up, please try again later.",
-                                                Toast.LENGTH_LONG)
-                                                .show();
-                                }
-                            }
-                        }
-                    });
+                    createUser(email, password, name, school);
                 }
             }
         });
     }
 
+    /**
+     * Creates the user and saves them to Parse.
+     * @param email
+     * @param password
+     * @param name
+     * @param school
+     */
+    public void createUser(String email, String password, String name, String school) {
+        ParseUser user = new ParseUser();
+        user.setUsername(email);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.put("name", name);
+        user.put("school", school);
+
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Show a simple Toast message upon successful registration
+                    Toast.makeText(getApplicationContext(),
+                            "Successfully Signed up, " +
+                                    "please confirm email before logging in to fully " +
+                                    "utilize all of Chirp's features.",
+                            Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(
+                            SignUpActivity.this,
+                            LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    switch (e.getCode()) {
+                        case ParseException.INVALID_EMAIL_ADDRESS:
+                            Toast.makeText(getApplicationContext(),
+                                    "Invalid email address.", Toast.LENGTH_LONG)
+                                    .show();
+                            break;
+                        case ParseException.USERNAME_TAKEN:
+                            Toast.makeText(getApplicationContext(),
+                                    "Username is already taken. Please enter a different one.",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                            break;
+                        case ParseException.EMAIL_TAKEN:
+                            Toast.makeText(getApplicationContext(),
+                                    "Username is already taken. Please enter a different one.",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                            break;
+                        default:
+                            Toast.makeText(getApplicationContext(),
+                                    "Could not sign up, please try again later.",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Connect views to values in xml file using their id's.
+     */
+    public void connectViews() {
+        firstNameView = (EditText) findViewById(R.id.sign_up_first_name_input);
+        lastNameView = (EditText) findViewById(R.id.sign_up_last_name_input);
+        emailView = (EditText) findViewById(R.id.sign_up_email_input);
+        passwordView = (EditText) findViewById(R.id.sign_up_password_input);
+        reenterPasswordView = (EditText) findViewById(R.id.sign_up_reenter_password_input);
+        signUpButtonView = (Button) findViewById(R.id.sign_up_button);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,10 +152,15 @@ public class SignUpActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Determines which school the user belongs to from their email.
+     * @return The school that matched the email.
+     */
     public String getSchool() {
         String email = (emailView.getText().toString()).toLowerCase();
         String school = "";
 
+        // Check which school is a match.
         if(email.matches(getString(R.string.email_regex_harveymudd)))
             school = getString(R.string.school_harveymudd);
         else if(email.matches(getString(R.string.email_regex_pomona)))
@@ -151,6 +175,10 @@ public class SignUpActivity extends Activity {
         return school;
     }
 
+    /**
+     * Determines whether the user's email is a valid 5C email.
+     * @return A boolean indicating whether or not it's valid.
+     */
     public boolean emailValidation() {
         String email = (emailView.getText().toString()).toLowerCase();
 
@@ -167,6 +195,10 @@ public class SignUpActivity extends Activity {
         return true;
     }
 
+    /**
+     * Checks that the password and reenterPassword fields match.
+     * @return A boolean indicating the match.
+     */
     public boolean reenterPasswordViewValidation() {
         String reenterPassword = reenterPasswordView.getText().toString();
         String password = passwordView.getText().toString();
@@ -184,6 +216,9 @@ public class SignUpActivity extends Activity {
         return true;
     }
 
+    /**
+     * Sets up the inline data validation.
+     */
     public void addInlineSignUpValidation() {
         emailView.addTextChangedListener(new TextWatcher() {
             @Override

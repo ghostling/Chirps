@@ -5,48 +5,46 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.MenuItem;
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.util.Date;
 
 import cs121.jam.model.Chirp;
 import cs121.jam.model.User;
 
-import static cs121.jam.model.User.*;
-
-
+/**
+ * Created by jiexicao. Modified by alexputman.
+ *
+ * Activity for viewing the details of a specific chirp. Navigation to this activity should
+ * include selecting a chirp.
+ */
 public class ChirpDetailsActivity extends Activity {
-
+    // Data members
     TextView relevantSchoolsTextView;
-
     public static String USER_CLICKABLE = "userClickable?";
-
     public Chirp chirp;
-
     boolean userClickable;
-
     public ParseQuery<Chirp> chirpQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // If there is navigation from a previous activity, set up the up button to go back to
+        // that activity.
         setContentView(R.layout.activity_chirp_details);
         try {
             getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,10 +52,13 @@ public class ChirpDetailsActivity extends Activity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+
+        // Handle the intent and extract the object ID of the chirp.
         Intent intent = getIntent();
         String chirpObjectId = intent.getStringExtra(MainActivity.CHIRP_OBJECT_ID);
         userClickable = intent.getBooleanExtra(USER_CLICKABLE, true);
 
+        // Look up in parse
         chirpQuery = ParseQuery.getQuery(Chirp.class);
         try {
             chirp = chirpQuery.get(chirpObjectId);
@@ -68,6 +69,10 @@ public class ChirpDetailsActivity extends Activity {
         getAndDisplayChirpDetails(chirpObjectId);
     }
 
+    /**
+     * Extracts relevant values from the chirp and modifies the XML to display those values.
+     * @param chirpObjectId Parse objectID of the specific chirp.
+     */
     public void getAndDisplayChirpDetails(String chirpObjectId) {
         // Don't display the chirp if it doesn't exist!
         if (chirp == null) {
@@ -77,6 +82,7 @@ public class ChirpDetailsActivity extends Activity {
             return;
         }
 
+        // Initialize values
         String title = "";
         String description = "";
         Date expirationDate = null;
@@ -86,6 +92,7 @@ public class ChirpDetailsActivity extends Activity {
         StringBuilder schools = new StringBuilder("");
         StringBuilder categories = new StringBuilder("");
 
+        // Extract values
         if (chirp != null) {
             title = chirp.getTitle();
             description = chirp.getDescription();
@@ -93,17 +100,17 @@ public class ChirpDetailsActivity extends Activity {
             contact = chirp.getContactEmail();
         }
 
+        // Fill in the user information.
         TextView userField = (TextView) findViewById(R.id.chirp_details_user);
-
         try {
             userField.setText(chirp.getUser().fetchIfNeeded().getString(User.NAME));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        // If they have a public profile, set up the button handler to bring the user to the
+        // appropriate profile page.
         if(userClickable) {
-
-
             userField.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,17 +121,24 @@ public class ChirpDetailsActivity extends Activity {
             });
         }
 
+        // Fill in the rest of the fields in the chirp details.
         Log.e("Chirp Details", title);
-        TextView tv = (TextView) findViewById(R.id.chirp_details_title);
-        tv.setText(title);
-        tv = (TextView) findViewById(R.id.chirp_details_description);
-        tv.setText(description);
-        tv = (TextView) findViewById(R.id.chirp_details_expiration_date);
-        tv.setText(ChirpList.PRETTY_DATE_TIME.format(expirationDate));
-        tv = (TextView) findViewById(R.id.chirp_details_contact);
-        tv.setText(contact);
+        TextView chirpTitleView = (TextView) findViewById(R.id.chirp_details_title);
+        chirpTitleView.setText(title);
+
+        TextView chirpDescriptionView = (TextView) findViewById(R.id.chirp_details_description);
+        chirpDescriptionView.setText(description);
+
+        TextView chirpExpirationDate = (TextView) findViewById(R.id.chirp_details_expiration_date);
+        chirpExpirationDate.setText(ChirpList.PRETTY_DATE_TIME.format(expirationDate));
+
+        TextView chirpContact = (TextView) findViewById(R.id.chirp_details_contact);
+        chirpContact.setText(contact);
+
+        // When a user clicks on the contact email, they should be able to choose which
+        // application to use to email the chirp poster.
         final String finalContact = contact;
-        tv.setOnClickListener(new View.OnClickListener() {
+        chirpContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
@@ -133,6 +147,9 @@ public class ChirpDetailsActivity extends Activity {
                 startActivity(Intent.createChooser(intent, ""));
             }
         });
+
+        // If schools were selected, generate a pretty way to display the selected schools on
+        // the view.
         if(schoolsArray != null) {
             for (int i = 0; i < schoolsArray.length(); i++) {
                 if (i != 0)
@@ -148,6 +165,8 @@ public class ChirpDetailsActivity extends Activity {
         relevantSchoolsTextView = (TextView) findViewById(R.id.chirp_relevant_schools);
         relevantSchoolsTextView.setText(schools.toString());
 
+        // If categories were selected, generate a pretty way to display the selected categories
+        // on the view.
         if(categoriesArray != null) {
             for (int i = 0; i < categoriesArray.length(); i++) {
                 if (i != 0)
@@ -160,8 +179,8 @@ public class ChirpDetailsActivity extends Activity {
                 }
             }
         }
-        tv = (TextView) findViewById(R.id.chirp_details_categories);
-        tv.setText(categories);
+        TextView relevantCategoriesTextView = (TextView) findViewById(R.id.chirp_details_categories);
+        relevantCategoriesTextView.setText(categories);
     }
 
     @Override
@@ -169,6 +188,9 @@ public class ChirpDetailsActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.chirp_details, menu);
 
+        // If viewing the details of your own chirp, then don't show a button to be able to
+        // favorite the chirp. All of a user's chirps are automatically followed by the user
+        // who submitted them.
         ParseUser currentUser = ParseUser.getCurrentUser();
         if(chirp.getUser().getObjectId().equals(currentUser.getObjectId())) {
             MenuItem favToggle = menu.findItem(R.id.favorite_toggle);
@@ -210,8 +232,10 @@ public class ChirpDetailsActivity extends Activity {
             startActivity(intent);
             finish();
         } else if (id == R.id.delete) {
+            // Functionality to delete chirps
             DeleteChirpDialog deleteChirpDialog = new DeleteChirpDialog(this);
         } else if (id == R.id.favorite_toggle) {
+            // Functionality to favorite chirps
             try {
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 boolean fav = chirp.isFavoriting(currentUser);
@@ -232,13 +256,23 @@ public class ChirpDetailsActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method to change the chirp shown in the chirp details.
+     *
+     * The main reason why I had this method is so I can test the Activity by inserting mock
+     * objects.
+     *
+     * @param chirpObj A chirp object to replace the current one with.
+     */
     public void setChirp(Chirp chirpObj) {
         chirp = chirpObj;
     }
 
+    /**
+     * A dialog that pops up when a user tries to delete a chirp. It asks the user to confirm the
+     * the deletion before it occurs.
+     */
     public class DeleteChirpDialog extends AlertDialog implements  DialogInterface.OnClickListener {
-        private int chirpToDelete;
-
         protected DeleteChirpDialog(Context context) {
             super(context);
 

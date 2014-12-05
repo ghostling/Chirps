@@ -16,8 +16,11 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 
-//import cs121.jam.model.User;
-
+/**
+ * Created by maiho.
+ *
+ * Includes the functionality for the logging into the application.
+ */
 public class LoginActivity extends Activity {
     // All views from Login
     EditText emailView;
@@ -26,6 +29,9 @@ public class LoginActivity extends Activity {
     Button signUpButtonView;
     Button forgotPasswordButtonView;
 
+    /**
+     * Called when this activity is started. Handles the login button listener.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +50,6 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 
                 // Get the values of all the form fields
-
                 String email = emailView.getText().toString().trim().toLowerCase();
                 String password = passwordView.getText().toString().trim();
 
@@ -64,6 +69,7 @@ public class LoginActivity extends Activity {
                                             Toast.LENGTH_LONG).show();
                                     finish();
                                 } else {
+                                    // Otherwise, give an appropriate error message.
                                     if (e.getMessage().equals(ParseException.OBJECT_NOT_FOUND)) {
                                         Toast.makeText(getApplicationContext(),
                                                 "Invalid email/password combination.",
