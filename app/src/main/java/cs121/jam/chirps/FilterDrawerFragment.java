@@ -46,7 +46,7 @@ public class FilterDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition;
+    private int mCurrentSelectedPosition = -1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -66,7 +66,8 @@ public class FilterDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
-            selectItem(mCurrentSelectedPosition);
+            if(mCurrentSelectedPosition != -1)
+                selectItem(mCurrentSelectedPosition);
         }
     }
 
@@ -101,7 +102,8 @@ public class FilterDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 getResources().getStringArray(R.array.categories_array)));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        if(mCurrentSelectedPosition != -1)
+            mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
 
@@ -251,6 +253,11 @@ public class FilterDrawerFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // To say no filter is selected because it is not in the current view
+    public void unsetFilterChoice() {
+        mCurrentSelectedPosition = -1;
     }
 
     /**

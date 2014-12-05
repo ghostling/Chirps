@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -108,13 +109,12 @@ public class MainActivity extends FragmentActivity implements
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         // Initial setup for search and filter bar.
-        if (!hideSearchAndFilterBar) {
-            ViewStub stub = (ViewStub) findViewById(R.id.search_filter_bar_stub);
-            stub.inflate();
+        ViewStub stub = (ViewStub) findViewById(R.id.search_filter_bar_stub);
+        stub.inflate();
 
-            // Initially switch to first fragment ("All Chirps").
-            onFragmentSwitch();
-        }
+        // Initially switch to first fragment ("All Chirps").
+        onFragmentSwitch();
+
     }
 
     @Override
@@ -156,7 +156,10 @@ public class MainActivity extends FragmentActivity implements
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         if(hideSearchAndFilterBar) {
-            (findViewById(R.id.search_filter_bar)).setVisibility(View.GONE);
+            RelativeLayout searchFilterBar = (RelativeLayout) findViewById(R.id.search_filter_bar);
+            if(searchFilterBar != null) {
+                searchFilterBar.setVisibility(View.GONE);
+            }
         } else {
             try {
                 (findViewById(R.id.search_filter_bar)).setVisibility(View.VISIBLE);
@@ -217,6 +220,11 @@ public class MainActivity extends FragmentActivity implements
 
         // TODO(jiexi): Standardize position numbers into constant variables.
         // Depending on which section is selected, get the correct fragment.
+
+        // Undo all selected filters
+        if(mFilterDrawerFragment != null)
+            mFilterDrawerFragment.unsetFilterChoice();
+
         if (position == 3) {
             mTitle = getString(R.string.all_chirps_section);
             if (navigationFragments[position] == null) {
