@@ -124,13 +124,13 @@ public class ChirpList extends ArrayAdapter<Chirp> {
         different = different % minutesInMilli;
 
         if(elapsedWeeks != 0)
-            showTime += elapsedWeeks + " weeks";
+            showTime += elapsedWeeks + " week" + ((elapsedWeeks > 1)? "s" : "");
         else if(elapsedDays != 0)
-            showTime += elapsedDays + " days";
+            showTime += elapsedDays + " day" + ((elapsedDays > 1)? "s" : "");
         else if(elapsedHours != 0)
-            showTime += elapsedHours + " hours";
+            showTime += elapsedHours + " hour" + ((elapsedHours > 1)? "s" : "");
         else
-            showTime += elapsedMinutes + " minutes";
+            showTime += elapsedMinutes + " minute" + ((elapsedMinutes > 1)? "s" : "");
         textExpDate.setText(showTime);
 
         return rowView;
