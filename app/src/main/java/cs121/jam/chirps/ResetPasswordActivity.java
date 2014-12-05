@@ -11,9 +11,12 @@ import android.widget.Toast;
 
 import com.parse.ParseUser;
 
-
+/**
+ * Created by alexputman.
+ *
+ * Activity for a user to reset their password.
+ */
 public class ResetPasswordActivity extends Activity {
-
     public Button setNewPasswordButton;
     public EditText newPasswordView;
     public EditText confirmNewPasswordView;
@@ -23,6 +26,7 @@ public class ResetPasswordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
+        // Connect views.
         setNewPasswordButton = (Button) findViewById(R.id.set_new_password_button);
         newPasswordView = (EditText) findViewById(R.id.new_password);
         confirmNewPasswordView = (EditText) findViewById(R.id.confirm_new_password);
@@ -33,6 +37,7 @@ public class ResetPasswordActivity extends Activity {
                 String newPassword = newPasswordView.getText().toString();
                 String confirmPassword = confirmNewPasswordView.getText().toString();
 
+                // If the password and confirm password match, then change the password
                 if(newPassword.equals(confirmPassword)) {
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     currentUser.setPassword(newPassword);
@@ -48,7 +53,7 @@ public class ResetPasswordActivity extends Activity {
                 else {
                     Toast.makeText(
                             getApplicationContext(),
-                            "New password and confirm new password values are not equal",
+                            "New password and confirm new password values do not match.",
                             Toast.LENGTH_LONG).show();
                 }
 
