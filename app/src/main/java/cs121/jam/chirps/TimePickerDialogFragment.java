@@ -24,11 +24,7 @@ public class TimePickerDialogFragment extends DialogFragment {
         // nothing to see here, move along
     }
 
-    /**
-     * Setting up the DialogFragment to connect to the callback.
-     * @param callback
-     */
-    public TimePickerDialogFragment(TimePickerDialog.OnTimeSetListener callback) {
+    public void setTimeSetListener(TimePickerDialog.OnTimeSetListener callback) {
         mTimeSetListener = (TimePickerDialog.OnTimeSetListener) callback;
     }
 

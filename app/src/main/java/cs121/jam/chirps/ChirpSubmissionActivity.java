@@ -450,7 +450,8 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
      */
     public void showDatePickerDialog(View v) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        DialogFragment newFragment = new DatePickerDialogFragment(ChirpSubmissionActivity.this);
+        DatePickerDialogFragment newFragment = new DatePickerDialogFragment();
+        newFragment.setDateSetListener(ChirpSubmissionActivity.this);
         newFragment.show(ft, "date_dialog");
     }
 
@@ -460,7 +461,8 @@ public class ChirpSubmissionActivity extends FragmentActivity implements DatePic
      */
     public void showTimePickerDialog(View v) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        DialogFragment newFragment = new TimePickerDialogFragment(ChirpSubmissionActivity.this);
+        TimePickerDialogFragment newFragment = new TimePickerDialogFragment();
+        newFragment.setTimeSetListener(ChirpSubmissionActivity.this);
         newFragment.show(ft, "time_dialog");
     }
 

@@ -31,6 +31,10 @@ public class DatePickerDialogFragment extends DialogFragment {
         mDateSetListener = (OnDateSetListener) callback;
     }
 
+    public void setDateSetListener(OnDateSetListener callback) {
+        mDateSetListener = (OnDateSetListener) callback;
+    }
+
     /**
      * Creates the actual dialog displayed.
      * @param savedInstanceState
