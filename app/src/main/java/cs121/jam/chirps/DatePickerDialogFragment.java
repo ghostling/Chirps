@@ -23,14 +23,6 @@ public class DatePickerDialogFragment extends DialogFragment {
         // nothing to see here, move along
     }
 
-    /**
-     * Setting up the DialogFragment to connect to the callback.
-     * @param callback
-     */
-    public DatePickerDialogFragment(OnDateSetListener callback) {
-        mDateSetListener = (OnDateSetListener) callback;
-    }
-
     public void setDateSetListener(OnDateSetListener callback) {
         mDateSetListener = (OnDateSetListener) callback;
     }
